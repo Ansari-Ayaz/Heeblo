@@ -69,6 +69,46 @@ namespace Heeblo.Implementation
                 return response;
             }
         }
+
+
+        public Response ValidateUser(LoginReq req)
+        {
+            Response resp = new Response();
+            var isMobile = false;
+            if (req.UserCred.Contains("@"))
+            {
+                isMobile = false;
+            }
+            else isMobile = true;
+            var user = new hbl_tbl_user();
+            if(isMobile)
+            user = _db.hbl_tbl_user.FirstOrDefault(z => z.mobile.Equals(req.UserCred));
+            else
+            {
+                user = _db.hbl_tbl_user.FirstOrDefault(z => z.email.Equals(req.UserCred));
+            }
+            if (user == null)
+            {
+                resp.RespMsg = "Invalid User";
+            }
+            else
+            {
+                if(user.password == ComputeMD5Hash(req.UserPwd))
+                {
+                    user.password = "";
+                    resp.Resp = true;
+                    resp.RespObj = user;
+                    resp.RespMsg = "Valid User";
+                }
+                else
+                {
+                    resp.RespObj = null;
+                    resp.RespMsg = "Invalid Credentials";
+                }
+            }
+            return resp;
+        }
+
         public static string ComputeMD5Hash(string input)
         {
             using (MD5 md5 = MD5.Create())
@@ -115,5 +155,11 @@ namespace Heeblo.Implementation
         //    }
         //    return plainText;
         //}
+    }
+
+    public class LoginReq
+    {
+        public string UserCred { get; set; }
+        public string UserPwd { get; set; }
     }
 }

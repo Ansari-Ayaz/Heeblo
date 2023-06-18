@@ -109,24 +109,29 @@
 
                                 <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
                                     <div class="col-md-12 btn-login">
-                                        <button type="submit" value="submit">
-                                            <span>
-                                                <i class="fa-solid fa-phone-volume"></i>Phone
-                                            </span>
+                                        <button type="button" onclick="Whatsapp()">
+                                            <span><i class="fa-brands fa-whatsapp"></i>Whatsapp</span>
                                         </button>
-                                        <button type="submit" value="submit">
+                                        <button type="button" onclick="Facebook()">
+                                            <span><i class="fa-brands fa-facebook-f"></i>Facebook</span>
+                                        </button>
+                                        <button type="button" onclick="Google()">
+                                            <span> <i class="fa-brands fa-google"></i> Google</span>
+                                        </button>
+                                        @* <div class="g_id_signin"
+                                            data-type="standard"
+                                            data-shape="rectangular"
+                                            data-theme="filled_black"
+                                            data-text="signin_with"
+                                            data-size="medium"
+                                            data-logo_alignment="left">
+                                            </div>*@
+                                        <!-- Display Google sign-in button -->
+                                        @*<div id="gSignIn"></div>*@
+
+                                        <button type="button" onclick="Email()">
                                             <span> <i class="fa-solid fa-envelope"></i> Email</span>
                                         </button>
-                                        <a href="http://localhost/customer/facebook">
-                                            <button type="submit" value="submit">
-                                                <span> <i class="fa-brands fa-facebook-f"></i>  <span>Facebook</span>
-                                            </button>
-                                        </a>
-                                        <a href="http://localhost/customer/google">
-                                            <button type="submit" value="submit">
-                                                <span> <i class="fa-brands fa-google"></i> Google</span>
-                                            </button>
-                                        </a>
                                     </div>
 
                                 </div>
@@ -141,19 +146,12 @@
                         <ul>
                             <li><a href="#">Terms and Conditions </a></li>
                             <li><a href="#">Privacy Policy</a></li>
-
                         </ul>
                     </div>
-
                 </div>
             </div>
-
-
-
         </div>
 
-        <!-- Start Footer
-           ============================================= -->
         <footer class="footer">
             <div class="footer__top padding-tb">
                 <div class="container-fluid">
@@ -219,6 +217,7 @@
 
         <!-- ==========Footer Section Ends Here========== -->
         <!-- All Scripts -->
+
         <script src="~/frontend-assets/pattern/assets/js/jquery.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
@@ -229,11 +228,25 @@
         <script src="~/frontend-assets/pattern/assets/js/lightcase.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/isotope.pkgd.min.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
-        <script>
+        <meta name="google-signin-client_id" content="370069400410-srd922ua4fpqfkkfgjlnuddf0je47f9v.apps.googleusercontent.com">
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <script async defer src="https://apis.google.com/js/platform.js?onload=renderButton"></script>
 
+        <script>
+            function Whatsapp(){
+                alert('Whatsapp')
+            }
+            function Facebook(){
+                alert('Facebook')
+            }
+            function Google(){
+                alert('Google')
+            }
+            function Email(){
+                window.location.href='@Url.Action("Register","Auth")'
+            }
         </script>
-        <!-- End Footer Bottom -->
-        <!-- End Footer-->
+
 
 
 
@@ -241,12 +254,65 @@
     </div>
 
     <script src="https://www.google.com/recaptcha/api.js?render=https://callsystem.net"></script>
+
     <script>
-        grecaptcha.ready(function () {
-            grecaptcha.execute('https://callsystem.net', { action: 'homepage' }).then(function (token) {
-                // pass the token to the backend script for verification
-            });
-        });
+              
+                //grecaptcha.ready(function () {
+                //    grecaptcha.execute('https://callsystem.net', { action: 'homepage' }).then(function (token) {
+                //        // pass the token to the backend script for verification
+                //    });
+                //});
+
+                    // Render Google Sign-in button
+                function renderButton() {
+                    gapi.signin2.render('gSignIn', {
+                        'scope': 'profile email',
+                        'width': 240,
+                        'height': 50,
+                        'longtitle': true,
+                        'theme': 'dark',
+                        'onsuccess': onSuccess,
+                        'onfailure': onFailure
+                    });
+                }
+                 // Sign-in success callback
+                function onSuccess(googleUser) {
+                   // Retrieve the Google account data
+                    gapi.client.load('oauth2', 'v2', function () {
+                        var request = gapi.client.oauth2.userinfo.get({
+                            'userId': 'me'
+                        });
+                        request.execute(function (resp) {
+                            // Display the user details
+                            var profileHTML = '<h3>Welcome ' + resp.given_name + '! <a href="javascript:void(0);" onclick="signOut();">Sign out</a></h3>';
+                            profileHTML += '<img src="' + resp.picture + '"/><p><b>Google ID: </b>' + resp.id + '</p><p><b>Name: </b>' + resp.name + '</p><p><b>Email: </b>' + resp.email + '</p><p><b>Gender: </b>' + resp.gender + '</p><p><b>Locale: </b>' + resp.locale + '</p><p><b>Google Profile:</b> <a target="_blank" href="' + resp.link + '">click to view profile</a></p>';
+                            document.getElementsByClassName("userContent")[0].innerHTML = profileHTML;
+
+                            document.getElementById("gSignIn").style.display = "none";
+                            document.getElementsByClassName("userContent")[0].style.display = "block";
+                        });
+                    });
+                }
+
+                // Sign-in failure callback
+                function onFailure(error) {
+                    alert(error);
+                }
+                function handleCredentialResponse(response) {
+                    console.log(response);
+                    const responsePayload = decodeJwtResponse(response.credential);
+                    console.log("ID: " + responsePayload.sub);
+                    console.log("Full Name: " + responsePayload.name);
+                    console.log("Given Name: " + responsePayload.given_name);
+                    console.log("Family Name: " + responsePayload.family_name);
+                    console.log("Image Url: " + responsePayload.picture);
+                    console.log("Email: " + responsePayload.email);
+                }
+
+                function decodeJwtResponse(data){
+                    var tokens = data.split(".");
+                    return JSON.parse(atob(tokens[1]));
+                }
     </script>
 
 </body>

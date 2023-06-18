@@ -106,42 +106,41 @@
 
                             <div class="col-lg-6 col-md-6 main-form-center">
                                 <div class="login-tittle mb-4">
-                                    <h2> <span style="color:#d6c494">Wel</span>come </h2>
-                                    <h3> Lets get to <span style="color:#d6c494">work! </span></h3>
+                                    <h2> <span style="color:#d6c494">Reg</span>ister </h2>
+                                    <h3> Lets get you <span style="color:#d6c494">onboarded! </span></h3>
                                 </div>
                                 <div class="form-info welcome-login wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
-                                <form action="@Url.Action("LoginPost","Auth")" method="post">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input class="form-control" placeholder="Email Id*" name="cred" type="email" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input class="form-control" placeholder="Password*" name="pwd" type="password" />
-                                            </div>
-                                            <div class="text-end for-pass"> <a href="#">Forgot password?</a></div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <button type="submit">
-                                                Login
-                                            </button>
-                                        </div>
-                                    </form>
 
-                                    <div class="signup-line">
-                                        <a href="#">Or Signup With </a>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Name" name="name" type="text" />
+                                        </div>
                                     </div>
-                                    <div class="social-media">
-                                        <ul>
-                                            <li><a href="#"> Phone</a> </li>
-                                            <li><a href="#"> Email</a> </li>
-                                            <li><a href="http://localhost/customer/facebook">Facebook</a> </li>
-                                            <li><a href="http://localhost/customer/google">Google</a> </li>
-
-                                        </ul>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Mobile*" name="mobile" type="number" />
+                                        </div>
                                     </div>
-
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Email" name="email" type="email" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Password*" name="password" type="password" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Confirm Password*" name="confirmPassword" type="password" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button onclick="submitFunc()">
+                                            Submit
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -222,7 +221,7 @@
             <div class="footer__bottom wow fadeInUp" data-wow-delay=".5s">
                 <div class="container-fluid">
                     <div class="row">
-                        <p> © COPYRIGHT 2023 . ALL RIGHTS RESERVED.</p>
+                        <p> © COPYRIGHT @DateTime.Now.Year . ALL RIGHTS RESERVED.</p>
                     </div>
                 </div>
             </div>
@@ -253,107 +252,71 @@
 
 
     </div>
-
-</body>
-<script>
-
-    var users = [
-        {
-            uid: 1,
-            name: "John Doe",
-            mobile: "1234567890",
-            email: "john@example.com",
-            password: "password123",
-            role: 1,
-            verified: true,
-            is_active: true,
-            created_on: new Date(),
-            created_by: 1,
-            update_on: new Date(),
-            updated_by: 1
-        },
-        {
-            uid: 2,
-            name: "Jane Smith",
-            mobile: "9876543210",
-            email: "jane@example.com",
-            password: "password456",
-            role: 2,
-            verified: true,
-            is_active: true,
-            created_on: new Date(),
-            created_by: 1,
-            update_on: new Date(),
-            updated_by: 1
-        },
-        {
-            uid: 3,
-            name: "Alice Johnson",
-            mobile: "5555555555",
-            email: "alice@example.com",
-            password: "password789",
-            role: 3,
-            verified: true,
-            is_active: true,
-            created_on: new Date(),
-            created_by: 1,
-            update_on: new Date(),
-            updated_by: 1
-        }
-    ];
+    <script>
         function submitFunc() {
-            event.preventDefault();
+               // Get the input field values
+               var name = $("input[name='name']").val();
+               var mobile = $("input[name='mobile']").val();
+               var email = $("input[name='email']").val();
+               var password = $("input[name='password']").val();
+               var confirmPassword = $("input[name='confirmPassword']").val();
+                // Create the request object
+               var requestData = {
+                   "name": name,
+                   "mobile": mobile,
+                   "email": email,
+                   "password": password,
+                   "role": 2
+               };
+               console.log(requestData)
+
+               // Validate the fields
+               if (name === "") {
+                   alert("Please enter your name.");
+                   return;
+               }
+               if (mobile === "") {
+                   alert("Please enter your mobile number.");
+                   return;
+               }
+               if (email === "") {
+                   alert("Please enter your email address.");
+                   return;
+               }
+               if (password === "") {
+                   alert("Please enter a password.");
+                   return;
+               }
+               if (confirmPassword === "") {
+                   alert("Please confirm your password.");
+                   return;
+               }
+               if (password != confirmPassword) {
+                   alert("Password and confirm password do not match.");
+                   return;
+               }
 
 
 
-            // Perform validation
-            var email = $('input[name="email"]').val();
-            var password = $('input[name="password"]').val();
+               // Send the AJAX request
+               $.ajax({
+                   url: '@Url.Action("saveuser","user")',
+                   type: "POST",
+                   data: JSON.stringify(requestData),
+                   contentType: "application/json",
+                   success: function(response) {
+                       // Handle the success response
+                       console.log("User saved successfully:", response);
+                       window.location.href = '@Url.Action("EmailSent","home")'+'?u='+btoa(response.respObj.email)
+                   },
+                   error: function(xhr, status, error) {
+                       // Handle the error response
+                       console.log("Error saving user:", error);
+                       // TODO: Display error message to the user
+                   }
+               });
+           }
+    </script>
+</body>
 
-            if (email.trim() === '') {
-                $('input[name="email"]').addClass('error');
-            } else {
-                $('input[name="email"]').removeClass('error');
-            }
-
-            if (password.trim() === '') {
-                $('input[name="password"]').addClass('error');
-            } else {
-                $('input[name="password"]').removeClass('error');
-            }
-
-            // Check if any invalid fields exist
-            if ($('input.error').length > 0) {
-                alert('Please fill in all the required fields.');
-                return;
-            }
-
-            // Create a data object with the form values
-            var data = {
-                email: email,
-                password: password
-            };
-
-
-            // Send the data to the home controller's upload page
-            //$.ajax({
-            //    url: 'http://localhost/home/upload',
-            //    type: 'POST',
-            //    data: data,
-            //    success: function (response) {
-            //        // Handle the response from the server
-            //        // This could be a success message or a redirect to another page
-            //        console.log(response);
-
-        if (users[0].role == 2) window.location.href = "@Url.Action("WriterUpload","Home")";
-        else window.location.href = "@Url.Action("Index","Home")";
-            //    },
-            //    error: function (xhr, status, error) {
-            //        // Handle any errors that occur during the AJAX request
-            //        console.log(error);
-            //    }
-            //});
-        }
-
-</script>
 </html>

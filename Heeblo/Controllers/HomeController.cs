@@ -21,6 +21,11 @@ namespace Heeblo.Controllers
         {
             return View();
         }
+        public IActionResult EmailSent()
+        {
+            return View();
+        }
+
         public IActionResult WriterThankyou()
         {
             return View();
@@ -45,5 +50,13 @@ namespace Heeblo.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Request(string pid)
+        {
+            var decryptedPid =  AESEncryption.Decrypt(pid);
+            HttpContext.Session.SetObjectAsJson("pid", decryptedPid);
+            return RedirectToAction("LoginSignUp", "Auth");
+        }
+
     }
 }

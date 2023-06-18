@@ -1,4 +1,5 @@
-﻿using Heeblo.Models;
+﻿using Heeblo.Implementation;
+using Heeblo.Models;
 using Heeblo.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,15 @@ namespace Heeblo.Controllers
             var res = _user.SaveUser(user);
             return Ok(res);
         }
+
+        [HttpPost]
+        public IActionResult ValidateUser(LoginReq req)
+        {
+            var resp = _user.ValidateUser(req);
+            return Ok(resp);
+        }
+
+
         [HttpGet("{encryptedData}")]
         public IActionResult Decrypt(string encryptedData)
         {

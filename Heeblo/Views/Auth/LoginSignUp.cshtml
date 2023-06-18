@@ -166,11 +166,8 @@
                                 <ul>
                                     <li> <a href="#"> Term & Condition  </a> </li>
                                     <li> <a href="#"> Privacy & Policy  </a> </li>
-
-
                                 </ul>
                             </div>
-
                         </div>
 
                         <div class="col-lg-3 col-sm-3 col-12">
@@ -222,7 +219,15 @@
 
 
     </div>
+    <script>
+      $(document).ready(function() {
+          var params = new URLSearchParams(window.location.search);
+          var pid = params.get("pid");
+          console.log(pid); 
 
+
+        });
+    </script>
 
 </body>
 </html>

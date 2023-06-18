@@ -6,12 +6,20 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(z => z.UseNpgsql(builder.Configuration.GetConnectionString("HBL")));
 builder.Services.AddTransient<IUser, UserRepo>();
 builder.Services.AddTransient<IProject, ProjectRepo>();
 builder.Services.AddTransient<IApplication, ApplicationRepo>();
 builder.Services.AddTransient<IHeeblo, HeebloRepo>();
+builder.Services.AddHttpContextAccessor();
+//corsBuilder.AllowCredentials();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+});
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", cp =>
@@ -31,7 +39,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 app.UseCors("AllowAll");
 app.UseAuthorization();
