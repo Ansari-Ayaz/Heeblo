@@ -1,4 +1,5 @@
-﻿using Heeblo.Models;
+﻿using Heeblo.Implementation;
+using Heeblo.Models;
 
 namespace Heeblo.Repository
 {
@@ -8,5 +9,6 @@ namespace Heeblo.Repository
         Response GetUserByPublication(int pid);
         Response GetUserById(int id);
         Response SaveUser(hbl_tbl_user user);
+        Response ValidateUser(LoginReq req);
     }
 }
