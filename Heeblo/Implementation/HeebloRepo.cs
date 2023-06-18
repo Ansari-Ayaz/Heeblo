@@ -7,7 +7,9 @@ using Npgsql;
 using ProWritingAid.SDK.Api;
 using ProWritingAid.SDK.Model;
 using System;
+using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -175,6 +177,25 @@ namespace Heeblo.Implementation
             
         }
 
-
+        public bool SendEmail(hbl_tbl_user user)
+        {
+            MailMessage mail = new MailMessage();
+            mail.To.Add(user.email);
+            mail.From = new MailAddress(_config.GetValue<string>("Mail:From"));
+            mail.Subject = "Heeblo Email Verification";
+            mail.Body = @"Dear "+user.name+" Please click on below link for verification";
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = _config.GetValue<string>("Mail:Server");
+            smtp.Port = _config.GetValue<int>("Mail:Port");
+            smtp.Credentials = new NetworkCredential(
+                _config.GetValue<string>("Mail:From"),
+                _config.GetValue<string>("Mail:Password")
+                );
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+            return true;
+            
+        }
     }
 }

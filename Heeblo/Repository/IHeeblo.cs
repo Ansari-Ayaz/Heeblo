@@ -8,6 +8,8 @@ namespace Heeblo.Repository
         string AiDetect(string content);
         string Grammer(string content);
         Task GetScores(string content, int id);
-       
+        bool SendEmail(hbl_tbl_user user);
+
+
     }
 }

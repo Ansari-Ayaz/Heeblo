@@ -8,10 +8,12 @@ namespace Heeblo.Implementation
     public class UserRepo : IUser
     {
         private readonly ApplicationDbContext _db;
+        private readonly IHeeblo _heeblo;
 
-        public UserRepo(ApplicationDbContext db)
+        public UserRepo(ApplicationDbContext db,IHeeblo heeblo)
         {
             this._db = db;
+            this._heeblo = heeblo;
         }
         public Response GetAllUser()
         {
@@ -57,8 +59,9 @@ namespace Heeblo.Implementation
                 _db.hbl_tbl_user.Add(user);
                 var i = _db.SaveChanges();
                 user.uid = user.uid;
-                if(i == 0) { response.RespMsg = "User Not Saved";return response; }
-                if (i > 0) { response.Resp = true;response.RespMsg = "User Saved Successfully";response.RespObj = user;return response; }
+                bool mailSent = _heeblo.SendEmail(user);
+                if (i == 0) { response.RespMsg = "User Not Saved";return response; }
+                if (i > 0 && mailSent) { response.Resp = true;response.RespMsg = "User Saved and mail sent Successfully";response.RespObj = user;return response; }
                 return response;
             }
             catch (Exception ex)
