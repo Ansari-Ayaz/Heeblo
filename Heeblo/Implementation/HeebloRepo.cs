@@ -3,6 +3,7 @@ using Heeblo.Models;
 using Heeblo.Repository;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Npgsql;
 using ProWritingAid.SDK.Api;
 using ProWritingAid.SDK.Model;
 using System;
@@ -17,7 +18,7 @@ namespace Heeblo.Implementation
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _db;
 
-        public HeebloRepo(IConfiguration config,ApplicationDbContext db)
+        public HeebloRepo(IConfiguration config, ApplicationDbContext db)
         {
             this._config = config;
             this._db = db;
@@ -93,7 +94,7 @@ namespace Heeblo.Implementation
                     string result = response.Content.ReadAsStringAsync().Result;
                     var responseBody = JsonConvert.DeserializeObject<dynamic>(result);
 
-                    var score = responseBody;
+                    var score = responseBody.score;
 
                     return score.ToString();
                 }
@@ -138,24 +139,42 @@ namespace Heeblo.Implementation
                 string scoreStr = match.Groups[1].Value;
                 int score = int.Parse(scoreStr);
 
-                return ("Score: " + score + "%");
+                return (Convert.ToString(score));
             }
             else
             {
                 return "";
             }
         }
-        public async Task GetScores(string content,int id)
+        public async Task GetScores(string content, int id)
         {
-            var obj = _db.hbl_tbl_application.FirstOrDefault(z => z.application_id.Equals(id));
-            obj.plagiarism =  decimal.Parse(Plagiarism(content));
-            obj.ai_score = decimal.Parse(AiDetect(content));
-            obj.grammar_score = decimal.Parse(Grammer(content));
+            try
+            {
+                string connectionString = _config.GetConnectionString("HBL");
+                using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+                {
+                    connection.Open();                   
+                    var plagiarism = Math.Round(Decimal.Parse(Plagiarism(content)),2);
+                    var ai_score = Math.Round(Decimal.Parse(AiDetect(content)),2);
+                    var grammar_score = Math.Round(Decimal.Parse(Grammer(content)), 2);
+
+                    string sql = "UPDATE hbl_tbl_application SET plagiarism = @plagiarism, ai_score = @ai_score,grammar_score = @grammar_score WHERE application_id = @id";
+                    NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+                    command.Parameters.AddWithValue("@plagiarism", plagiarism);
+                    command.Parameters.AddWithValue("@ai_score", ai_score);
+                    command.Parameters.AddWithValue("@grammar_score", grammar_score);
+                    command.Parameters.AddWithValue("@id", id);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
             
-            _db.hbl_tbl_application.Attach(obj);
-            _db.Entry(obj).State = EntityState.Modified;
-            _db.SaveChanges();
         }
+
 
     }
 }

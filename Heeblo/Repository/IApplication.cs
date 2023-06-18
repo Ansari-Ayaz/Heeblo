@@ -6,6 +6,6 @@ namespace Heeblo.Repository
     {
         Response GetAllApplication();
         Response GetApplicationById(int id);
-        Response SaveApplication(IFormFile file1, IFormFile file2, application_view application);
+        Response SaveApplication(application_view application);
     }
 }

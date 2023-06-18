@@ -7,9 +7,7 @@ namespace Heeblo.Models
         [Key]
         public int application_id { get; set; }
         public int pid { get; set; }
-        public int uid { get; set; }
-        public string resume { get; set; }
-        public string sample_content { get; set; }
+        public int uid { get; set; }       
         public DateTime date { get; set; }
         public decimal ai_score { get; set; }
         public decimal grammar_score { get; set; }
@@ -25,6 +23,7 @@ namespace Heeblo.Models
     {
         public int pid { get; set; }
         public int uid { get; set; }
+
         public IFormFile resume { get; set; }
         public IFormFile sample_content { get; set; }
         public int created_by { get; set; }
