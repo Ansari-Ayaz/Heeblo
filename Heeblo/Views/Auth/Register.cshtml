@@ -266,7 +266,8 @@
                    "mobile": mobile,
                    "email": email,
                    "password": password,
-                   "role": 2
+                   "role" : sessionStorage.getItem('role')??2
+
                };
                console.log(requestData)
 

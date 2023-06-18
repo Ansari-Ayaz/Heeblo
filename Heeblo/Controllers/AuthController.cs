@@ -38,11 +38,12 @@ namespace Heeblo.Controllers
 
             if (response.Resp)
             {
-                hbl_tbl_user u = JsonConvert.DeserializeObject<hbl_tbl_user>(response.RespObj.ToString());
+                var serialized = JsonConvert.SerializeObject(response.RespObj);
+                hbl_tbl_user u = JsonConvert.DeserializeObject<hbl_tbl_user>(serialized);
                 HttpContext.Session.SetObjectAsJson("user", u);
                 if (u.role == 2)
-                    return View("WriterUpload", "Home");
-                else return View("Index", "Home");
+                    return RedirectToAction("WriterUpload", "Home");
+                else return RedirectToAction("Index", "Home");
 
             }
             else

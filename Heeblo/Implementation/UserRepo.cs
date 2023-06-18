@@ -95,7 +95,7 @@ namespace Heeblo.Implementation
             {
                 if(user.password == ComputeMD5Hash(req.UserPwd))
                 {
-                    user.password = "";
+                    user.password = "dummy";
                     resp.Resp = true;
                     resp.RespObj = user;
                     resp.RespMsg = "Valid User";

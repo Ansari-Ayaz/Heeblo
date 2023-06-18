@@ -1,4 +1,7 @@
-﻿
+﻿@using Microsoft.AspNetCore.Html
+@{
+    Layout = null;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +32,14 @@
             font-size: 18px;
             font-weight: 500;
         }
+
+        [type="file"] {
+            display: none;
+        }
+
+        .button small {
+            font-size: 0.6em;
+        }
     </style>
 </head>
 <body>
@@ -50,17 +61,18 @@
                             </div>
                             <div class="col-md-12 btn-login">
                                 <div class="upload-btn">
-                                    <label for="files" class="button">  Upload Resume</label>
+                                    <label for="files" class="button">  Upload Resume<small><br /> Text here</small></label>
                                     <input id="resume" type="file">
                                 </div>
                                 <div class="upload-btn">
-                                    <label for="files" class="button">  Upload Writing Sample</label>
+                                    <label for="files" class="button">  Upload Writing Sample<small><br /> Text here</small></label>
                                     <input id="sample" type="file">
                                 </div>
                             </div>
                             <div class="maximum size">
-                                <p> Maxximum File Size is 1 MB </p>
+                                <p> Maximum File Size is 1 MB </p>
                             </div>
+                            <button onclick="uploadFile()">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -89,39 +101,48 @@
     <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
 </body>
 <script>
-    function uploadFiles() {
-        var resumeFile = document.getElementById("resume").files[0];
-        var sampleFile = document.getElementById("sample").files[0];
 
-        // Check if resume file is in PDF format
-        if (resumeFile && resumeFile.type === "application/pdf") {
-            // Upload resume file
-            uploadFile(resumeFile, "resume");
-        } else {
-            alert("Please upload a resume in PDF format.");
-            return;
+    $('label[for="files"]').click(function(){
+        $(this).parent().find('input[type="file"]').trigger('click')
+    })
+
+    $('input[type="file"]').change(function(){
+        var f = $(this)[0].files;
+        if(f.length == 0)
+            $(this).parent().find('.button small').empty();
+        else
+            $(this).parent().find('.button small').html(`<br/>` + f[0].name);
+    }).trigger('change')
+
+        function uploadFile() {
+            var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
+            var pid = @(new HtmlString(_hca.HttpContext.Session.GetString("pid")??"null"));
+
+
+            var formData = new FormData()
+            formData.append('resume', $('#resume')[0].files[0]);
+            formData.append('sample_content', $('#sample')[0].files[0]);
+
+            formData.append("pid", pid);
+            formData.append("uid",user.uid );
+            formData.append("created_by", user.uid);
+
+            $.ajax({
+            url: `@Url.Action("SaveApplication","Application")`,
+            type: 'POST',
+            data:formData,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                console.log(data)
+                window.location.href = "@Url.Action("WriterThankyou", "Home")"
+            },
+            error : function(err){
+                alert("Something went wrong")
+            }
+            })
         }
 
-        // Check if sample file is in DOC or DOCX format
-        if (sampleFile && (sampleFile.type === "application/msword" || sampleFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-            // Upload sample file
-            uploadFile(sampleFile, "sample");
-        } else {
-            alert("Please upload a writing sample in DOC or DOCX format.");
-            return;
-        }
-    }
-
-    function uploadFile(file, fileType) {
-        // Implement your file upload logic here
-        // You can use AJAX, fetch, or any other method to send the file to the server
-        // Make sure to handle the file on the server-side appropriately
-        // Example code:
-        var formData = new FormData();
-        formData.append(fileType, file);
-
-       
-    }
 
 </script>
 </html>

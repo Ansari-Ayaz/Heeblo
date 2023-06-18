@@ -41,6 +41,8 @@
 
                             <p> We have sent a verification link on your email. <span style="color:#d6c494" id="email"></span></p>
                         </div>
+                        <a href="@Url.Action("Login","Auth")"> Click here to go back to login</a>
+
                     </div>
                 </div>
             </div>
@@ -66,12 +68,11 @@
           var params = new URLSearchParams(window.location.search);
           var uValue = params.get("u");
 
-          console.log(atob(uValue)); 
+          console.log(atob(uValue));
           $('#email').text(atob(uValue))
 
           // Further processing or actions with the extracted value can be done here
         });
-
     </script>
 </body>
 </html>

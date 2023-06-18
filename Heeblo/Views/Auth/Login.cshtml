@@ -130,17 +130,9 @@
                                     </form>
 
                                     <div class="signup-line">
-                                        <a href="#">Or Signup With </a>
+                                        <a href="@Url.Action("SignUp","Auth")">Or Signup </a>
                                     </div>
-                                    <div class="social-media">
-                                        <ul>
-                                            <li><a href="#"> Phone</a> </li>
-                                            <li><a href="#"> Email</a> </li>
-                                            <li><a href="http://localhost/customer/facebook">Facebook</a> </li>
-                                            <li><a href="http://localhost/customer/google">Google</a> </li>
-
-                                        </ul>
-                                    </div>
+                                   
 
                                 </div>
                             </div>
@@ -255,105 +247,5 @@
     </div>
 
 </body>
-<script>
 
-    var users = [
-        {
-            uid: 1,
-            name: "John Doe",
-            mobile: "1234567890",
-            email: "john@example.com",
-            password: "password123",
-            role: 1,
-            verified: true,
-            is_active: true,
-            created_on: new Date(),
-            created_by: 1,
-            update_on: new Date(),
-            updated_by: 1
-        },
-        {
-            uid: 2,
-            name: "Jane Smith",
-            mobile: "9876543210",
-            email: "jane@example.com",
-            password: "password456",
-            role: 2,
-            verified: true,
-            is_active: true,
-            created_on: new Date(),
-            created_by: 1,
-            update_on: new Date(),
-            updated_by: 1
-        },
-        {
-            uid: 3,
-            name: "Alice Johnson",
-            mobile: "5555555555",
-            email: "alice@example.com",
-            password: "password789",
-            role: 3,
-            verified: true,
-            is_active: true,
-            created_on: new Date(),
-            created_by: 1,
-            update_on: new Date(),
-            updated_by: 1
-        }
-    ];
-        function submitFunc() {
-            event.preventDefault();
-
-
-
-            // Perform validation
-            var email = $('input[name="email"]').val();
-            var password = $('input[name="password"]').val();
-
-            if (email.trim() === '') {
-                $('input[name="email"]').addClass('error');
-            } else {
-                $('input[name="email"]').removeClass('error');
-            }
-
-            if (password.trim() === '') {
-                $('input[name="password"]').addClass('error');
-            } else {
-                $('input[name="password"]').removeClass('error');
-            }
-
-            // Check if any invalid fields exist
-            if ($('input.error').length > 0) {
-                alert('Please fill in all the required fields.');
-                return;
-            }
-
-            // Create a data object with the form values
-            var data = {
-                email: email,
-                password: password
-            };
-
-
-            // Send the data to the home controller's upload page
-            //$.ajax({
-            //    url: 'http://localhost/home/upload',
-            //    type: 'POST',
-            //    data: data,
-            //    success: function (response) {
-            //        // Handle the response from the server
-            //        // This could be a success message or a redirect to another page
-            //        console.log(response);
-
-        if (users[0].role == 2) window.location.href = "@Url.Action("WriterUpload","Home")";
-        else window.location.href = "@Url.Action("Index","Home")";
-            //    },
-            //    error: function (xhr, status, error) {
-            //        // Handle any errors that occur during the AJAX request
-            //        console.log(error);
-            //    }
-            //});
-        }
-
-</script>
 </html>
