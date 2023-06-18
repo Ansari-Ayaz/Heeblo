@@ -59,7 +59,9 @@ namespace Heeblo.Implementation
                 _db.hbl_tbl_user.Add(user);
                 var i = _db.SaveChanges();
                 user.uid = user.uid;
-                bool mailSent = _heeblo.SendEmail(user);
+                var subject = "Heeblo assigment Accepted";
+                var body = @"Dear " + user.name + "click below link to varify your account";
+                bool mailSent = _heeblo.SendEmail(user.email,subject,body);
                 if (i == 0) { response.RespMsg = "User Not Saved";return response; }
                 if (i > 0 && mailSent) { response.Resp = true;response.RespMsg = "User Saved and mail sent Successfully";response.RespObj = user;return response; }
                 return response;

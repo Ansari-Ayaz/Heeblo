@@ -177,13 +177,13 @@ namespace Heeblo.Implementation
             
         }
 
-        public bool SendEmail(hbl_tbl_user user)
+        public bool SendEmail(string emaiId,string subject,string body)
         {
             MailMessage mail = new MailMessage();
-            mail.To.Add(user.email);
+            mail.To.Add(emaiId);
             mail.From = new MailAddress(_config.GetValue<string>("Mail:From"));
-            mail.Subject = "Heeblo Email Verification";
-            mail.Body = @"Dear "+user.name+" Please click on below link for verification";
+            mail.Subject = subject;
+            mail.Body = body;
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
             smtp.Host = _config.GetValue<string>("Mail:Server");
