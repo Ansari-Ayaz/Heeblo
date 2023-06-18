@@ -4,7 +4,7 @@ namespace Heeblo.Repository
 {
     public interface IProject
     {
-        Response GetAllProjects();
+        List<hbl_tbl_project> GetAllProjects();
         Response GetProjectById(int id);
         Response SaveProject(hbl_tbl_project project);
     }

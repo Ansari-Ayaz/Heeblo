@@ -36,7 +36,13 @@ namespace Heeblo.Controllers
         }
         public IActionResult Index()
         {
-            var a = 10;
+            
+            return View();
+        }
+
+        public IActionResult Applications()
+        {
+          
             return View();
         }
 

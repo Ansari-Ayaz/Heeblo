@@ -1,5 +1,7 @@
 ﻿using Heeblo.Models;
 using Heeblo.Repository;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Xceed.Words.NET;
 
 namespace Heeblo.Implementation
@@ -8,11 +10,13 @@ namespace Heeblo.Implementation
     {
         private readonly ApplicationDbContext _db;
         private readonly IHeeblo _heeblo;
+        private readonly IConfiguration _config;
 
-        public ApplicationRepo(ApplicationDbContext db, IHeeblo heeblo)
+        public ApplicationRepo(ApplicationDbContext db, IHeeblo heeblo,IConfiguration config)
         {
             this._db = db;
             this._heeblo = heeblo;
+            this._config = config;
         }
         public Response GetAllApplication()
         {
@@ -21,12 +25,58 @@ namespace Heeblo.Implementation
             if (applns.Count == 0) { response.RespMsg = "Application Data Not Found"; response.RespObj = null; return response; }
             response.Resp = true; response.RespMsg = "Application Data Found Successfully"; response.RespObj = applns; return response;
         }
-        public Response GetApplicationById(int id)
+        public List<AllApplication> GetApplicationByPid(int pid)
         {
-            Response response = new Response();
-            var appln = _db.hbl_tbl_application.FirstOrDefault(z => z.application_id == id);
-            if (appln == null) { response.RespMsg = "Application Not Found On This Id"; return response; }
-            response.Resp = true; response.RespMsg = "Application Found Successfully"; response.RespObj = appln; return response;
+            
+            try
+            {
+                List<AllApplication> applns = new List<AllApplication>();
+                string connectionString = _config.GetConnectionString("HBL");
+                using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+                {
+                    string sql = @"select application_id , app.created_on ,app.status, u.name as created_by , ai_score,grammar_score, plagiarism 
+                                    from hbl_tbl_application app
+                                    inner
+                                    join hbl_tbl_user u on u.uid = app.created_by
+                                    where app.pid = @pid";
+                    NpgsqlCommand cmd = new NpgsqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("@pid", pid);
+                    connection.Open();
+                    NpgsqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            applns.Add(new AllApplication
+                            {
+                                application_id = int.Parse(reader["application_id"].ToString()),
+                                ai_score = decimal.Parse(reader["ai_score"].ToString()),
+                                created_by = reader["created_by"].ToString(),
+                                created_on = DateTime.Parse(reader["created_on"].ToString()),
+                                grammar_score = decimal.Parse(reader["grammar_score"].ToString()),
+                                plagiarism = decimal.Parse(reader["plagiarism"].ToString()),
+                                status = reader["status"].ToString(),
+
+                            });
+                        }
+                        
+                    }
+
+                }
+                return applns;
+            }
+            catch (Exception ex)
+            {
+                
+                return null;
+            }
+
+        }
+        public hbl_tbl_application GetApplicationById(int id)
+        {
+            var applns = _db.hbl_tbl_application.FirstOrDefault(z => z.application_id == id);
+            if (applns == null) { return null; }
+            return applns;
         }
         public Response SaveApplication(application_view application)
         {
@@ -77,7 +127,21 @@ namespace Heeblo.Implementation
                 return response;
             }
         }
+        
+        public bool ApplicationStatus(string status,int appId)
+        {
+            bool resp = false;
+            string sql = "update hbl_tbl_application set Status='" + status + "' where application_id='" + appId + "'";
 
+            using(NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
+            {
+                NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                resp = (i > 0);
+            }
+            return resp;
+        }
         private string ConvertFiletoBase64(IFormFile formFile)
         {
             string s = null;

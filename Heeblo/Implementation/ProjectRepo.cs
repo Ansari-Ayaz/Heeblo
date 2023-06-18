@@ -17,12 +17,12 @@ namespace Heeblo.Implementation
             this._db = db;
             this._config = config;
         }
-        public Response GetAllProjects()
+        public List<hbl_tbl_project> GetAllProjects()
         {
             Response response = new Response();
             var projects = _db.hbl_tbl_project.ToList();
-            if (projects == null) { response.RespMsg = "Project Data Not Found"; response.RespObj = null; return response; }
-            else { response.Resp = true; response.RespMsg = "Project Data Found Successfully"; response.RespObj = projects; return response; }
+            if (projects == null) {  return null; }
+            else { return projects; }
         }
         public Response GetProjectById(int id)
         {
