@@ -21,12 +21,27 @@ namespace Heeblo.Controllers
             var res = _app.GetAllApplication();
             return Ok(res);
         }
+        [HttpGet]
+        [HttpGet("{pid}")]
+        public IActionResult GetApplicationByPid(int pid)
+        {
+            var res = _app.GetApplicationByPid(pid);
+            return Ok(res);
+        }
         [HttpGet("{id}")]
         public IActionResult GetApplicationById(int id)
         {
             var res = _app.GetApplicationById(id);
             return Ok(res);
         }
+        [HttpGet("{status}/{appId}")]
+        [HttpGet]
+        public IActionResult ApplicationStatus(string status,int appId)
+        {
+            var res = _app.ApplicationStatus(status,appId);
+            return Ok(res);
+        }
+
         [HttpPost]
         public IActionResult SaveApplication([FromForm] application_view app)
         {
