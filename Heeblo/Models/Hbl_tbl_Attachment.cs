@@ -11,6 +11,6 @@ namespace Heeblo.Models
         public string resume { get; set; }
         public string sample_content { get; set; }
         public string resume_filename { get; set; }
-        public string sample_content_filenme { get; set; }
+        public string sample_content_filename { get; set; }
     }
 }
