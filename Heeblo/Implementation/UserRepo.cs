@@ -1,5 +1,6 @@
 ﻿using Heeblo.Models;
 using Heeblo.Repository;
+using Npgsql;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,11 +10,13 @@ namespace Heeblo.Implementation
     {
         private readonly ApplicationDbContext _db;
         private readonly IHeeblo _heeblo;
+        private readonly IConfiguration _config;
 
-        public UserRepo(ApplicationDbContext db,IHeeblo heeblo)
+        public UserRepo(ApplicationDbContext db,IHeeblo heeblo,IConfiguration config)
         {
             this._db = db;
             this._heeblo = heeblo;
+            this._config = config;
         }
         public Response GetAllUser()
         {
@@ -59,8 +62,10 @@ namespace Heeblo.Implementation
                 _db.hbl_tbl_user.Add(user);
                 var i = _db.SaveChanges();
                 user.uid = user.uid;
-                var subject = "Heeblo assigment Accepted";
-                var body = @"Dear " + user.name + "click below link to varify your account";
+                string aesString = AESEncryption.Encrypt(user.uid.ToString());
+                var link = _config["verifyUrl"] + aesString;
+                var subject = "Heeblo Account Verification";
+                var body = @"Dear " + user.name + ", \r\nPlease click below link to verify your account.\r\n"+ link;
                 bool mailSent = _heeblo.SendEmail(user.email,subject,body);
                 if (i == 0) { response.RespMsg = "User Not Saved";return response; }
                 if (i > 0 && mailSent) { response.Resp = true;response.RespMsg = "User Saved and mail sent Successfully";response.RespObj = user;return response; }
@@ -74,7 +79,22 @@ namespace Heeblo.Implementation
                 return response;
             }
         }
+        public bool VerifyUser(int uid)
+        {
+            //Response response = new Response();
+            var user = _db.hbl_tbl_user.FirstOrDefault(z => z.uid.Equals(uid));
+            string sql = "update hbl_tbl_user set verified= true where uid='" + uid + "'";
+            using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
+            {
+                NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i == 0) { return false; }
+                if (i >= 1) { return true; }
+                return false;
+            }
 
+        }
 
         public Response ValidateUser(LoginReq req)
         {

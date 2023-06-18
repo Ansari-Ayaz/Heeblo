@@ -49,7 +49,13 @@ namespace Heeblo.Controllers
             var resp = _user.ValidateUser(req);
             return Ok(resp);
         }
-
+        [HttpGet("{uid}")]
+        [HttpGet]
+        public IActionResult VerifyUser(int uid)
+        {
+            var res = _user.VerifyUser(uid);
+            return Ok(res);
+        }
 
         [HttpGet("{encryptedData}")]
         public IActionResult Decrypt(string encryptedData)

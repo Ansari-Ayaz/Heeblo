@@ -1,5 +1,6 @@
 ﻿using Heeblo.Models;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp;
 using System.Diagnostics;
 
 namespace Heeblo.Controllers
@@ -7,12 +8,17 @@ namespace Heeblo.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
+            this.configuration = configuration;
             _logger = logger;
         }
-
+        public IActionResult Verified()
+        {
+            return View();
+        }
         public IActionResult ApplicationList()
         {
             return View();
@@ -62,6 +68,23 @@ namespace Heeblo.Controllers
             var decryptedPid =  AESEncryption.Decrypt(pid);
             HttpContext.Session.SetObjectAsJson("pid", decryptedPid);
             return RedirectToAction("LoginSignUp", "Auth");
+        }
+        public IActionResult Verify(string uid)
+        {
+            var decryptedUid = AESEncryption.Decrypt(uid);
+
+            var client = new RestClient(configuration["Config:API"]);
+            var request = new RestRequest("User/VerifyUser/"+ decryptedUid, Method.GET);
+            var response = client.Execute<bool>(request).Data;
+            if (response)
+            {
+                return RedirectToAction("Verified", "Home");
+            }
+            else
+            {
+                return View("Login");
+            }
+
         }
 
     }
