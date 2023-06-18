@@ -10,6 +10,7 @@ namespace Heeblo.Models
         public int application_id { get; set; }
         public string resume { get; set; }
         public string sample_content { get; set; }
-
+        public string resume_filename { get; set; }
+        public string sample_content_filenme { get; set; }
     }
 }
