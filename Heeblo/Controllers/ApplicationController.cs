@@ -28,6 +28,14 @@ namespace Heeblo.Controllers
             var res = _app.GetApplicationByPid(pid);
             return Ok(res);
         }
+
+        [HttpGet]
+        [HttpGet("{appId}")]
+        public IActionResult GetUserDetailsByAppId(int appId)
+        {
+            var res = _app.GetUserDetailsByAppId(appId);
+            return Ok(res);
+        }
         [HttpGet("{id}")]
         public IActionResult GetApplicationById(int id)
         {

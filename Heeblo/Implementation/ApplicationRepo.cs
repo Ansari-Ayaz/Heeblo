@@ -12,7 +12,7 @@ namespace Heeblo.Implementation
         private readonly IHeeblo _heeblo;
         private readonly IConfiguration _config;
 
-        public ApplicationRepo(ApplicationDbContext db, IHeeblo heeblo,IConfiguration config)
+        public ApplicationRepo(ApplicationDbContext db, IHeeblo heeblo, IConfiguration config)
         {
             this._db = db;
             this._heeblo = heeblo;
@@ -27,7 +27,7 @@ namespace Heeblo.Implementation
         }
         public List<AllApplication> GetApplicationByPid(int pid)
         {
-            
+
             try
             {
                 List<AllApplication> applns = new List<AllApplication>();
@@ -59,7 +59,7 @@ namespace Heeblo.Implementation
 
                             });
                         }
-                        
+
                     }
 
                 }
@@ -67,7 +67,52 @@ namespace Heeblo.Implementation
             }
             catch (Exception ex)
             {
-                
+
+                return null;
+            }
+
+        }
+
+        public UserDetailsWithUploadDocs GetUserDetailsByAppId(int appid)
+        {
+
+            try
+            {
+
+                var result = new UserDetailsWithUploadDocs();
+                string connectionString = _config.GetConnectionString("HBL");
+                using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+                {
+                    string sql = @"select app.application_id , app.created_on , u.name ,u.mobile,u.email,
+                                att.resume,att.sample_content ,att.resume_filename,att.sample_content_filename
+                                from hbl_tbl_application app 
+                                inner join hbl_tbl_attachment att on att.application_id=app.application_id
+                                inner join hbl_tbl_user u on u.uid=app.created_by
+                                where app.application_id= @appid";
+                    NpgsqlCommand cmd = new NpgsqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("@appid", appid);
+                    connection.Open();
+                    NpgsqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        //reader.Read();
+                        result.application_id = int.Parse(reader["application_id"].ToString());
+                        result.name = reader["name"].ToString();
+                        result.created_on = DateTime.Parse(reader["created_on"].ToString());
+                        result.resume_filename = reader["resume_filename"].ToString();
+                        result.sample_content_filename = reader["sample_content_filename"].ToString();
+                        result.resume = reader["resume"].ToString();
+                        result.sample_content = reader["sample_content"].ToString();
+                        result.email = reader["email"].ToString();
+                        result.mobile = reader["mobile"].ToString();
+                    }
+
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+
                 return null;
             }
 
@@ -109,6 +154,8 @@ namespace Heeblo.Implementation
                 }
                 hbl_tbl_attachment attachment = new hbl_tbl_attachment();
                 attachment.application_id = app.application_id;
+                attachment.resume_filename = application.resume.FileName;
+                attachment.sample_content_filenme = application.sample_content.FileName;
                 attachment.resume = ConvertFiletoBase64(application.resume);
                 attachment.sample_content = ConvertFiletoBase64(application.sample_content);
                 _db.hbl_tbl_attachment.Add(attachment);
@@ -127,13 +174,13 @@ namespace Heeblo.Implementation
                 return response;
             }
         }
-        
-        public bool ApplicationStatus(string status,int appId)
+
+        public bool ApplicationStatus(string status, int appId)
         {
             bool resp = false;
             string sql = "update hbl_tbl_application set Status='" + status + "' where application_id='" + appId + "'";
 
-            using(NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
+            using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
             {
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
                 con.Open();
