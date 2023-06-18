@@ -1,0 +1,67 @@
+﻿<style>
+    .fa-square-check {
+        color: green;
+    }
+
+    .fa-circle-xmark {
+        background-color: green;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tblUser" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email Id</th>
+                            <th>Role</th>
+                            <th>Active</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+            function GetAllUsers(){
+        $("#tblUser").dataTable({
+            "ajax":{
+                url: baseUrl + "tp/GetAllUsers",
+                type:"GET",
+                dataType:"JSON",
+                contentType:"application/json",
+                async:false,
+                dataSrc:""
+            },
+            "columns":[
+            {"data":"name"},
+            {"data":"email"},
+            {
+                "data":null,
+                "render":function(a,b,c){
+                    if(c.role==1)
+                    return 'Admin'
+                    else
+                    return 'Test Creater'
+                }
+
+            },
+            {
+                "data":null,
+                "render":function(a,b,c){
+                    return c.isActive ? `<i class="fa-solid fa-square-check"></i>`:`<i class="fa-solid fa-circle-xmark"></i>`
+                }
+            }
+            ]
+        })
+    }
+
+    </script>
+}

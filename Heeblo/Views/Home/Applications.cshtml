@@ -1,0 +1,123 @@
+﻿<style>
+    .fa-square-check {
+        color: green;
+    }
+
+    .fa-circle-xmark {
+        background-color: green;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tblApp" class="table table-sm table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Submitted By</th>
+                            <th>Submitted On</th>
+                            <th>AI Score</th>
+                            <th>Grammar Score</th>
+                            <th>Plagiarism Score</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        var params = new URLSearchParams(window.location.search)
+        var pid = params.get('pid');
+        $(document).ready(function() {
+            GetAllApplications();
+        })
+        function GetAllApplications() {
+            $("#tblApp").dataTable({
+                "ajax": {
+                    url: '@Url.Action("GetApplicationByPid","Application")' + '/' + pid,
+                    type: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    async: false,
+                    dataSrc: ""
+                },
+                "columns": [
+                    { "data": "application_id" },
+                    { "data": "created_by" },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return moment(c.created_on).format("DD-MMM-YYYY") + '<br/><small>'+ moment(c.created_on).format("hh:mm a") +'</small>';
+                        }
+                    },
+                    { "data": null,
+                        "render": function(a, b, c) {
+                            return badge_2(c.ai_score)
+                        }
+                    },
+                    { "data": null,
+                        "render": function(a, b, c) {
+                            return badge_1(c.grammar_score)
+                        }
+                    },
+                    { "data": null,
+                        "render": function(a, b, c) {
+                            return badge_2(c.plagiarism)
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            if (c.status == "Accepted") {
+                                return ' <label for="inputField" class="col-form-label" >Accepted</label>'
+                            } else if (c.status == "Rejected") {
+                                return ' <label for="inputField" class="col-form-label" ">Rejected</label>'
+                            } else {
+                                return `<button class="btn btn-sm btn-primary" onclick="StatusUpdate('Accepted', ${c.application_id})">Accept</button><button class="btn btn-sm btn-danger" style="margin-left:30px;" onclick="StatusUpdate('Rejected', ${c.application_id})">Reject</button>`
+                            }
+
+                        }
+
+                    }
+
+                ]
+            })
+        }
+        function StatusUpdate(status, id) {
+            $.ajax({
+                url: '@Url.Action("ApplicationStatus","Application")'+'/'+status+'/'+id,
+                type: "GET",
+                contentType: "application/json",
+                async: false,
+                success: function(resp) {
+                    Swal.fire('Saved', 'Status updated successfully', 'success');
+                    
+                },
+                error: function(err) {
+                    Swal.fire('Error', 'Something went wrong', 'error');
+                }
+            })
+        }
+        function badge_1(val){
+            if(val > 0 && val <= 25) return `<span class="badge badge-danger">${val}%</span>`;
+            if(val > 25 && val <= 50) return `<span class="badge badge-warning">${val}%</span>`;
+            if(val > 50 && val <= 75) return `<span class="badge badge-info">${val}%</span>`;
+            if(val > 75 && val <= 100) return `<span class="badge badge-success">${val}%</span>`;
+            return ``;
+        }
+
+        function badge_2(val){
+            if(val > 0 && val <= 25) return `<span class="badge badge-success">${val}%</span>`;
+            if(val > 25 && val <= 50) return `<span class="badge badge-info">${val}%</span>`;
+            if(val > 50 && val <= 75) return `<span class="badge badge-warning">${val}%</span>`;
+            if(val > 75 && val <= 100) return `<span class="badge badge-danger">${val}%</span>`;
+            return ``;
+        }
+    </script>
+}

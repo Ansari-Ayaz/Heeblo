@@ -12,7 +12,7 @@ namespace Heeblo.Models
         public decimal ai_score { get; set; }
         public decimal grammar_score { get; set; }
         public decimal plagiarism { get; set; }
-        public string status { get; set; }
+        public string? status { get; set; }
         public bool is_active { get; set; }
         public DateTime created_on { get; set; }
         public int created_by { get; set; }

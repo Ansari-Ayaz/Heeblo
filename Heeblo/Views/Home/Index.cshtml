@@ -1,144 +1,121 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- x-icon -->
-    <link rel="shortcut icon" href="~/frontend-assets/pattern/assets/images/fav.png" type="image/x-icon">
-    <!-- Other css -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/animate.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
-    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/all.min.css">
-    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/icofont.min.css">
-    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/swiper.min.css">
-    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/style.css">
-    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/admin-style.css">
-    <style>
-        .slider.round {
-            border-radius: 34px;
-        }
+﻿@using Microsoft.AspNetCore.Html
+<style>
+    .fa-square-check {
+        color: green;
+    }
 
-            .slider.round:before {
-                border-radius: 50%;
-            }
-    </style>
-</head>
-<body>
-    <div class="banner">
-        <div class="container">
-            <div class="content-login">
-                <div class="top-logo">
-                    <img src="~/frontend-assets/pattern/assets/images/Heeblo_Logo_white.png" alt="Logo">
-                </div>
-                <div class="middle-text text-center">
-                    <h4>Flicker Production</h4>
-                    <button>
-                        <a href="@Url.Action("AddProject","Home")">
-                            Add New Project Now
-                        </a>
-                    </button>
-                    <p>The duel of two Samurai Business Plan <span style="color:#d6c494">Application Received</p>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="table-responsive">
-                            <table id="myTable" class="display">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Name</th>
-                                        <th>link</th>
-                                        <th>Date</th>
-                                        <th>Active</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>1</th>
-                                        <th>Manager</th>
-                                        <th>Http://google.com</th>
-                                        <th>2/4/22</th>
-                                        <th>Active</th>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid bottom-info">
-            <div class="left-ft">
-                <a href="mailto:contact@entertainment.com">
-                    <i class="fa-solid fa-envelope"></i>contact@entertainment.com
-                </a>
-            </div>
-            <div class="right-ft">
-                <ul>
-                    <li><a href="#">Terms and Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
+    .fa-circle-xmark {
+        background-color: green;
+    }
+</style>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <button id="btnAdd" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Add Project</button>
             </div>
         </div>
     </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tblProject" class="table table-sm table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th></th>
+                            <th>Application Link</th>
+                            <th>Created On</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Projects Details</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="/action_page.php modal">
+                    <div class="form-group">
+                        <label for="name">Project Name</label>
+                        <input type="text" class="form-control" id="txtProjectName" placeholder="Enter Name" name="name" required>
+                    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
-    <script src="~/frontend-assets/pattern/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="~/frontend-assets/pattern/assets/js/waypoints.min.js"></script>
-    <script src="~/frontend-assets/pattern/assets/js/swiper.min.js"></script>
-    <script src="~/frontend-assets/pattern/assets/js/wow.min.js"></script>
-    <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
-    <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+                    <button type="button" class="btn btn btn-primary" onclick="SaveProject()">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
     <script>
-        $(document).ready(function () {
-            var a =@@ViewData["user"];
-            console.log(a)
-            $('#myTable').DataTable({
-                responsive: true,
-                ajax: {
+        $(document).ready(function() {
+            GetAllProjects();
+            var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
+        })
+        function GetAllProjects() {
+            $("#tblProject").dataTable({
+                "ajax": {
                     url: '@Url.Action("GetAllProjects","project")',
-                    method: 'GET',
-                    dataSrc: 'respObj'
+                    type: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    async: false,
+                    dataSrc: ""
                 },
-                columns: [
+                "columns": [
+                    { "data": "name" },
                     {
-                        data: null,
-                        render: function (data, type, row, meta) {
-                            return meta.row + 1;
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return '<button class="btn btn-primary btn-sm" onclick="viewApplication(' + c.pid + ')">View</button>'
                         }
                     },
-                    { data: 'name' },
-                    {
-                        data: 'link',
-                        render: function (data) {
-                            return '<a href="#"' + data + '</a>';
-                        }
-                    }, 
-                    {
-                        data: 'date',
-                        render: function (data) {
-                            return new Date(data).toLocaleDateString('en-US');
-                        }
-                    },
-                    {
-                        data: 'is_active',
-                        render: function (data) {
-                            return data ? '<input class="form-check-input" type="checkbox" checked disabled>' :
-                                '<input class="form-check-input" type="checkbox" disabled>';
+                    { "data": "link" },
+                    { 
+                        "data":null,
+                        "render": function(a, b, c) {
+                            return moment(c.created_on).format("YYYY-MM-DD");
                         }
                     }
-                ]
-            }).on('click', 'tr', function () {
-                var table = $('#myTable').DataTable();
-                var rowData = table.row(this).data();
-                window.location.href = '@Url.Action("ApplicationList", "Home")?id=' + rowData.pid;
-            });
 
-        });
+                ]
+            })
+        }
+        function viewApplication(pid) {
+            window.open('@Url.Action("Applications","Home")' + '?pid=' + pid, '_blank')
+        }
+        function SaveProject() {
+            var obj = {
+                name:$('#txtProjectName').val()
+                //created_by:user.uid,
+                //updated_by:user.uid
+            }
+            $.ajax({
+            url: '@Url.Action("SaveProject","Project")',
+            type:"POST",
+            contentType:"application/json",
+            async:false,
+            data:JSON.stringify(obj),
+            success:function(resp){
+                Swal.fire('Saved','Project Saved Sucessfuly','success');
+                $("#txtProjectName").val('');
+                $("#myModal").modal('hide');
+            },
+            error:function(err){
+                Swal.fire('OOPS','Something Went Wrong','error');
+            }
+        })
+        }
     </script>
-</body>
-</html>
+}
