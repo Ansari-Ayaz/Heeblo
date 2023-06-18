@@ -84,6 +84,7 @@
               GetAllApplications();
           })
           function GetAllApplications() {
+              $('#tblApp').DataTable().destroy();
               $("#tblApp").dataTable({
                   "ajax": {
                       url: '@Url.Action("GetApplicationByPid","Application")' + '/' + pid,
@@ -148,8 +149,9 @@
                   contentType: "application/json",
                   async: false,
                   success: function(resp) {
+                      GetAllApplications();
                       Swal.fire('Saved', 'Status updated successfully', 'success');
-
+                      
                   },
                   error: function(err) {
                       Swal.fire('Error', 'Something went wrong', 'error');
