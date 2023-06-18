@@ -1,73 +1,74 @@
 ﻿
+using Heeblo.Models;
 using Heeblo.Repository;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ProWritingAid.SDK.Api;
+using ProWritingAid.SDK.Model;
 using System;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Heeblo.Implementation
 {
     public class HeebloRepo : IHeeblo
     {
-        public async Task Plagiarism()
+        private readonly IConfiguration _config;
+        private readonly ApplicationDbContext _db;
+
+        public HeebloRepo(IConfiguration config,ApplicationDbContext db)
         {
-            string apiKey = "6f5a1ada7d24d7739c6b1e907645ed49";
-            string textToCheck = "I am checking plagiarism ........... black permanent marker.";
+            this._config = config;
+            this._db = db;
+        }
+
+        public string Plagiarism(string content)
+        {
+            string apiKey = _config["pKey"];
+            string textToCheck = content;
 
             using (HttpClient client = new HttpClient())
             {
-                // Set the base URL of the API
                 client.BaseAddress = new Uri("https://www.check-plagiarism.com/apis/");
 
-                // Prepare the request data
                 var requestData = new FormUrlEncodedContent(new[]
                 {
-                new KeyValuePair<string, string>("key", apiKey),
-                new KeyValuePair<string, string>("data", textToCheck)
-            });
+            new KeyValuePair<string, string>("key", apiKey),
+            new KeyValuePair<string, string>("data", textToCheck)
+        });
 
                 try
                 {
-                    // Send the POST request to the API
-                    HttpResponseMessage response = await client.PostAsync("checkPlag", requestData);
+                    HttpResponseMessage response = client.PostAsync("checkPlag", requestData).Result;
 
-                    // Check if the request was successful
                     if (response.IsSuccessStatusCode)
                     {
-                        // Read the response content
-                        string result = await response.Content.ReadAsStringAsync();
-
-                        // Deserialize the response JSON
+                        string result = response.Content.ReadAsStringAsync().Result;
                         var responseObj = JsonConvert.DeserializeObject<dynamic>(result);
-
-                        // Extract the plagiarism percentage
                         int plagiarismPercent = responseObj.plagPercent;
-
-                        // Display the plagiarism percentage
-                        Console.WriteLine("Plagiarism percentage: " + plagiarismPercent + "%");
+                        return plagiarismPercent.ToString();
                     }
                     else
                     {
-                        // Display the error message if the request failed
-                        Console.WriteLine("Request failed with status code: " + response.StatusCode);
+                        return "Request failed with status code: " + response.StatusCode;
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Display any exception that occurred
-                    Console.WriteLine("An error occurred: " + ex.Message);
+                    return "An error occurred: " + ex.Message;
                 }
             }
         }
-        public async Task AiDetect()
+        public string AiDetect(string content)
         {
             string apiUrl = "https://api.sapling.ai/api/v1/aidetect";
 
             // Set your API key
-            string apiKey = "YOUR_API_KEY";
+            string apiKey = _config["aiKey"];
 
             // Set the text to run detection on
-            string text = "Text to run detection on. This is an example text.";
+            string text = content;
 
             // Set sent_scores parameter to false
             bool sentScores = false;
@@ -85,26 +86,76 @@ namespace Heeblo.Implementation
             {
                 try
                 {
-                    var response = await client.PostAsJsonAsync(apiUrl, requestPayload);
+                    HttpResponseMessage response = client.PostAsJsonAsync(apiUrl, requestPayload).Result;
                     response.EnsureSuccessStatusCode();
 
                     // Read the response as JSON
-                    var responseBody = await response.Content.ReadFromJsonAsync<dynamic>();
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    var responseBody = JsonConvert.DeserializeObject<dynamic>(result);
 
-                    // Extract the score
-                    double score = responseBody["score"];
+                    var score = responseBody;
 
-                    // Print the score
-                    Console.WriteLine("Score: " + score);
+                    return score.ToString();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + ex.Message);
+                    return "Error: " + ex.Message;
                 }
             }
-
-
-
         }
+        public string Grammer(string content)
+        {
+            var api = new TextAsyncApi().SetLicenseCode(_config["gKey"]);
+            var request = new TextAnalysisRequest(
+                content,
+                new List<string> { "grammar" },
+                TextAnalysisRequest.StyleEnum.General,
+                TextAnalysisRequest.LanguageEnum.En);
+
+            try
+            {
+                var response = api.Post(request);
+                //int a = response.Summaries?.FirstOrDefault()?.NumberOfIssues??0;
+                string a = response.Summaries?.FirstOrDefault()?.SummaryItems?.FirstOrDefault()?.Text ?? "";
+                string score = GetPercentValue(a);
+                return score;
+            }
+
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+        }
+        public string GetPercentValue(string str)
+        {
+            string input = str;
+
+            string pattern = @"(\d+)%";
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                string scoreStr = match.Groups[1].Value;
+                int score = int.Parse(scoreStr);
+
+                return ("Score: " + score + "%");
+            }
+            else
+            {
+                return "";
+            }
+        }
+        public async Task GetScores(string content,int id)
+        {
+            var obj = _db.hbl_tbl_application.FirstOrDefault(z => z.application_id.Equals(id));
+            obj.plagiarism =  decimal.Parse(Plagiarism(content));
+            obj.ai_score = decimal.Parse(AiDetect(content));
+            obj.grammar_score = decimal.Parse(Grammer(content));
+            
+            _db.hbl_tbl_application.Attach(obj);
+            _db.Entry(obj).State = EntityState.Modified;
+            _db.SaveChanges();
+        }
+
     }
 }

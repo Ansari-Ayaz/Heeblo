@@ -1,0 +1,267 @@
+ 
+img.header-brand-img {
+    max-width: 150px;
+    height: auto;
+}
+.form-info h2{
+  color: #d6c494;
+text-align: center;
+font-size: 50px;
+margin-bottom: 22px;
+font-family: orkney bold;
+  
+}
+.banner{
+	background-color: #006480;
+	padding: 20px;
+	position: relative;
+}
+.create-link {
+  height: 130vh;
+}
+.create-link .card {
+  width: auto;
+  margin: 0px 15px;
+}
+.form-info input {
+       width: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    height: 60px;
+    text-align: center;
+    font-size: 20px;
+}
+.form-info textarea{
+  width: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #ffffff;
+  height: 100px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 20px;
+}
+.top-logo img {
+	margin: auto;
+	display: block;
+	max-width: 130px;
+}
+.main-form-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 50%;
+}
+
+.app-content .side-app {
+  padding: 35px 0px 0px 0px !important;
+}
+
+.invalid-feedback {
+  color: #fff !important; 
+}
+.bottom-info {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  padding: 0px 40px;
+  width: 100%;
+  left: 0;
+}
+.bottom-info {
+	color:#fff
+}
+.top-logo {
+  margin: 20px 0 ;
+}
+.left-ft i {
+	margin-right: 5px;
+}
+.bottom-info a {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
+.right-ft li {
+	display: inline-block;
+	margin: 0px 4px;
+}
+.social-icon h3{
+  font-size: 22px;
+  color: #fff;
+  text-align: center;
+   	font-family: orkney bold;
+}
+.form-info p{
+       text-align: center;
+    color: #fff;
+    font-size:20px;
+    line-height: 30px;
+    margin: 0;
+	 font-family: orkney bold;
+}
+.form-info input::placeholder {
+    color: #67a2b1;
+}
+.form-info hr {
+    border-top: 1px solid #338399;   
+    margin: 0px 0px 022px 0
+}
+.form-info button {
+    border: 2px solid #6f99a4;
+    padding: 14px 0px;
+    text-transform: capitalize;
+    background: #fff;
+    color: #006480;
+    width: 100%;
+    border-radius: 8px;
+    font-weight: 800;
+	 font-size: 20px;
+	 cursor:pointer
+}
+ 
+.social-icon ul {
+  display: flex;
+  justify-content: space-between;
+}
+.social-icon a {
+  color: #fff;
+  font-size: 22px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  display: block;
+  line-height: 50px;
+  text-align: center;
+  border: 1px solid #fff;
+  border-radius: 50px;
+}
+.social-icon a{
+  color: #fff;
+  font-size: 23px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  display: block;
+  line-height: 50px;
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: 50px;
+}
+.social-icon a:hover{
+	 border: 1px solid #fff;
+	   color: #fff;
+}
+.social-icon {
+  margin-top: 80px;
+  overflow: hidden;
+}
+.middle-text h4 {
+  color: #d6c494;
+  font-size: 70px;
+  font-family: orkney bold;
+  margin: 0;
+}
+
+.middle-text button a{
+border: 1px solid rgba(255, 255, 255, 0.5);
+background: rgba(255, 255, 255, 0.2);
+border-radius: 10px;
+color: #ffffff;
+text-align: center;
+font-size: 22px;
+padding: 18px 100px;
+display: block;
+ 
+}
+ .middle-text button{
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+ .middle-text button:hover{
+ border-radius:10px;
+ 
+}
+.middle-text p{
+      font-size: 26px;
+    color: #fff;
+    margin: 0;
+    font-family: orkney medium;
+}
+.table-responsive a{
+  color: #d6c494;
+}
+
+ .table-responsive label{
+  color: #fff;
+}
+#DataTables_Table_0_info {
+  color: #fff;
+}
+ .even {
+  background-color: #2f8299fc !important;
+}
+thead, td {
+  color: #fff;
+  font-size:18px;
+}
+table.dataTable thead th, table.dataTable tfoot th {
+  font-size:18px; padding: 12px 10px !important;;
+}
+table.dataTable tbody td {
+  padding: 12px 10px !important;;
+}
+
+.table-responsive th.sorting:nth-child(3) {
+  width: 0px !important;
+}
+#back-to-top {
+  display: none !Important;
+}
+
+.middle-text button:hover a {
+  color: #006480;
+}
+ 
+.middle-text button:hover {
+  background: #fff;
+}
+ th {
+  text-align: inherit;
+  font-weight: 100 !important;
+  font-size: 16px;
+}
+table.dataTable thead th, table.dataTable thead td {
+ 
+  border-bottom: 0 !important;
+}
+.page-link {
+  color: #006480 !important;
+}
+.page-link:hover{
+  color: #fff !important;
+}
+.page-link a:hover {
+  color: #006480 !important;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: 11px 31px;
+  margin-left: -1px;
+  line-height: 1.25;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+}
+table.dataTable.no-footer {
+  border-bottom: 1px solid #fff !important;
+}
+table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable td:last-child, table.table-bordered.dataTable td:last-child {
+  border-right-width: 3px !important;
+}

@@ -1,0 +1,127 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- x-icon -->
+    <link rel="shortcut icon" href="~/frontend-assets/pattern/assets/images/fav.png" type="image/x-icon">
+    <!-- Other css -->
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/animate.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/all.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/icofont.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/swiper.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        #files {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            opacity: 0;
+        }
+
+        .maximum.size p {
+            text-align: center;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="container">
+            <div class="content-login">
+                <div class="top-logo">
+                    <img src="~/frontend-assets/pattern/assets/images/Heeblo_Logo_white.png" alt="Logo">
+                </div>
+                <div class="row" style="align-items: center;">
+                    <div class="col-lg-6 col-md-6 main-form-center">
+                        <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
+                            <div class="upload file">
+                                <img src="~/frontend-assets/pattern/assets/images/arrow-img.png" alt="">
+                                <p>You're <b style="color:#d6c494">almost there </b></span></p>
+                            </div>
+                            <div class="signup-line">
+                                <a href="#">Or</a>
+                            </div>
+                            <div class="col-md-12 btn-login">
+                                <div class="upload-btn">
+                                    <label for="files" class="button">  Upload Resume</label>
+                                    <input id="resume" type="file">
+                                </div>
+                                <div class="upload-btn">
+                                    <label for="files" class="button">  Upload Writing Sample</label>
+                                    <input id="sample" type="file">
+                                </div>
+                            </div>
+                            <div class="maximum size">
+                                <p> Maxximum File Size is 1 MB </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bottom-info">
+        <div class="left-ft">
+            <a href="mailto:contact@entertainment.com">
+                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                contact@entertainment.com
+            </a>
+        </div>
+        <div class="right-ft">
+            <ul>
+                <li><a href="#">Terms and Conditions </a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
+    <script src="~/frontend-assets/pattern/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/frontend-assets/pattern/assets/js/waypoints.min.js"></script>
+    <script src="~/frontend-assets/pattern/assets/js/swiper.min.js"></script>
+    <script src="~/frontend-assets/pattern/assets/js/wow.min.js"></script>
+    <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
+</body>
+<script>
+    function uploadFiles() {
+        var resumeFile = document.getElementById("resume").files[0];
+        var sampleFile = document.getElementById("sample").files[0];
+
+        // Check if resume file is in PDF format
+        if (resumeFile && resumeFile.type === "application/pdf") {
+            // Upload resume file
+            uploadFile(resumeFile, "resume");
+        } else {
+            alert("Please upload a resume in PDF format.");
+            return;
+        }
+
+        // Check if sample file is in DOC or DOCX format
+        if (sampleFile && (sampleFile.type === "application/msword" || sampleFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+            // Upload sample file
+            uploadFile(sampleFile, "sample");
+        } else {
+            alert("Please upload a writing sample in DOC or DOCX format.");
+            return;
+        }
+    }
+
+    function uploadFile(file, fileType) {
+        // Implement your file upload logic here
+        // You can use AJAX, fetch, or any other method to send the file to the server
+        // Make sure to handle the file on the server-side appropriately
+        // Example code:
+        var formData = new FormData();
+        formData.append(fileType, file);
+
+       
+    }
+
+</script>
+</html>

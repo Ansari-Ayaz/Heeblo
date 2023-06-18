@@ -18,6 +18,8 @@ namespace Heeblo.Controllers
         [HttpGet]
         public IActionResult GetAllUser()
         {
+            
+            
             var res = _user.GetAllUser();
             return Ok(res);
         }
@@ -39,6 +41,11 @@ namespace Heeblo.Controllers
             var res = _user.SaveUser(user);
             return Ok(res);
         }
-        
+        [HttpGet("{encryptedData}")]
+        public IActionResult Decrypt(string encryptedData)
+        {
+            var res = AESEncryption.Decrypt(encryptedData);
+            return Ok(res);
+        }
     }
 }

@@ -27,11 +27,11 @@ namespace Heeblo.Controllers
             var res = _app.GetApplicationById(id);
             return Ok(res);
         }
-        [HttpPost]
-        public IActionResult SaveApplication(hbl_tbl_application app)
-        {
-            var res = _app.SaveApplication(app);
-            return Ok(res);
-        }
+        //[HttpPost("{pid}/{uid}/{created_by}")]
+        //public IActionResult SaveApplication([FromForm]IFormFile file1,[FromForm]IFormFile file2, int pid,int uid,int created_by)
+        //{
+        //    var res = _app.SaveApplication(file1,file2,app);
+        //    return Ok(res);
+        //}
     }
 }

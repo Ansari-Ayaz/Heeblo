@@ -13,8 +13,25 @@ namespace Heeblo.Controllers
             _logger = logger;
         }
 
+        public IActionResult ApplicationList()
+        {
+            return View();
+        }
+        public IActionResult AddProject()
+        {
+            return View();
+        }
+        public IActionResult WriterThankyou()
+        {
+            return View();
+        }
+        public IActionResult WriterUpload()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
+            var a = 10;
             return View();
         }
 

@@ -33,11 +33,6 @@ namespace Heeblo.Controllers
             var res = _proj.SaveProject(proj);
             return Ok(res);
         }
-        [HttpGet("{ciphere}")]
-        public IActionResult DecryptString(string ciphere)
-        {
-            var res = _proj.DecryptString(ciphere);
-                return Ok(res);
-        }
+        
     }
 }

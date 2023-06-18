@@ -1,0 +1,357 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ========== Meta Tags ========== -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Stock Logistics: Powered by Matrixninjas" />
+    
+    <!-- ========== Page Title ========== -->
+    <title> Heeblo</title>
+    <!-- ========== Favicon Icon ========== -->
+
+    <link rel="shortcut icon" href="~/frontend-assets/pattern/assets/images/fav.png" type="image/x-icon" />
+    <!-- Other css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/animate.css" />
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/all.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/icofont.min.css" />
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/swiper.min.css" />
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/style.css" />
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/rangeui.css" />
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
+    <!-- ========== End Stylesheet ========== -->
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "350px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+    <style>
+        .error {
+            border: 1px solid red;
+        }
+    </style>
+
+</head>
+<body>
+
+
+    <div class="main-wraper ">
+        <div class="preloader">
+            <div class="preloader-inner">
+                <div class="preloader-icon">
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <header>
+            <div class="row">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-lg">
+                        <div class="container-fluid">
+                            <a class="navbar-brand" href="#">
+                                <div class="logo-nav">
+                                    <img src="~/frontend-assets/pattern/assets/images//heeblo-logo.png" alt="Logo" />
+                                </div>
+                            </a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"> <i class="fa-solid fa-bars"></i></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#"><span class="outer-border">log in   </span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Signup </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="content-main-wraper">
+
+            <!-- Start Banner
+
+               ============================================= -->
+
+
+
+            <div class="banner">
+                <div class="container">
+                    <div class="content-login">
+                        <div class="row" style="align-items: center;">
+                            <div class="top-logo">  <img src="~/frontend-assets/pattern/assets/images/Heeblo_Logo_white.png" alt="Logo" /></div>
+
+                            <div class="col-lg-6 col-md-6 main-form-center">
+                                <div class="login-tittle mb-4">
+                                    <h2> <span style="color:#d6c494">Wel</span>come </h2>
+                                    <h3> Lets get to <span style="color:#d6c494">work! </span></h3>
+                                </div>
+                                <div class="form-info welcome-login wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
+
+                                        @*<input type="hidden" name="_token" value="rZ3zX1dNEGz3R30Ek9IafBt5MJp31NkEnluQJfNR">*@
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input class="form-control" placeholder="Email Id*" name="email" type="email" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input class="form-control" placeholder="Password*" name="password" type="password" />
+                                            </div>
+                                            <div class="text-end for-pass"> <a href="#">Forgot password?</a></div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button onclick="submitFunc()">
+                                                Login
+                                            </button>
+                                        </div>
+
+                                    <div class="signup-line">
+                                        <a href="#">Or Signup With </a>
+                                    </div>
+                                    <div class="social-media">
+                                        <ul>
+                                            <li><a href="#"> Phone</a> </li>
+                                            <li><a href="#"> Email</a> </li>
+                                            <li><a href="http://localhost/customer/facebook">Facebook</a> </li>
+                                            <li><a href="http://localhost/customer/google">Google</a> </li>
+
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid bottom-info">
+
+                    <div class="left-ft"><a href="mailto:contact@entertainment.com"><i class="fa-solid fa-envelope"></i>contact@entertainment.com</a></div>
+                    <div class="right-ft">
+                        <ul>
+                            <li><a href="#">Terms and Conditions </a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Start Footer
+           ============================================= -->
+        <footer class="footer">
+            <div class="footer__top padding-tb">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-sm-3 col-12">
+                            <div class="logo wow fadeInUp" data-wow-delay=".5s">
+                                <img src="~/frontend-assets/pattern/assets/images/logo-2.png" alt="Logo" />
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-12">
+                            <div class="footer__body wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s;">
+                                <h2> Menu</h2>
+                                <ul>
+                                    <li> <a href="#"> Home </a> </li>
+                                    <li> <a href="#"> Login  </a> </li>
+                                    <li><a href="#">  SignUp</a>  </li>
+
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-3 col-sm-3 col-12">
+                            <div class="footer__body wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s;">
+                                <h2> Important Links</h2>
+                                <ul>
+                                    <li> <a href="#"> Term & Condition  </a> </li>
+                                    <li> <a href="#"> Privacy & Policy  </a> </li>
+
+
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-3 col-sm-3 col-12">
+                            <div class="social-bottom wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s;">
+                                <h2> Social Links</h2>
+                                <ul>
+                                    <li> <a href="#"> <i class="fa-brands fa-facebook-f"></i></a></li>
+                                    <li> <a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                                    <li> <a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom wow fadeInUp" data-wow-delay=".5s">
+                <div class="container-fluid">
+                    <div class="row">
+                        <p> © COPYRIGHT 2023 . ALL RIGHTS RESERVED.</p>
+                    </div>
+                </div>
+            </div>
+
+        </footer>
+
+
+
+        <!-- ==========Footer Section Ends Here========== -->
+        <!-- All Scripts -->
+        <script src="~/frontend-assets/pattern/assets/js/jquery.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/waypoints.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/swiper.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/wow.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/lightcase.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/isotope.pkgd.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
+        <script>
+
+        </script>
+        <!-- End Footer Bottom -->
+        <!-- End Footer-->
+
+
+
+
+    </div>
+
+</body>
+<script>
+
+    var users = [
+        {
+            uid: 1,
+            name: "John Doe",
+            mobile: "1234567890",
+            email: "john@example.com",
+            password: "password123",
+            role: 1,
+            verified: true,
+            is_active: true,
+            created_on: new Date(),
+            created_by: 1,
+            update_on: new Date(),
+            updated_by: 1
+        },
+        {
+            uid: 2,
+            name: "Jane Smith",
+            mobile: "9876543210",
+            email: "jane@example.com",
+            password: "password456",
+            role: 2,
+            verified: true,
+            is_active: true,
+            created_on: new Date(),
+            created_by: 1,
+            update_on: new Date(),
+            updated_by: 1
+        },
+        {
+            uid: 3,
+            name: "Alice Johnson",
+            mobile: "5555555555",
+            email: "alice@example.com",
+            password: "password789",
+            role: 3,
+            verified: true,
+            is_active: true,
+            created_on: new Date(),
+            created_by: 1,
+            update_on: new Date(),
+            updated_by: 1
+        }
+    ];
+        function submitFunc() {
+            event.preventDefault();
+
+
+
+            // Perform validation
+            var email = $('input[name="email"]').val();
+            var password = $('input[name="password"]').val();
+
+            if (email.trim() === '') {
+                $('input[name="email"]').addClass('error');
+            } else {
+                $('input[name="email"]').removeClass('error');
+            }
+
+            if (password.trim() === '') {
+                $('input[name="password"]').addClass('error');
+            } else {
+                $('input[name="password"]').removeClass('error');
+            }
+
+            // Check if any invalid fields exist
+            if ($('input.error').length > 0) {
+                alert('Please fill in all the required fields.');
+                return;
+            }
+
+            // Create a data object with the form values
+            var data = {
+                email: email,
+                password: password
+            };
+
+
+            // Send the data to the home controller's upload page
+            //$.ajax({
+            //    url: 'http://localhost/home/upload',
+            //    type: 'POST',
+            //    data: data,
+            //    success: function (response) {
+            //        // Handle the response from the server
+            //        // This could be a success message or a redirect to another page
+            //        console.log(response);
+    
+        if (users[0].role == 2) window.location.href = "@Url.Action("WriterUpload","Home")";
+        else window.location.href = "@Url.Action("Index","Home")";
+            //    },
+            //    error: function (xhr, status, error) {
+            //        // Handle any errors that occur during the AJAX request
+            //        console.log(error);
+            //    }
+            //});
+        }
+
+</script>
+</html>

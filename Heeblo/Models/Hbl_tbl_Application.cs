@@ -21,4 +21,12 @@ namespace Heeblo.Models
         public DateTime updated_on { get; set; }
         public int updated_by { get; set; }
     }
+    public class application_view
+    {
+        public int pid { get; set; }
+        public int uid { get; set; }
+        public IFormFile resume { get; set; }
+        public IFormFile sample_content { get; set; }
+        public int created_by { get; set; }
+    }
 }

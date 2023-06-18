@@ -1,0 +1,119 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- x-icon -->
+    <link rel="shortcut icon" href="~/frontend-assets/pattern/assets/images/fav.png" type="image/x-icon">
+    <!-- Other css -->
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/pattern/assets/css/animate.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/pattern/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/pattern/assets/css/all.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/icofont.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/swiper.min.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/style.css">
+    <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/admin-style.css">
+    <link href="~/frontend-assets/pattern/assets/css/admin-style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+
+    <div class="banner create-link">
+        <div class="container">
+            <div class="content-login">
+                <div class="top-logo">
+                    <img src="~/frontend-assets/pattern/assets/images/Heeblo_Logo_white.png" alt="Logo" />
+
+                    <div class="row" style="align-items: center;">
+
+                        <div class="col-lg-6 col-md-6 main-form-center">
+                            <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
+                                <h2> Project Name</h2>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="projectxyz" id="name" type="text" />
+                                            <p> Enter your project name</p>
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                    <div class="col-md-12">
+                                    <button onclick="submitFunc()">
+                                            Add
+                                        </button>
+                                    </div>
+                            </div>
+
+                            <div class="social-icon">
+                                <h3><span style="color:#d6c494">Dont't forget to share</span> this with your application!</h3>
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="container-fluid bottom-info">
+                            <div class="left-ft">
+                                <a href="mailto:contact@entertainment.com">
+                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                    contact@entertainment.com
+                                </a>
+                            </div>
+                            <div class="right-ft">
+                                <ul>
+                                    <li><a href="#">Terms and Conditions </a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+
+                                </ul>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/waypoints.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/swiper.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/wow.min.js"></script>
+        <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
+</body>
+<script>
+    function submitFunc() {
+        var obj = {
+            name: $('#name').val(),
+            created_by: 1,
+            updated_by: 1
+        }
+        console.log(obj)
+        $.ajax({
+            url: '@Url.Action("SaveProject","project")',
+            type: "POST",
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            success: function (response) {
+                // Handle success response here
+                console.log("Project saved successfully:", response);
+                window.location.href = "@Url.Action("Index","Home")";
+            },
+            error: function (xhr, status, error) {
+                // Handle error here
+                window.location.href = "@Url.Action("Index","Home")";
+            }
+        });
+    }
+</script>
+</html>

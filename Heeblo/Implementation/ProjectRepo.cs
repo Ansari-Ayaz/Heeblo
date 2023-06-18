@@ -44,8 +44,7 @@ namespace Heeblo.Implementation
                 project.updated_on = DateTime.UtcNow;
                 _db.hbl_tbl_project.Add(project);
                 var i = _db.SaveChanges();
-                string link = _config["url"];
-                link += EncryptString(project.pid.ToString());
+                string link = _config["url"] + AESEncryption.Encrypt(project.pid.ToString());
                 project.link = link;
                 _db.hbl_tbl_project.Attach(project);
                 _db.Entry(project).State = EntityState.Modified;
@@ -61,41 +60,7 @@ namespace Heeblo.Implementation
                 return response;
             }
         }
-        public static string EncryptString(string plainText)
-        {
-            using (AesCryptoServiceProvider aes = new AesCryptoServiceProvider())
-            {
-                aes.Key = secretKey;
-                aes.IV = iv;
-                aes.Padding = PaddingMode.PKCS7;
-                aes.Mode = CipherMode.CBC;
-
-                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-
-                byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
-                byte[] encryptedBytes = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
-
-                return Convert.ToBase64String(encryptedBytes);
-            }
-        }
-        public string DecryptString(string cipherText)
-        {
-            byte[] cipherBytes = Convert.FromBase64String(cipherText);
-
-            using (AesCryptoServiceProvider aes = new AesCryptoServiceProvider())
-            {
-                aes.Key = secretKey;
-                aes.IV = iv;
-                aes.Padding = PaddingMode.PKCS7;
-                aes.Mode = CipherMode.CBC;
-
-                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-
-                byte[] decryptedBytes = decryptor.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
-
-                return Encoding.UTF8.GetString(decryptedBytes);
-            }
-        }
+       
 
 
     }

@@ -7,6 +7,5 @@ namespace Heeblo.Repository
         Response GetAllProjects();
         Response GetProjectById(int id);
         Response SaveProject(hbl_tbl_project project);
-        string DecryptString(string cipherText);
     }
 }

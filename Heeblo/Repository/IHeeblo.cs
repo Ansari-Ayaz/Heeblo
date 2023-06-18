@@ -1,7 +1,12 @@
-﻿namespace Heeblo.Repository
+﻿using Heeblo.Models;
+
+namespace Heeblo.Repository
 {
     public interface IHeeblo
     {
-        Task Plagiarism();
+        //string Plagiarism(string content);
+        //string AiDetect(string content);
+        //string Grammer(string content);
+        Task GetScores(string content, int id);
     }
 }
