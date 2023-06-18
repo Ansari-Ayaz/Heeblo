@@ -64,7 +64,7 @@
             var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
         })
         function GetAllProjects() {
-            $("#tblProject").dataTable().destroy();
+            $('#tblProject').DataTable().destroy();
             $("#tblProject").dataTable({
                 "ajax": {
                     url: '@Url.Action("GetAllProjects","project")',
