@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -31,7 +32,7 @@ namespace Heeblo.Models
 
                         byte[] encryptedBytes = memoryStream.ToArray();
                         string encryptedText = Convert.ToBase64String(encryptedBytes);
-                        return encryptedText;
+                        return HttpUtility.UrlEncode(encryptedText);
                     }
                 }
             }
@@ -39,7 +40,8 @@ namespace Heeblo.Models
 
         public static string Decrypt(string encryptedText)
         {
-            byte[] cipherTextBytes = Convert.FromBase64String(encryptedText);
+            var base64String = HttpUtility.UrlDecode(encryptedText);
+            byte[] cipherTextBytes = Convert.FromBase64String(HttpUtility.UrlDecode(encryptedText));
 
             using (Aes aesAlg = Aes.Create())
             {

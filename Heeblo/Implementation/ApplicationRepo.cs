@@ -179,12 +179,16 @@ namespace Heeblo.Implementation
         {
             bool resp = false;
             string sql = "update hbl_tbl_application set Status='" + status + "' where application_id='" + appId + "'";
-
-            using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
+            var appData = _db.hbl_tbl_application.FirstOrDefault(z => z.application_id == appId);
+            var user = _db.hbl_tbl_user.FirstOrDefault(z => z.uid == appData.uid);
+            var subject = "Heeblo assignment Rejected!";
+            var body = "Thanks for your submission but your content is not approved. Better luck next time !!";
+            using(NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
             {
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
                 con.Open();
                 int i = cmd.ExecuteNonQuery();
+                bool sentMail = _heeblo.SendEmail(user.email,subject,body);
                 resp = (i > 0);
             }
             return resp;

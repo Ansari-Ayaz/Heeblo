@@ -10,5 +10,6 @@ namespace Heeblo.Repository
         Response GetUserById(int id);
         Response SaveUser(hbl_tbl_user user);
         Response ValidateUser(LoginReq req);
+        bool VerifyUser(int uid);
     }
 }
