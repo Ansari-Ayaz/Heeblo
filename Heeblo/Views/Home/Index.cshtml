@@ -64,6 +64,7 @@
             var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
         })
         function GetAllProjects() {
+            $('#tblProject').DataTable().destroy();
             $("#tblProject").dataTable({
                 "ajax": {
                     url: '@Url.Action("GetAllProjects","project")',
@@ -111,6 +112,7 @@
                 Swal.fire('Saved','Project Saved Sucessfuly','success');
                 $("#txtProjectName").val('');
                 $("#myModal").modal('hide');
+                GetAllProjects();
             },
             error:function(err){
                 Swal.fire('OOPS','Something Went Wrong','error');

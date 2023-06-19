@@ -41,7 +41,7 @@ namespace Heeblo.Models
         public static string Decrypt(string encryptedText)
         {
             var base64String = HttpUtility.UrlDecode(encryptedText);
-            byte[] cipherTextBytes = Convert.FromBase64String(HttpUtility.UrlDecode(encryptedText));
+            byte[] cipherTextBytes = Convert.FromBase64String(HttpUtility.UrlDecode(encryptedText).Replace(" ","+"));
 
             using (Aes aesAlg = Aes.Create())
             {

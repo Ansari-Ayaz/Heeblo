@@ -86,8 +86,8 @@ namespace Heeblo.Implementation
                     string sql = @"select app.application_id , app.created_on , u.name ,u.mobile,u.email,
                                 att.resume,att.sample_content ,att.resume_filename,att.sample_content_filename
                                 from hbl_tbl_application app 
-                                inner join hbl_tbl_attachment att on att.application_id=app.application_id
-                                inner join hbl_tbl_user u on u.uid=app.created_by
+                                left join hbl_tbl_attachment att on att.application_id=app.application_id
+                                left join hbl_tbl_user u on u.uid=app.created_by
                                 where app.application_id= @appid";
                     NpgsqlCommand cmd = new NpgsqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("@appid", appid);
@@ -155,7 +155,7 @@ namespace Heeblo.Implementation
                 hbl_tbl_attachment attachment = new hbl_tbl_attachment();
                 attachment.application_id = app.application_id;
                 attachment.resume_filename = application.resume.FileName;
-                attachment.sample_content_filenme = application.sample_content.FileName;
+                attachment.sample_content_filename = application.sample_content.FileName;
                 attachment.resume = ConvertFiletoBase64(application.resume);
                 attachment.sample_content = ConvertFiletoBase64(application.sample_content);
                 _db.hbl_tbl_attachment.Add(attachment);
