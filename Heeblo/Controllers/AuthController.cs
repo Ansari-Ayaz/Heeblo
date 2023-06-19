@@ -1,5 +1,6 @@
 ﻿using Heeblo.Implementation;
 using Heeblo.Models;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
@@ -41,8 +42,13 @@ namespace Heeblo.Controllers
                 var serialized = JsonConvert.SerializeObject(response.RespObj);
                 hbl_tbl_user u = JsonConvert.DeserializeObject<hbl_tbl_user>(serialized);
                 HttpContext.Session.SetObjectAsJson("user", u);
+                ViewData["Error"] = null;
                 if (u.role == 2)
-                    return RedirectToAction("WriterUpload", "Home");
+                {
+                    var pid = HttpContext.Session.GetString("pid") ?? null;
+                    if (pid!=null) return RedirectToAction("WriterUpload", "Home");
+                    else return RedirectToAction("WriterNoProject", "Home");
+                }
                 else return RedirectToAction("Index", "Home");
 
             }

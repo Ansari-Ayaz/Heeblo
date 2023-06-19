@@ -32,6 +32,10 @@ namespace Heeblo.Controllers
             return View();
         }
 
+        public IActionResult WriterNoProject()
+        {
+            return View();
+        }
         public IActionResult WriterThankyou()
         {
             return View();

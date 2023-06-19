@@ -32,17 +32,15 @@
                     <div class="col-lg-6 col-md-6 main-form-center text-center">
                         <div class="form-info thankyou-page wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
                             <div class="upload file">
-                                <img src="~/frontend-assets/pattern/assets/images/thankyou-icon.svg" alt="" />
+                                <img src="~/frontend-assets/pattern/assets/images/whiteCross.png" alt="" />
 
                             </div>
                             <h2>
-                                Thank <span style="color:#d6c494">you !</span>
+                                No project <span style="color:#d6c494">found !</span>  
                             </h2>
 
-                            <p> We have sent a verification link on your email. <span style="color:#d6c494" id="email"></span></p>
+                            <p> Please request <span style="color:#d6c494">link from publisher</span></p>
                         </div>
-                        <a href="@Url.Action("Login","Auth")" style="color:#ffffff"> Click here to go back to login</a>
-
                     </div>
                 </div>
             </div>
@@ -63,16 +61,5 @@
     <script src="~/frontend-assets/pattern/assets/js/swiper.min.js"></script>
     <script src="~/frontend-assets/pattern/assets/js/wow.min.js"></script>
     <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
-    <script>
-            $(document).ready(function() {
-          var params = new URLSearchParams(window.location.search);
-          var uValue = params.get("u");
-
-          console.log(atob(uValue));
-          $('#email').text(atob(uValue))
-
-          // Further processing or actions with the extracted value can be done here
-        });
-    </script>
 </body>
 </html>
