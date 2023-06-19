@@ -155,7 +155,7 @@ namespace Heeblo.Implementation
                 string connectionString = _config.GetConnectionString("HBL");
                 using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
                 {
-                    connection.Open();                   
+                    connection.OpenAsync();                   
                     decimal plagiarism = Math.Round(Decimal.Parse(Plagiarism(content)),2);
                     decimal ai_score = Math.Round(Decimal.Parse(AiDetect(content)),2) *100;
                     decimal grammar_score = Math.Round(Decimal.Parse(Grammer(content)), 2);
