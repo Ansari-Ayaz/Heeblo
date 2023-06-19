@@ -188,7 +188,7 @@ namespace Heeblo.Implementation
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
                 con.Open();
                 int i = cmd.ExecuteNonQuery();
-                bool sentMail = _heeblo.SendEmail(user.email,subject,body);
+                System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
                 resp = (i > 0);
             }
             return resp;

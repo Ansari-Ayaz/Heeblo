@@ -68,9 +68,9 @@ namespace Heeblo.Implementation
                 var link = _config["verifyUrl"] + aesString;
                 var subject = "Heeblo Account Verification";
                 var body = @"Dear " + user.name + ", \r\nPlease click below link to verify your account.\r\n"+ link;
-                bool mailSent = _heeblo.SendEmail(user.email,subject,body);
+                System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
                 if (i == 0) { response.RespMsg = "User Not Saved";return response; }
-                if (i > 0 && mailSent) { response.Resp = true;response.RespMsg = "User Saved and mail sent Successfully";response.RespObj = user;return response; }
+                if (i > 0) { response.Resp = true;response.RespMsg = "User Saved and mail sent Successfully";response.RespObj = user;return response; }
                 return response;
             }
             catch (Exception ex)
@@ -97,7 +97,30 @@ namespace Heeblo.Implementation
             }
 
         }
-        
+        public void ForgotLink(string email)
+        {
+            //if (string.IsNullOrEmpty(email)) { return null; }
+            var user = _db.hbl_tbl_user.FirstOrDefault(z => z.email.Equals(email));
+            var subject = "Forgot Password Link";
+            var link = _config["forgotUrl"] + AESEncryption.Encrypt(user.uid.ToString());
+            var body = @"Dear " + user.name + ", \r\nPlease click below link to forgot your password.\r\n" + link;
+            System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(email, subject, body); });
+        }
+        public string PasswordForgot(int uid,string password)
+        {
+            if (uid <= 0) { return "User id is not valid"; }
+            if (string.IsNullOrEmpty(password)) { return "Password should not blank"; }
+            var pass = ComputeMD5Hash(password);
+            string sql = "update hbl_tbl_user set password= '"+ pass + "' where uid='" + uid + "'";
+            using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
+            {
+                NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                if(i == 0)  { return "Failed to update password"; } 
+                return "Password updated successfully";
+            }
+        }
 
         public Response ValidateUser(LoginReq req)
         {

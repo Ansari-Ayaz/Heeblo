@@ -177,7 +177,7 @@ namespace Heeblo.Implementation
             
         }
 
-        public bool SendEmail(string emaiId,string subject,string body)
+        public async Task<bool> SendEmail(string emaiId,string subject,string body)
         {
             MailMessage mail = new MailMessage();
             mail.To.Add(emaiId);

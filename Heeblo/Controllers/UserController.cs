@@ -42,6 +42,20 @@ namespace Heeblo.Controllers
             var res = _user.SaveUser(user);
             return Ok(res);
         }
+        [HttpGet]
+        [HttpGet("{email}")]
+        public IActionResult ForgotLink(string email)
+        {
+            _user.ForgotLink(email);
+            return Ok();
+        }
+        [HttpGet]
+        [HttpGet("{uid}/{password}")]
+        public IActionResult PasswordForgot(int uid,string password)
+        {
+            var res = _user.PasswordForgot(uid,password);
+            return Ok(res);
+        }
 
         [HttpPost]
         public IActionResult ValidateUser(LoginReq req)
