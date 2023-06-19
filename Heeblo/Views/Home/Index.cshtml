@@ -58,66 +58,71 @@
 </div>
 
 @section Scripts{
-    <script>
-        $(document).ready(function() {
-            GetAllProjects();
-            var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
-        })
-        function GetAllProjects() {
-            $('#tblProject').DataTable().destroy();
-            $("#tblProject").dataTable({
-                "ajax": {
-                    url: '@Url.Action("GetAllProjects","project")',
-                    type: "GET",
-                    dataType: "JSON",
-                    contentType: "application/json",
-                    async: false,
-                    dataSrc: ""
-                },
-                "columns": [
-                    { "data": "name" },
-                    {
-                        "data": null,
-                        "render": function(a, b, c) {
-                            return '<button class="btn btn-primary btn-sm" onclick="viewApplication(' + c.pid + ')">View</button>'
-                        }
-                    },
-                    { "data": "link" },
-                    { 
-                        "data":null,
-                        "render": function(a, b, c) {
-                            return moment(c.created_on).format("YYYY-MM-DD");
-                        }
-                    }
+<script>
+    $(document).ready(function() {
+        var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
+        console.log(user.uid)
+                console.log('@Url.Action("GetAllProjects","project")'+'/'+user.uid)
 
-                ]
-            })
-        }
-        function viewApplication(pid) {
-            window.open('@Url.Action("Applications","Home")' + '?pid=' + pid, '_blank')
-        }
-        function SaveProject() {
-            var obj = {
-                name:$('#txtProjectName').val()
-                //created_by:user.uid,
-                //updated_by:user.uid
-            }
-            $.ajax({
-            url: '@Url.Action("SaveProject","Project")',
-            type:"POST",
-            contentType:"application/json",
-            async:false,
-            data:JSON.stringify(obj),
-            success:function(resp){
-                Swal.fire('Saved','Project Saved Sucessfuly','success');
-                $("#txtProjectName").val('');
-                $("#myModal").modal('hide');
-                GetAllProjects();
+                    GetAllProjects(user.uid);
+
+    })
+    function GetAllProjects(uid) {
+        //var action = "GetAllProjects/" + uid
+        $('#tblProject').DataTable().destroy();
+        $("#tblProject").dataTable({
+            "ajax": {
+                url: '@(Url.Action("GetAllProjects", "Project"))' + '/' + uid,
+                type: "GET",
+                dataType: "JSON",
+                contentType: "application/json",
+                async: false,
+                dataSrc: ""
             },
-            error:function(err){
-                Swal.fire('OOPS','Something Went Wrong','error');
-            }
+            "columns": [
+                { "data": "name" },
+                {
+                    "data": null,
+                    "render": function(a, b, c) {
+                        return '<button class="btn btn-primary btn-sm" onclick="viewApplication(' + c.pid + ')">View</button>'
+                    }
+                },
+                { "data": "link" },
+                {
+                    "data":null,
+                    "render": function(a, b, c) {
+                        return moment(c.created_on).format("YYYY-MM-DD");
+                    }
+                }
+
+            ]
         })
+    }
+    function viewApplication(pid) {
+        window.open('@Url.Action("Applications","Home")' + '?pid=' + pid, '_blank')
+    }
+    function SaveProject() {
+        var obj = {
+            name:$('#txtProjectName').val()
+            //created_by:user.uid,
+            //updated_by:user.uid
         }
-    </script>
+        $.ajax({
+        url: '@Url.Action("SaveProject","Project")',
+        type:"POST",
+        contentType:"application/json",
+        async:false,
+        data:JSON.stringify(obj),
+        success:function(resp){
+            Swal.fire('Saved','Project Saved Sucessfuly','success');
+            $("#txtProjectName").val('');
+            $("#myModal").modal('hide');
+            GetAllProjects();
+        },
+        error:function(err){
+            Swal.fire('OOPS','Something Went Wrong','error');
+        }
+    })
+    }
+</script>
 }

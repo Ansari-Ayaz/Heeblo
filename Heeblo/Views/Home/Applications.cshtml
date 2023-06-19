@@ -87,7 +87,8 @@
               $('#tblApp').DataTable().destroy();
               $("#tblApp").dataTable({
                   "ajax": {
-                      url: '@Url.Action("GetApplicationByPid","Application")' + '/' + pid,
+                      
+                      url: '@(Url.Action("GetApplicationByPid","Application"))'+'/'+pid,
                       type: "GET",
                       dataType: "JSON",
                       contentType: "application/json",
