@@ -51,6 +51,8 @@ namespace Heeblo.Implementation
                 if (string.IsNullOrEmpty(user.name) == null) { response.RespMsg = "Name is Blank";return response; }
                 if (string.IsNullOrEmpty(user.email) == null) { response.RespMsg = "Email is Blank"; return response; }
                 if (string.IsNullOrEmpty(user.mobile) == null) { response.RespMsg = "Mobile Number is Blank"; return response; }
+                if (_db.hbl_tbl_user.Any(z => z.mobile.Equals(user.mobile))) { response.Resp = false; response.RespMsg = "Mobile Number already exist"; response.RespObj = user.mobile; return response; }
+                if (_db.hbl_tbl_user.Any(z => z.email.Equals(user.email))) { response.Resp = false; response.RespMsg = "email already exist"; response.RespObj = user.mobile; return response; }
                 user.name = user.name.Trim().ToLower();
                 user.email = user.email.Trim().ToLower();
                 string pass = ComputeMD5Hash(user.password);
@@ -95,6 +97,7 @@ namespace Heeblo.Implementation
             }
 
         }
+        
 
         public Response ValidateUser(LoginReq req)
         {
