@@ -26,7 +26,7 @@ namespace Heeblo.Implementation
             this._db = db;
         }
 
-        public string Plagiarism(string content)
+        public async Task<string> Plagiarism(string content)
         {
             string apiKey = _config["pKey"];
             string textToCheck = content;
@@ -39,7 +39,7 @@ namespace Heeblo.Implementation
                 {
             new KeyValuePair<string, string>("key", apiKey),
             new KeyValuePair<string, string>("data", textToCheck)
-        });
+            });
 
                 try
                 {
@@ -63,7 +63,7 @@ namespace Heeblo.Implementation
                 }
             }
         }
-        public string AiDetect(string content)
+        public async Task<string> AiDetect(string content)
         {
             string apiUrl = "https://api.sapling.ai/api/v1/aidetect";
 
@@ -106,7 +106,7 @@ namespace Heeblo.Implementation
                 }
             }
         }
-        public string Grammer(string content)
+        public async Task<string> Grammer(string content)
         {
             var api = new TextAsyncApi().SetLicenseCode(_config["gKey"]);
             var request = new TextAnalysisRequest(
@@ -117,7 +117,7 @@ namespace Heeblo.Implementation
 
             try
             {
-                var response = api.Post(request);
+                var response = api.PostAsync(request).Result;
                 //int a = response.Summaries?.FirstOrDefault()?.NumberOfIssues??0;
                 string a = response.Summaries?.FirstOrDefault()?.SummaryItems?.FirstOrDefault()?.Text ?? "";
                 string score = GetPercentValue(a);
@@ -155,15 +155,15 @@ namespace Heeblo.Implementation
                 string connectionString = _config.GetConnectionString("HBL");
                 using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
                 {
-                    connection.Open();                   
-                    decimal plagiarism = Math.Round(Decimal.Parse(Plagiarism(content)),2);
-                    decimal ai_score = Math.Round(Decimal.Parse(AiDetect(content)),2) *100;
-                    decimal grammar_score = Math.Round(Decimal.Parse(Grammer(content)), 2);
+                    connection.Open();
+                    decimal plagiarism = Math.Round(Decimal.Parse(Plagiarism(content).Result), 2);
+                    //decimal ai_score = Math.Round(Decimal.Parse(AiDetect(content).Result), 2);
+                    decimal grammar_score = Math.Round(Decimal.Parse(Grammer(content).Result), 2);
 
                     string sql = "UPDATE hbl_tbl_application SET plagiarism = @plagiarism, ai_score = @ai_score,grammar_score = @grammar_score WHERE application_id = @id";
                     NpgsqlCommand command = new NpgsqlCommand(sql, connection);
                     command.Parameters.AddWithValue("@plagiarism", plagiarism);
-                    command.Parameters.AddWithValue("@ai_score", ai_score);
+                    //command.Parameters.AddWithValue("@ai_score", ai_score);
                     command.Parameters.AddWithValue("@grammar_score", grammar_score);
                     command.Parameters.AddWithValue("@id", id);
                     int rowsAffected = command.ExecuteNonQuery();

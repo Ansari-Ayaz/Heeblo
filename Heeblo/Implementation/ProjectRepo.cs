@@ -17,13 +17,14 @@ namespace Heeblo.Implementation
             this._db = db;
             this._config = config;
         }
-        public List<hbl_tbl_project> GetAllProjects()
+        public List<hbl_tbl_project> GetAllProjects(int uid)
         {
             Response response = new Response();
-            var projects = _db.hbl_tbl_project.ToList();
-            if (projects == null) {  return null; }
-            else { return projects; }
+            var projects = _db.hbl_tbl_project.Where(z => z.created_by == uid).ToList();
+            if (projects == null) { return null; }
+            return projects; 
         }
+        
         public Response GetProjectById(int id)
         {
             Response response = new Response();
@@ -31,6 +32,7 @@ namespace Heeblo.Implementation
             if (projects == null) { response.RespMsg = "Project Data Not Found"; response.RespObj = null; return response; }
             else { response.Resp = true; response.RespMsg = "Project Data Found Successfully"; response.RespObj = projects; return response; }
         }
+        
         public Response SaveProject(hbl_tbl_project project)
         {
             Response response = new Response();

@@ -15,12 +15,14 @@ namespace Heeblo.Controllers
         {
             this._proj = proj;
         }
+        [HttpGet("{uid}")]
         [HttpGet]
-        public IActionResult GetAllProjects()
+        public IActionResult GetAllProjects(int uid)
         {
-            var res = _proj.GetAllProjects();
+            var res = _proj.GetAllProjects(uid);
             return Ok(res);
         }
+
         [HttpGet("{id}")]
         public IActionResult GetProjectById(int id)
         {
