@@ -157,7 +157,7 @@ namespace Heeblo.Implementation
                 {
                     connection.Open();
                     decimal plagiarism = Math.Round(Decimal.Parse(Plagiarism(content).Result), 2);
-                    //decimal ai_score = Math.Round(Decimal.Parse(AiDetect(content).Result),2);
+                    //decimal ai_score = Math.Round(Decimal.Parse(AiDetect(content).Result), 2);
                     decimal grammar_score = Math.Round(Decimal.Parse(Grammer(content).Result), 2);
 
                     string sql = "UPDATE hbl_tbl_application SET plagiarism = @plagiarism, ai_score = @ai_score,grammar_score = @grammar_score WHERE application_id = @id";
