@@ -14,23 +14,23 @@ namespace Heeblo.Controllers
         {
             this._heeblo = heeblo;
         }
-        [HttpGet("{content}")]
-        public IActionResult Plagiarism(string content)
-        {
-            var res = _heeblo.Plagiarism(content);
-            return Ok(res);
-        }
-        [HttpGet("{content}")]
-        public IActionResult AiDetect(string content)
-        {
-            var res = _heeblo.AiDetect(content);
-            return Ok(res);
-        }
-        [HttpGet("{content}")]
-        public IActionResult Grammer(string content)
-        {
-            var res = _heeblo.Grammer(content);
-            return Ok(res);
-        }
+        //[HttpGet("{content}")]
+        //public IActionResult Plagiarism(string content)
+        //{
+        //    var res = _heeblo.Plagiarism(content);
+        //    return Ok(res);
+        //}
+        //[HttpGet("{content}")]
+        //public IActionResult AiDetect(string content)
+        //{
+        //    var res = _heeblo.AiDetect(content);
+        //    return Ok(res);
+        //}
+        //[HttpGet("{content}")]
+        //public IActionResult Grammer(string content)
+        //{
+        //    var res = _heeblo.Grammer(content);
+        //    return Ok(res);
+        //}
     }
 }
