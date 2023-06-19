@@ -41,6 +41,12 @@
         .error {
             border: 1px solid red;
         }
+        .error-label {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+}
+
     </style>
 
 </head>
@@ -137,6 +143,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
+                                                <span id="errorLabel" class="error-label"></span>
+                                                <hr />
+
                                         <button onclick="submitFunc()">
                                             Submit
                                         </button>
@@ -273,31 +282,31 @@
 
                // Validate the fields
                if (name === "") {
-                   alert("Please enter your name.");
+                   $('#errorLabel').text("Please enter your name.");
                    return;
                }
                if (mobile === "") {
-                   alert("Please enter your mobile number.");
+                   $('#errorLabel').text("Please enter your mobile number.");
                    return;
                }
                if (email === "") {
-                   alert("Please enter your email address.");
+                   $('#errorLabel').text("Please enter your email address.");
                    return;
                }
                if (password === "") {
-                   alert("Please enter a password.");
+                   $('#errorLabel').text("Please enter a password.");
                    return;
                }
                if (confirmPassword === "") {
-                   alert("Please confirm your password.");
+                   $('#errorLabel').text("Please enter confirm password.");
                    return;
                }
                if (password != confirmPassword) {
-                   alert("Password and confirm password do not match.");
+                   $('#errorLabel').text("Password and confirm password do not match.");
                    return;
                }
 
-
+               $('#errorLabel').text("")
 
                // Send the AJAX request
                $.ajax({
@@ -307,13 +316,18 @@
                    contentType: "application/json",
                    success: function(response) {
                        // Handle the success response
-                       console.log("User saved successfully:", response);
+                       if (response.resp) {
+                           console.log("User saved successfully:", response);
                        window.location.href = '@Url.Action("EmailSent","home")'+'?u='+btoa(response.respObj.email)
+                       }else{
+                            $('#errorLabel').text(response.RespMsg); 
+                       }
+                       
                    },
                    error: function(xhr, status, error) {
                        // Handle the error response
                        console.log("Error saving user:", error);
-                       // TODO: Display error message to the user
+                 $('#errorLabel').text("Something went wrong"); 
                    }
                });
            }

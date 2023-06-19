@@ -160,18 +160,18 @@
               })
           }
           function badge_1(val){
-              if(val > 0 && val <= 25) return `<span class="badge badge-danger">${val}%</span>`;
-              if(val > 25 && val <= 50) return `<span class="badge badge-warning">${val}%</span>`;
-              if(val > 50 && val <= 75) return `<span class="badge badge-info">${val}%</span>`;
-              if(val > 75 && val <= 100) return `<span class="badge badge-success">${val}%</span>`;
+              if(val > 0 && val <= 25) return `<span class="badge badge-danger score">${val}%</span>`;
+              if(val > 25 && val <= 50) return `<span class="badge badge-warning score">${val}%</span>`;
+              if(val > 50 && val <= 75) return `<span class="badge badge-info score">${val}%</span>`;
+              if(val > 75 && val <= 100) return `<span class="badge badge-success score">${val}%</span>`;
               return ``;
           }
 
           function badge_2(val){
-              if(val > 0 && val <= 25) return `<span class="badge badge-success">${val}%</span>`;
-              if(val > 25 && val <= 50) return `<span class="badge badge-info">${val}%</span>`;
-              if(val > 50 && val <= 75) return `<span class="badge badge-warning">${val}%</span>`;
-              if(val > 75 && val <= 100) return `<span class="badge badge-danger">${val}%</span>`;
+              if(val > 0 && val <= 25) return `<span class="badge badge-success score">${val}%</span>`;
+              if(val > 25 && val <= 50) return `<span class="badge badge-info score">${val}%</span>`;
+              if(val > 50 && val <= 75) return `<span class="badge badge-warning score">${val}%</span>`;
+              if(val > 75 && val <= 100) return `<span class="badge badge-danger score">${val}%</span>`;
               return ``;
           }
           function showWriterDetails(app_id){

@@ -97,14 +97,36 @@ namespace Heeblo.Implementation
             }
 
         }
-        public void ForgotLink(string email)
+        public Response ForgotLink(string userCred)
         {
             //if (string.IsNullOrEmpty(email)) { return null; }
-            var user = _db.hbl_tbl_user.FirstOrDefault(z => z.email.Equals(email));
+            Response resp = new Response();
+            var isMobile = false;
+            if (userCred.Contains("@"))
+            {
+                isMobile = false;
+            }
+            else isMobile = true;
+            var user = new hbl_tbl_user();
+            if (isMobile)
+                user = _db.hbl_tbl_user.FirstOrDefault(z => z.mobile.Equals(userCred));
+            else
+            {
+                user = _db.hbl_tbl_user.FirstOrDefault(z => z.email.Equals(userCred));
+            }
+            if (user == null)
+            {
+                resp.Resp = false;
+                resp.RespMsg = "Invalid User";
+                return resp;
+            }
             var subject = "Forgot Password Link";
             var link = _config["forgotUrl"] + AESEncryption.Encrypt(user.uid.ToString());
-            var body = @"Dear " + user.name + ", \r\nPlease click below link to forgot your password.\r\n" + link;
-            System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(email, subject, body); });
+            var body = @"Dear " + user.name + ", \r\nPlease click below link to reset your password.\r\n" + link;
+            System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
+            resp.Resp = true;
+            resp.RespMsg = "We have sent a mail to "+user.email;
+            return resp;
         }
         public string PasswordForgot(int uid,string password)
         {

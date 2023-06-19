@@ -73,6 +73,24 @@ namespace Heeblo.Controllers
             HttpContext.Session.SetObjectAsJson("pid", decryptedPid);
             return RedirectToAction("LoginSignUp", "Auth");
         }
+        public IActionResult VerifyForReset(string uid)
+        {
+            var decryptedUid = AESEncryption.Decrypt(uid);
+
+            var client = new RestClient(configuration["Config:API"]);
+            var request = new RestRequest("User/VerifyUser/" + decryptedUid, Method.GET);
+            HttpContext.Session.SetObjectAsJson("uid", decryptedUid);
+            var response = client.Execute<bool>(request).Data;
+            if (response)
+            {
+                return RedirectToAction("ResetPassword", "Auth");
+            }
+            else
+            {
+                return View("Login");
+            }
+
+        }
         public IActionResult Verify(string uid)
         {
             var decryptedUid = AESEncryption.Decrypt(uid);

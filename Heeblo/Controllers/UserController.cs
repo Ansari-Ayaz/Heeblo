@@ -43,11 +43,11 @@ namespace Heeblo.Controllers
             return Ok(res);
         }
         [HttpGet]
-        [HttpGet("{email}")]
-        public IActionResult ForgotLink(string email)
+        [HttpGet("{userCred}")]
+        public IActionResult ForgotLink(string userCred)
         {
-            _user.ForgotLink(email);
-            return Ok();
+           var resp= _user.ForgotLink(userCred);
+            return Ok(resp);
         }
         [HttpGet]
         [HttpGet("{uid}/{password}")]

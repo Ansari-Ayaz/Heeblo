@@ -72,6 +72,10 @@ namespace Heeblo.Controllers
         {
             return View();
         }
+        public IActionResult ForgotPass()
+        {
+            return View();
+        }
         public IActionResult ResetPassword()
         {
             return View();

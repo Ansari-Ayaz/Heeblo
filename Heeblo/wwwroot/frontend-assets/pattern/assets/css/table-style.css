@@ -1,0 +1,115 @@
+
+table.dataTable.no-footer {
+  border-bottom: 1px solid #fff !important;
+  background: #006480;
+font-family: orkney medium;
+}
+
+ .even {
+  background-color: #2f8299fc !important;
+}
+.table-responsive a{
+  color: #d6c494;
+}
+
+ .table-responsive label{
+  color: #fff;
+}
+#DataTables_Table_0_info {
+  color: #fff;
+}
+ 
+thead, td {
+  color: #fff;
+  font-size:18px;
+}
+table.dataTable thead th, table.dataTable tfoot th {
+  font-size:18px; padding: 12px 10px !important;;
+}
+table.dataTable tbody td {
+  padding: 12px 10px !important;;
+}
+#btnAdd {
+  padding: 10px 38px;
+  background: #006480;
+  border: 0;
+  font-family: orkney medium;
+}
+
+
+.modal-dialog {
+  max-width: 60%;
+  font-family: orkney medium;
+}
+.modal-content {
+  background: #006480;
+  padding: 20px;
+}
+.modal-header h3 {
+  color: #d6c494;
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 0;
+  font-family: orkney bold;
+}
+ .close {
+color: #fff;
+opacity: 1;
+ 
+}
+.modal-content label {
+  text-align: center;
+  color: #fff;
+  font-size: 22px;
+  line-height: 30px;
+  margin: 0px 0px 10px;
+}
+#txtProjectName {
+  width: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #ffffff;
+  height: 60px;
+  text-align: left;
+}
+.modal-content .btn.btn-primary {
+  border: 2px solid #6f99a4;
+  padding: 14px 0px;
+  text-transform: capitalize;
+  background: #fff;
+  color: #006480;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+#tblApp_wrapper .badge-success {
+  color: #fff;
+  background-color: #d6c494;
+  width: 70px;
+  height: 70px;
+  line-height: 60px;
+  border-radius: 50px;
+  margin: auto;
+  display: block;
+  border: 2px solid #fff6f7;
+  font-size: ;
+}
+#writerModal p {
+  color: #fff;
+}
+#tblApp_wrapper .btn {
+  background: #fff;
+  color: #000;
+  border: 0;
+  padding: 6px 11px;
+}
+.page-link {
+  background: #005f7a !Important;
+  color: #fff !Important;
+  border: 0;
+  margin: 0px 1px;
+}
