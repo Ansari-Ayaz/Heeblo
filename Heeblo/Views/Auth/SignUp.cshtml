@@ -133,15 +133,15 @@
                                                  data-auto_prompt="false">
                                             </div>
                                         </button>
-                                        
-                                         <div class="g_id_signin"
-                                            data-type="standard"
-                                            data-shape="rectangular"
-                                            data-theme="filled_black"
-                                            data-text="signin_with"
-                                            data-size="medium"
-                                            data-logo_alignment="left">
-                                            </div>
+
+                                        <div class="g_id_signin"
+                                             data-type="standard"
+                                             data-shape="rectangular"
+                                             data-theme="filled_black"
+                                             data-text="signin_with"
+                                             data-size="medium"
+                                             data-logo_alignment="left">
+                                        </div>
                                         <!-- Display Google sign-in button -->
                                         @*<div id="gSignIn"></div>*@
                                         <div class="userContent" style="display: none;"></div>
@@ -250,17 +250,17 @@
         <script async defer src="https://apis.google.com/js/platform.js?onload=renderButton"></script>
 
         <script>
-            function Whatsapp(){
+            function Whatsapp() {
                 alert('Whatsapp')
             }
-            function Facebook(){
+            function Facebook() {
                 alert('Facebook')
             }
-            function Google(){
+            function Google() {
                 alert('Google')
             }
-            function Email(){
-                window.location.href='@Url.Action("Register","Auth")'
+            function Email() {
+                window.location.href = '@Url.Action("Register","Auth")'
             }
         </script>
 
@@ -274,12 +274,12 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     @*<script type="text/javascript" src="https://otpless.com/auth.js"></script>*@
     <script>
-              
-                //grecaptcha.ready(function () {
-                //    grecaptcha.execute('https://callsystem.net', { action: 'homepage' }).then(function (token) {
-                //        // pass the token to the backend script for verification
-                //    });
-                //});
+
+        //grecaptcha.ready(function () {
+        //    grecaptcha.execute('https://callsystem.net', { action: 'homepage' }).then(function (token) {
+        //        // pass the token to the backend script for verification
+        //    });
+        //});
 
         //function otpless(otplessUser) {
         //    alert(JSON.stringify(otplessUser));
@@ -342,56 +342,57 @@
 
 
 
-                    // Render Google Sign-in button
-                function renderButton() {
-                    gapi.signin2.render('gSignIn', {
-                        'scope': 'profile email',
-                        'width': 240,
-                        'height': 50,
-                        'longtitle': true,
-                        'theme': 'dark',
-                        'onsuccess': onSuccess,
-                        'onfailure': onFailure
-                    });
-                }
-                 // Sign-in success callback
-                function onSuccess(googleUser) {
-                   // Retrieve the Google account data
-                    gapi.client.load('oauth2', 'v2', function () {
-                        var request = gapi.client.oauth2.userinfo.get({
-                            'userId': 'me'
-                        });
-                        request.execute(function (resp) {
-                            // Display the user details
-                            var profileHTML = '<h3>Welcome ' + resp.given_name + '! <a href="javascript:void(0);" onclick="signOut();">Sign out</a></h3>';
-                            profileHTML += '<img src="' + resp.picture + '"/><p><b>Google ID: </b>' + resp.id + '</p><p><b>Name: </b>' + resp.name + '</p><p><b>Email: </b>' + resp.email + '</p><p><b>Gender: </b>' + resp.gender + '</p><p><b>Locale: </b>' + resp.locale + '</p><p><b>Google Profile:</b> <a target="_blank" href="' + resp.link + '">click to view profile</a></p>';
-                            document.getElementsByClassName("userContent")[0].innerHTML = profileHTML;
+        // Render Google Sign-in button
+        function renderButton() {
+            gapi.signin2.render('gSignIn', {
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': onSuccess,
+                'onfailure': onFailure
+            });
+        }
+        // Sign-in success callback
+        function onSuccess(googleUser) {
+            // Retrieve the Google account data
+            gapi.client.load('oauth2', 'v2', function () {
+                var request = gapi.client.oauth2.userinfo.get({
+                    'userId': 'me'
+                });
+                request.execute(function (resp) {
+                    // Display the user details
+                    var profileHTML = '<h3>Welcome ' + resp.given_name + '! <a href="javascript:void(0);" onclick="signOut();">Sign out</a></h3>';
+                    profileHTML += '<img src="' + resp.picture + '"/><p><b>Google ID: </b>' + resp.id + '</p><p><b>Name: </b>' + resp.name + '</p><p><b>Email: </b>' + resp.email + '</p><p><b>Gender: </b>' + resp.gender + '</p><p><b>Locale: </b>' + resp.locale + '</p><p><b>Google Profile:</b> <a target="_blank" href="' + resp.link + '">click to view profile</a></p>';
+                    document.getElementsByClassName("userContent")[0].innerHTML = profileHTML;
 
-                            document.getElementById("gSignIn").style.display = "none";
-                            document.getElementsByClassName("userContent")[0].style.display = "block";
-                        });
-                    });
-                }
+                    document.getElementById("gSignIn").style.display = "none";
+                    document.getElementsByClassName("userContent")[0].style.display = "block";
+                });
+            });
+        }
 
-                // Sign-in failure callback
-                function onFailure(error) {
-                    alert(error);
-                }
-                function handleCredentialResponse(response) {
-                    console.log(response);
-                    const responsePayload = decodeJwtResponse(response.credential);
-                    console.log("ID: " + responsePayload.sub);
-                    console.log("Full Name: " + responsePayload.name);
-                    console.log("Given Name: " + responsePayload.given_name);
-                    console.log("Family Name: " + responsePayload.family_name);
-                    console.log("Image Url: " + responsePayload.picture);
-                    console.log("Email: " + responsePayload.email);
-                }
+        // Sign-in failure callback
+        function onFailure(error) {
+            alert(error);
+        }
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwtResponse(response.credential);
+            
+            var cred = {
+                email: responsePayload.email,
+                name: responsePayload.name
+            }
+            console.log(cred)
+            window.location.href = '@(Url.Action("Register", "Auth"))' + '?c='+btoa(JSON.stringify(cred))
 
-                function decodeJwtResponse(data){
-                    var tokens = data.split(".");
-                    return JSON.parse(atob(tokens[1]));
-                }
+        }
+
+        function decodeJwtResponse(data) {
+            var tokens = data.split(".");
+            return JSON.parse(atob(tokens[1]));
+        }
     </script>
 
 </body>

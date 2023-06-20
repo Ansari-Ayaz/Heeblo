@@ -262,6 +262,12 @@
 
     </div>
     <script>
+        $(document).ready(function () {
+            var params = new URLSearchParams(window.location.search);
+            var cred = JSON.parse(atob(params.get("c")))
+            console.log(cred);
+
+        });
         function submitFunc() {
                // Get the input field values
                var name = $("input[name='name']").val();
