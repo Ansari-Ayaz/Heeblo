@@ -41,11 +41,12 @@
         .error {
             border: 1px solid red;
         }
+
         .error-label {
-    color: red;
-    font-size: 14px;
-    font-weight: bold;
-}
+            color: red;
+            font-size: 14px;
+            font-weight: bold;
+        }
 
     </style>
 
@@ -143,8 +144,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                                <span id="errorLabel" class="error-label"></span>
-                                                <hr />
+                                        <span id="errorLabel" class="error-label"></span>
+                                        <hr />
 
                                         <button onclick="submitFunc()">
                                             Submit
@@ -262,81 +263,84 @@
 
     </div>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var params = new URLSearchParams(window.location.search);
-            var cred = JSON.parse(atob(params.get("c")))
-            console.log(cred);
-
+            var cred = JSON.parse(atob(params.get("c"))) ?? null
+            if (cred != null) {
+                console.log(cred);
+                $("input[name='name']").val(cred.name);
+                $("input[name='email']").val(cred.email);
+            }
         });
         function submitFunc() {
-               // Get the input field values
-               var name = $("input[name='name']").val();
-               var mobile = $("input[name='mobile']").val();
-               var email = $("input[name='email']").val();
-               var password = $("input[name='password']").val();
-               var confirmPassword = $("input[name='confirmPassword']").val();
-                // Create the request object
-               var requestData = {
-                   "name": name,
-                   "mobile": mobile,
-                   "email": email,
-                   "password": password,
-                   "role" : sessionStorage.getItem('role')??2
+            // Get the input field values
+            var name = $("input[name='name']").val();
+            var mobile = $("input[name='mobile']").val();
+            var email = $("input[name='email']").val();
+            var password = $("input[name='password']").val();
+            var confirmPassword = $("input[name='confirmPassword']").val();
+            // Create the request object
+            var requestData = {
+                "name": name,
+                "mobile": mobile,
+                "email": email,
+                "password": password,
+                "role": sessionStorage.getItem('role') ?? 2
 
-               };
-               console.log(requestData)
+            };
+            console.log(requestData)
 
-               // Validate the fields
-               if (name === "") {
-                   $('#errorLabel').text("Please enter your name.");
-                   return;
-               }
-               if (mobile === "") {
-                   $('#errorLabel').text("Please enter your mobile number.");
-                   return;
-               }
-               if (email === "") {
-                   $('#errorLabel').text("Please enter your email address.");
-                   return;
-               }
-               if (password === "") {
-                   $('#errorLabel').text("Please enter a password.");
-                   return;
-               }
-               if (confirmPassword === "") {
-                   $('#errorLabel').text("Please enter confirm password.");
-                   return;
-               }
-               if (password != confirmPassword) {
-                   $('#errorLabel').text("Password and confirm password do not match.");
-                   return;
-               }
+            // Validate the fields
+            if (name === "") {
+                $('#errorLabel').text("Please enter your name.");
+                return;
+            }
+            if (mobile === "") {
+                $('#errorLabel').text("Please enter your mobile number.");
+                return;
+            }
+            if (email === "") {
+                $('#errorLabel').text("Please enter your email address.");
+                return;
+            }
+            if (password === "") {
+                $('#errorLabel').text("Please enter a password.");
+                return;
+            }
+            if (confirmPassword === "") {
+                $('#errorLabel').text("Please enter confirm password.");
+                return;
+            }
+            if (password != confirmPassword) {
+                $('#errorLabel').text("Password and confirm password do not match.");
+                return;
+            }
 
-               $('#errorLabel').text("")
+            $('#errorLabel').text("")
 
-               // Send the AJAX request
-               $.ajax({
-                   url: '@Url.Action("saveuser","user")',
-                   type: "POST",
-                   data: JSON.stringify(requestData),
-                   contentType: "application/json",
-                   success: function(response) {
-                       // Handle the success response
-                       if (response.resp) {
-                           console.log("User saved successfully:", response);
-                       window.location.href = '@Url.Action("EmailSent","home")'+'?u='+btoa(response.respObj.email)
-                       }else{
-                            $('#errorLabel').text(response.RespMsg); 
-                       }
-                       
-                   },
-                   error: function(xhr, status, error) {
-                       // Handle the error response
-                       console.log("Error saving user:", error);
-                 $('#errorLabel').text("Something went wrong"); 
-                   }
-               });
-           }
+            // Send the AJAX request
+            $.ajax({
+                url: '@Url.Action("saveuser","user")',
+                type: "POST",
+                data: JSON.stringify(requestData),
+                contentType: "application/json",
+                success: function(response) {
+                    // Handle the success response
+                    if (response.resp) {
+                        console.log("User saved successfully:", response);
+                        window.location.href = '@Url.Action("EmailSent","home")' + '?u=' + btoa(response.respObj.email)
+                    } else {
+                        $('#errorLabel').text(response.RespMsg);
+                    }
+
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error response
+                    console.log("Error saving user:", error);
+                    $('#errorLabel').text("Something went wrong");
+                }
+            });
+        }
     </script>
 </body>
 
