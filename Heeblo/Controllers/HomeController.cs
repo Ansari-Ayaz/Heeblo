@@ -79,10 +79,10 @@ namespace Heeblo.Controllers
 
             var client = new RestClient(configuration["Config:API"]);
             var request = new RestRequest("User/VerifyUser/" + decryptedUid, Method.GET);
-            HttpContext.Session.SetObjectAsJson("uid", decryptedUid);
             var response = client.Execute<bool>(request).Data;
             if (response)
             {
+                HttpContext.Session.SetObjectAsJson("uid", decryptedUid);
                 return RedirectToAction("ResetPassword", "Auth");
             }
             else

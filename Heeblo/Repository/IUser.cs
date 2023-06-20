@@ -10,7 +10,7 @@ namespace Heeblo.Repository
         Response GetUserById(int id);
         Response SaveUser(hbl_tbl_user user);
         Response ForgotLink(string userCred);
-        string PasswordForgot(int uid, string password);
+        Response PasswordForgot(int uid, string password);
         Response ValidateUser(LoginReq req);
         bool VerifyUser(int uid);
     }

@@ -259,7 +259,7 @@
                     if (response.resp) {
                         window.location.href = '@Url.Action("EmailSent","home")' + '?u=' + btoa(email)
                     } else {
-                        $('#errorLabel').text(response.Resp);
+                        $('#errorLabel').text(response.respMsg);
                     }
 
                 },

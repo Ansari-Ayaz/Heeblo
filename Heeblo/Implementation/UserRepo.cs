@@ -128,10 +128,11 @@ namespace Heeblo.Implementation
             resp.RespMsg = "We have sent a mail to "+user.email;
             return resp;
         }
-        public string PasswordForgot(int uid,string password)
+        public Response PasswordForgot(int uid,string password)
         {
-            if (uid <= 0) { return "User id is not valid"; }
-            if (string.IsNullOrEmpty(password)) { return "Password should not blank"; }
+            Response resp = new Response();
+            if (uid <= 0) 
+            if (string.IsNullOrEmpty(password)) { resp.Resp = false; resp.RespMsg = "Password should not blank"; return resp; ; }
             var pass = ComputeMD5Hash(password);
             string sql = "update hbl_tbl_user set password= '"+ pass + "' where uid='" + uid + "'";
             using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
@@ -139,8 +140,8 @@ namespace Heeblo.Implementation
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
                 con.Open();
                 int i = cmd.ExecuteNonQuery();
-                if(i == 0)  { return "Failed to update password"; } 
-                return "Password updated successfully";
+                if(i == 0) { resp.Resp = false; resp.RespMsg = "Password not updated"; return resp; }
+                { resp.Resp = true; resp.RespMsg = "Password updated successfully"; return resp;  }
             }
         }
 
