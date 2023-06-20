@@ -105,8 +105,8 @@
     function SaveProject() {
         var obj = {
             name:$('#txtProjectName').val()
-            //created_by:user.uid,
-            //updated_by:user.uid
+            created_by:user.uid,
+            updated_by:user.uid
         }
         $.ajax({
         url: '@Url.Action("SaveProject","Project")',
@@ -118,7 +118,7 @@
             Swal.fire('Saved','Project Saved Sucessfuly','success');
             $("#txtProjectName").val('');
             $("#myModal").modal('hide');
-            GetAllProjects();
+            GetAllProjects(user.uid);
         },
         error:function(err){
             Swal.fire('OOPS','Something Went Wrong','error');
