@@ -244,10 +244,6 @@
         function submitFunc() {
             // Get the input field values
             var email = $("input[name='email']").val();
-            var requestData = {
-                "email": email,
-            };
-            console.log(requestData)
             if (email === "") {
                 $('#errorLabel').text("Please enter your email address.");
                 return;
@@ -255,16 +251,15 @@
             $('#errorLabel').text("")
 
             $.ajax({
-                url: '@Url.Action("saveuser","user")',
-                type: "POST",
-                data: JSON.stringify(requestData),
+                url: '@(Url.Action("forgotlink","user"))'+'/'+email,
+                type: "GET",
                 contentType: "application/json",
                 success: function(response) {
                     // Handle the success response
                     if (response.resp) {
-                        window.location.href = '@Url.Action("EmailSent","home")' + '?u=' + btoa(response.respObj.email)
+                        window.location.href = '@Url.Action("EmailSent","home")' + '?u=' + btoa(email)
                     } else {
-                        $('#errorLabel').text(response.RespMsg);
+                        $('#errorLabel').text(response.Resp);
                     }
 
                 },
