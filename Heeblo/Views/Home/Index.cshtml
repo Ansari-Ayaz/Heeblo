@@ -59,8 +59,10 @@
 
 @section Scripts{
 <script>
+            var user;
+
     $(document).ready(function() {
-        var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
+         user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
         console.log(user.uid)
                 console.log('@Url.Action("GetAllProjects","project")'+'/'+user.uid)
 
@@ -68,8 +70,7 @@
 
     })
     function GetAllProjects(uid) {
-        //uid = 30
-        //var action = "GetAllProjects/" + uid
+
         $('#tblProject').DataTable().destroy();
         $("#tblProject").dataTable({
             "ajax": {
@@ -100,13 +101,13 @@
         })
     }
     function viewApplication(pid) {
-        window.open('@Url.Action("Applications","Home")' + '?pid=' + pid, '_blank')
+        window.location.href = '@(Url.Action("Applications","Home"))' + '?pid=' + pid,)
     }
     function SaveProject() {
         var obj = {
-            name:$('#txtProjectName').val()
-            //created_by:user.uid,
-            //updated_by:user.uid
+            name:$('#txtProjectName').val(),
+            created_by:user.uid,
+            updated_by:user.uid
         }
         $.ajax({
         url: '@Url.Action("SaveProject","Project")',
@@ -118,7 +119,7 @@
             Swal.fire('Saved','Project Saved Sucessfuly','success');
             $("#txtProjectName").val('');
             $("#myModal").modal('hide');
-            GetAllProjects();
+            GetAllProjects(user.uid);
         },
         error:function(err){
             Swal.fire('OOPS','Something Went Wrong','error');
