@@ -119,12 +119,7 @@
 
 @section Scripts{
     <script>
-        var user;
         $(document).ready(function() {
-            user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
-            console.log(user.uid)
-            console.log('@Url.Action("GetAllProjects","project")' + '/' + user.uid)
-
             GetAllProjects(user.uid);
 
         })
