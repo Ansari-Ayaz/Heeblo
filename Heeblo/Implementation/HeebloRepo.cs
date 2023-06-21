@@ -159,6 +159,8 @@ namespace Heeblo.Implementation
                     decimal plagiarism = Math.Round(Decimal.Parse(Plagiarism(content).Result), 2);
                     decimal ai_score = Math.Round(Decimal.Parse(AiDetect(content).Result), 2)*100;
                     decimal grammar_score = Math.Round(Decimal.Parse(Grammer(content).Result), 2);
+                    plagiarism = (100 - plagiarism);
+                    grammar_score = (100 - grammar_score);
 
                     string sql = "UPDATE hbl_tbl_application SET plagiarism = @plagiarism, ai_score = @ai_score,grammar_score = @grammar_score WHERE application_id = @id";
                     NpgsqlCommand command = new NpgsqlCommand(sql, connection);
