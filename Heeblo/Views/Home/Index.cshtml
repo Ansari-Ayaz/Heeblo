@@ -1,22 +1,21 @@
 ﻿@using Microsoft.AspNetCore.Html
 <style>
+        .submittedBy {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+    }
     .fa-square-check {
         color: green;
     }
-
+    .form-control:disabled, .form-control[readonly] {
+    background-color: #e9ecef33;
+    opacity: 1;
+}
     .fa-circle-xmark {
         background-color: green;
     }
 </style>
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-2">
-                <button id="btnAdd" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Add Project</button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="card">
     <div class="card-body">
         <div class="row">
@@ -39,65 +38,59 @@
     </div>
 </div>
 
- <div class="modal" id="linkModal">
+<div class="modal" id="linkModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            
+
             <div class="modal-body">
-                 
- <div class="banner popup-body">
-    <div class="container">
-        <div class="content-login">
-    
-            <div class="row" style="align-items: center;">
-     
-        <div class="col-lg-12 col-md-12">
-                    <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
-                     <h2> Project Name</h2>
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <form action="#" method="post">
-                       <div class="col-md-12">
-                                <div class="form-group">
-                            <input class="form-control" placeholder="www.writey.com/projectxyz" name="link" type="text" />
-                            
-                                 
-                  <p> Here is your Custom link</p>
+
+                <div class="banner popup-body">
+                    <div class="container">
+                        <div class="content-login">
+
+                            <div class="row" style="align-items: center;">
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
+                                        <h2> Project Name</h2>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <form action="#" method="post">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input class="form-control" id="projName" type="text" disabled />
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <p> Here is your Custom link</p>
+                                            <div class="input-group">
+                                                <input class="form-control" id="projLink" type="text" disabled />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-secondary" id="copyBtn">Copy</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div class="social-icon">
+                                        <h3><span style="color:#d6c494">Dont't forget to share</span> this with your application!</h3>
+                                        <ul>
+                                            <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                                            <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                                            <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                            <li><a href="#"><i<i class="fa-brands fa-linkedin-in"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+
+                                        </ul>
+                                    </div>
+
+
                                 </div>
+
                             </div>
-<hr>
-                             <div class="form-group">
-                            <input class="form-control" placeholder="www.writey.com/projectxyz" name="link" type="text" />
-                            
-                                 
-                  <p> Here is your Custom link</p>
-                                </div>
-                     
-                        </form>
-             
-             
-        
+                        </div>
                     </div>
-          
-          <div class="social-icon">
-            <h3><span style="color:#d6c494">Dont't forget to share</span> this with your application!</h3>
-          <ul>
-          <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
-           <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li> 
-           <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-          <li><a href="#"><i<i class="fa-brands fa-linkedin-in"></i></a></li>
-          <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
-           
-          </ul>
-          </div>
-          
-          
+
                 </div>
-               
-            </div>
-        </div>
-    </div>
- 
-  </div>
             </div>
         </div>
     </div>
@@ -114,10 +107,10 @@
                 <form action="/action_page.php modal">
                     <div class="form-group">
                         <label for="name">Project Name</label>
-                        <input type="text" class="form-control" id="txtProjectName" placeholder="Enter Name" name="name" required>
+                        <input type="text" class="form-control " id="txtProjectName" placeholder="Enter Name" name="name" required>
                     </div>
 
-                    <button type="button" class="btn btn btn-primary" onclick="SaveProject()">Submit</button>
+                    <button type="button" class="btn btn btn-primary " onclick="SaveProject()">Submit</button>
                 </form>
             </div>
         </div>
@@ -125,133 +118,139 @@
 </div>
 
 @section Scripts{
-<script>
-    var user;
-    $(document).ready(function() {
-         user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
-        console.log(user.uid)
-                console.log('@Url.Action("GetAllProjects","project")'+'/'+user.uid)
+    <script>
+        var user;
+        $(document).ready(function() {
+            user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
+            console.log(user.uid)
+            console.log('@Url.Action("GetAllProjects","project")' + '/' + user.uid)
 
-                    GetAllProjects(user.uid);
+            GetAllProjects(user.uid);
 
-    })
-    function GetAllProjects(uid) {
+        })
+        function GetAllProjects(uid) {
 
-        $('#tblProject').DataTable().destroy();
-        $("#tblProject").dataTable({
-            "ajax": {
-                url: '@(Url.Action("GetAllProjects", "Project"))' + '/' + uid,
-                type: "GET",
-                dataType: "JSON",
+            $('#tblProject').DataTable().destroy();
+            $("#tblProject").dataTable({
+                "ajax": {
+                    url: '@(Url.Action("GetAllProjects", "Project"))' + '/' + uid,
+                    type: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    async: false,
+                    dataSrc: ""
+                },
+                "columns": [
+                    {
+                        "targets": 0,
+                        "render": function(data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return '<p class="submittedBy" onclick="viewApplication(' + c.pid + ')">' + c.name + '</p>'
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function(data, type, row) {
+                            var url = row.link;
+                            var link = '<div class="link-container"><p title="' + url + '">' + row.name + '.spreadhood.com</p></div>';
+                            var copyButton = '<button class="btn btn-secondary btn-sm copy-btn" onclick="share(\'copy\', \'' + row.link + '\')" title="Copy to Clipboard"><i class="far fa-copy"></i></button>';
+                            return link + '<div class="icon-buttons">' + copyButton + '</div>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function(data, type, row) {
+                            var whatsappButton = '<button class="btn btn-primary btn-sm whatsapp-btn" onclick="share(\'w\', \'' + row.link + '\')"><i class="fab fa-whatsapp"></i></button>';
+                            var instagramButton = '<button class="btn btn-danger btn-sm instagram-btn" onclick="share(\'i\', \'' + row.link + '\')"><i class="fab fa-instagram"></i></button>';
+                            var twitterButton = '<button class="btn btn-info btn-sm twitter-btn" onclick="share(\'t\', \'' + row.link + '\')"><i class="fab fa-twitter"></i></button>';
+                            var linkedinButton = '<button class="btn btn-primary btn-sm linkedin-btn" onclick="share(\'l\', \'' + row.link + '\')"><i class="fab fa-linkedin"></i></button>';
+                            return '<div class="icon-buttons">' + whatsappButton + ' ' + instagramButton + ' ' + twitterButton + ' ' + linkedinButton + '</div>';
+                        }
+                    },
+                    { "data": "applicatant_count", },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return moment(c.created_on).format("YYYY-MM-DD");
+                        }
+                    }
+
+                ]
+            })
+        }
+        function viewApplication(pid) {
+            window.location.href = '@(Url.Action("Applications","Home"))' + '?pid=' + pid
+        }
+        function SaveProject() {
+            var obj = {
+                name: $('#txtProjectName').val(),
+                created_by: user.uid,
+                updated_by: user.uid
+            }
+            $.ajax({
+                url: '@Url.Action("SaveProject","Project")',
+                type: "POST",
                 contentType: "application/json",
                 async: false,
-                dataSrc: ""
-            },
-            "columns": [
-                {
-        "targets": 0,
-        "render": function(data, type, row, meta) {
-          return meta.row + 1;
-        }
-      },
-                {
-                    "data": null,
-                    "render": function(a, b, c) {
-                        return '<p onclick="viewApplication(' + c.pid + ')">'+c.name+'</p>'
-                    }
+                data: JSON.stringify(obj),
+                success: function(resp) {
+                    //Swal.fire('Saved','Project Saved Sucessfuly','success');
+                    $("#txtProjectName").val('');
+                    $("#myModal").modal('hide');
+                    console.log(resp.respObj);
+                    $('#linkModal').modal('show');
+                    $("#projName").val(resp.respObj.name);
+                    $("#projLink").val(resp.respObj.link);
+                    GetAllProjects(user.uid);
                 },
-                {
-                    "data": null,
-                    "render": function(data, type, row) {
-                        var url = row.link;
-                        var link = '<div class="link-container"><p title="' + url + '">' + row.name + '.spreadhood.com</p></div>';
-                        var copyButton = '<button class="btn btn-secondary btn-sm copy-btn" onclick="share(\'copy\', \'' + row.link + '\')" title="Copy to Clipboard"><i class="far fa-copy"></i></button>';
-                        return link + '<div class="icon-buttons">' + copyButton+ '</div>';
-                    }
-                },
-                {
-                    "data": null,
-                    "render": function(data, type, row) {
-                        var whatsappButton = '<button class="btn btn-primary btn-sm whatsapp-btn" onclick="share(\'w\', \'' + row.link + '\')"><i class="fab fa-whatsapp"></i></button>';
-                        var instagramButton = '<button class="btn btn-danger btn-sm instagram-btn" onclick="share(\'i\', \'' + row.link + '\')"><i class="fab fa-instagram"></i></button>';
-                        var twitterButton = '<button class="btn btn-info btn-sm twitter-btn" onclick="share(\'t\', \'' + row.link + '\')"><i class="fab fa-twitter"></i></button>';
-                        var linkedinButton = '<button class="btn btn-primary btn-sm linkedin-btn" onclick="share(\'l\', \'' + row.link + '\')"><i class="fab fa-linkedin"></i></button>';
-                     return '<div class="icon-buttons">' + whatsappButton + ' ' + instagramButton + ' ' + twitterButton + ' ' + linkedinButton + '</div>';
-                    }
-                },
-                {
-                    "data":null,
-                    "render": function(a, b, c) {
-                        return '<p>10</p>';
-                    }
-                },
-                {
-                    "data":null,
-                    "render": function(a, b, c) {
-                        return moment(c.created_on).format("YYYY-MM-DD");
-                    }
+                error: function(err) {
+                    Swal.fire('OOPS', 'Something Went Wrong', 'error');
                 }
-
-            ]
-        })
-    }
-    function viewApplication(pid) {
-        window.location.href = '@(Url.Action("Applications","Home"))' + '?pid=' + pid
-    }
-    function SaveProject() {
-        var obj = {
-            name:$('#txtProjectName').val(),
-            created_by:user.uid,
-            updated_by:user.uid
+            })
         }
-        $.ajax({
-        url: '@Url.Action("SaveProject","Project")',
-        type:"POST",
-        contentType:"application/json",
-        async:false,
-        data:JSON.stringify(obj),
-        success:function(resp){
-            $('#linkModal').fadeIn();
-            //Swal.fire('Saved','Project Saved Sucessfuly','success');
-            $("#txtProjectName").val('');
-            $("#myModal").modal('hide');
-            GetAllProjects(user.uid);
-        },
-        error:function(err){
-            Swal.fire('OOPS','Something Went Wrong','error');
-        }
-    })
-    }
-    function share(type,url){
+        function share(type, url) {
 
-        switch (type) {
-            case 'copy':
-            navigator.clipboard.writeText(url)
-        .then(function() {
-        })
-        .catch(function(error) {
+            switch (type) {
+                case 'copy':
+                    navigator.clipboard.writeText(url)
+                        .then(function() {
+                        })
+                        .catch(function(error) {
+                        });
+                    break;
+                case 'w':
+                    var whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(url);
+                    window.open(whatsappUrl, '_blank');
+                    break;
+                case 'i':
+                    var instagramUrl = 'https://www.instagram.com/?url=' + encodeURIComponent(url);
+                    window.open(instagramUrl, '_blank');
+                    break;
+                case 't':
+                    var twitterUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url);
+                    window.open(twitterUrl, '_blank');
+                    break;
+                case 'l':
+                    var linkedinUrl = 'https://www.linkedin.com/shareArticle?url=' + encodeURIComponent(url);
+                    window.open(linkedinUrl, '_blank');
+                    break;
+                default:
+                    // Handle unknown social media platform
+                    break;
+            }
+        }
+        $('#copyBtn').click(function() {
+            event.preventDefault(); // Prevent the default form submission behavior
+            var projLinkField = $('#projLink');
+            projLinkField.prop('disabled', false); // Enable the input field temporarily
+            projLinkField.select(); // Select the text inside the input field
+            document.execCommand('copy'); // Copy the selected text to the clipboard
+            projLinkField.prop('disabled', true); // Disable the input field again
         });
-        break;
-          case 'w':
-            var whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(url);
-            window.open(whatsappUrl, '_blank');
-            break;
-          case 'i':
-            var instagramUrl = 'https://www.instagram.com/?url=' + encodeURIComponent(url);
-            window.open(instagramUrl, '_blank');
-            break;
-          case 't':
-            var twitterUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url);
-            window.open(twitterUrl, '_blank');
-            break;
-          case 'l':
-            var linkedinUrl = 'https://www.linkedin.com/shareArticle?url=' + encodeURIComponent(url);
-            window.open(linkedinUrl, '_blank');
-            break;
-          default:
-            // Handle unknown social media platform
-            break;
-        }
-      }
-</script>
+    </script>
 }

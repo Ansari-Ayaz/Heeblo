@@ -85,7 +85,9 @@ namespace Heeblo.Implementation
                 _db.Entry(project).State = EntityState.Modified;
                 var j = _db.SaveChanges();
                 if (j == 0) { response.RespMsg = "Project Not Saved"; response.RespObj = null; return response; }
-                response.Resp = true; response.RespMsg = "Project Saved Successfully"; return response;
+                response.Resp = true; response.RespMsg = "Project Saved Successfully";
+                response.RespObj = new { link= link,name = project.name} ;
+                return response;
             }
             catch (Exception ex)
             {

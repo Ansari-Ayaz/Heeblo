@@ -30,9 +30,10 @@
                             <th>Sr No</th>
                             <th>Submitted By</th>
                             <th>Submitted On</th>
-                            <th>AI Score</th>
-                            <th>Grammar Score</th>
-                            <th>Plagiarism Score</th>
+                            <th>AI Writen</th>
+                            <th>Grammar Error</th>
+                            <th>Plagiarism Error</th>
+                            <th>Average</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -75,212 +76,222 @@
     </div>
 </div>
 @section Scripts{
-<script>
-              var params = new URLSearchParams(window.location.search)
-              var pid = params.get('pid');
-              var resumeB64 = "";
-              var contentB64 = "";
-              var resumeFileName = "";
-              var contentFileName = "";
-              $(document).ready(function() {
-                  GetAllApplications();
-              })
-              function GetAllApplications() {
-                  $('#tblApp').DataTable().destroy();
-                  $("#tblApp").dataTable({
-                      "ajax": {
+    <script>
+        var params = new URLSearchParams(window.location.search)
+        var pid = params.get('pid');
+        var resumeB64 = "";
+        var contentB64 = "";
+        var resumeFileName = "";
+        var contentFileName = "";
+        $(document).ready(function() {
+            GetAllApplications();
+        })
+        function GetAllApplications() {
+            $('#tblApp').DataTable().destroy();
+            $("#tblApp").dataTable({
+                "ajax": {
 
-                          url: '@(Url.Action("GetApplicationByPid","Application"))'+'/'+pid,
-                          type: "GET",
-                          dataType: "JSON",
-                          contentType: "application/json",
-                          async: false,
-                          dataSrc: ""
-                      },
-                      "columns": [
-    {
-            "targets": 0,
-            "render": function(data, type, row, meta) {
-              return meta.row + 1;
+                    url: '@(Url.Action("GetApplicationByPid","Application"))' + '/' + pid,
+                    type: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    async: false,
+                    dataSrc: ""
+                },
+                "columns": [
+                    {
+                        "targets": 0,
+                        "render": function(data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return '<p class="submittedBy" onclick="showWriterDetails(' + c.application_id + ')">' + c.created_by + '</p>'
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return moment(c.created_on).format("YYYY-MM-DD");
+                        }
+                    },
+                    {
+                        "data": "ai_score",
+                        //"render": function(a, b, c) {
+                        //    return badge_2(c.ai_score)
+                        //}
+                    },
+                    {
+                        "data": "grammar_score",
+                        //"render": function(a, b, c) {
+                        //    return badge_1(c.grammar_score)
+                        //}
+                    },
+                    {
+                        "data": "plagiarism",
+                        //"render": function(a, b, c) {
+                        //    return badge_2(c.plagiarism)
+                        //}
+                    },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            var averageScore = (c.plagiarism + c.grammar_score + c.ai_score) / 3;
+                            return '<p>' + averageScore.toFixed(2) + '</p>';
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function(a, b, c) {
+                            if (c.status == "Accepted") {
+                                return ' <label for="inputField" class="col-form-label" >Accepted</label>'
+                            } else if (c.status == "Rejected") {
+                                return ' <label for="inputField" class="col-form-label" ">Rejected</label>'
+                            } else {
+                                return `<button class="btn btn-sm btn-primary" onclick="StatusUpdate('Accepted', ${c.application_id})">Accept</button><button class="btn btn-sm btn-danger" style="margin-left:30px;" onclick="StatusUpdate('Rejected', ${c.application_id})">Reject</button>`
+                            }
+
+                        }
+
+                    }
+
+                ]
+            })
+        }
+        function StatusUpdate(status, id) {
+            $.ajax({
+                url: '@Url.Action("ApplicationStatus","Application")' + '/' + status + '/' + id,
+                type: "GET",
+                contentType: "application/json",
+                async: false,
+                success: function(resp) {
+                    GetAllApplications();
+                    Swal.fire('Saved', 'Status updated successfully', 'success');
+
+                },
+                error: function(err) {
+                    Swal.fire('Error', 'Something went wrong', 'error');
+                }
+            })
+        }
+        function badge_1(val) {
+            if (val > 0 && val <= 25) return `<span class="badge badge-danger ">${val} %</span>`;
+            if (val > 25 && val <= 50) return `<span class="badge badge-warning ">${val} %</span>`;
+            if (val > 50 && val <= 75) return `<span class="badge badge-info ">${val} %</span>`;
+            if (val > 75 && val <= 100) return `<span class="badge badge-success ">${val} %</span>`;
+            return ``;
+        }
+
+        function badge_2(val) {
+            if (val > 0 && val <= 25) return `<span class="badge badge-success ">${val} %</span>`;
+            if (val > 25 && val <= 50) return `<span class="badge badge-info ">${val} %</span>`;
+            if (val > 50 && val <= 75) return `<span class="badge badge-warning ">${val} %</span>`;
+            if (val > 75 && val <= 100) return `<span class="badge badge-danger ">${val} %</span>`;
+            return ``;
+        }
+        function showWriterDetails(app_id) {
+            $('#writerName').text('');
+            $('#writerEmail').text('');
+            $('#writerMobile').text('');
+            $('#writerResume').text('');
+            $('#writerContent').text('');
+            resumeB64 = "";
+            contentB64 = "";
+            $.ajax({
+                url: '@Url.Action("GetUserDetailsByAppId","Application")' + '/' + app_id,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function(resp) {
+                    $('#writerName').text(resp.name);
+                    $('#writerEmail').text(resp.email);
+                    $('#writerMobile').text(resp.mobile);
+                    $('#writerResume').text(resp.resume_filename);
+                    $('#writerContent').text(resp.sample_content_filename);
+                    resumeB64 = resp.resume;
+                    contentB64 = resp.sample_content;
+                    resumeFileName = resp.resume_filename;
+                    contentFileName = resp.sample_content_filename;
+
+                },
+                error: function(err) {
+                    alert('Something went wrong')
+                }
+            })
+            $('#writerModal').modal('show');
+        }
+
+        function downloadResume() {
+            var blob = base64ToBlob(resumeB64, resumeFileName);
+            var downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = resumeFileName;
+
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        function downloadSampleContent() {
+            var blob = base64ToBlob(contentB64, contentFileName);
+            var downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = contentFileName;
+
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        function base64ToBlob(base64Data, fileName) {
+            var contentType = '';
+            var fileExtension = fileName.substr(fileName.lastIndexOf('.') + 1);
+
+            switch (fileExtension.toLowerCase()) {
+                case 'txt':
+                    contentType = 'text/plain';
+                    break;
+                case 'pdf':
+                    contentType = 'application/pdf';
+                    break;
+                case 'jpg':
+                case 'jpeg':
+                    contentType = 'image/jpeg';
+                    break;
+                case 'png':
+                    contentType = 'image/png';
+                    break;
+                case 'doc':
+                    contentType = 'application/msword';
+                    break;
+                case 'docx':
+                    contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                    break;
+                // Add more cases for other file extensions if needed
+                default:
+                    contentType = 'application/octet-stream';
             }
-          },
-                          {
-                              "data": null,
-                              "render":function(a,b,c){
-                                  return '<p class="submittedBy" onclick="showWriterDetails('+c.application_id+')">'+c.created_by+'</p>'
-                              }
-                          },
-                          {
-                              "data": null,
-                              "render": function(a, b, c) {
-                                  return moment(c.created_on).format("DD-MMM-YYYY") + '<br/><small>'+ moment(c.created_on).format("hh:mm a") +'</small>';
-                              }
-                          },
-                          { "data": null,
-                              "render": function(a, b, c) {
-                                  return badge_2(c.ai_score)
-                              }
-                          },
-                          { "data": null,
-                              "render": function(a, b, c) {
-                                  return badge_1(c.grammar_score)
-                              }
-                          },
-                          { "data": null,
-                              "render": function(a, b, c) {
-                                  return badge_2(c.plagiarism)
-                              }
-                          },
-                          {
-                              "data": null,
-                              "render": function(a, b, c) {
-                                  if (c.status == "Accepted") {
-                                      return ' <label for="inputField" class="col-form-label" >Accepted</label>'
-                                  } else if (c.status == "Rejected") {
-                                      return ' <label for="inputField" class="col-form-label" ">Rejected</label>'
-                                  } else {
-                                      return `<button class="btn btn-sm btn-primary" onclick="StatusUpdate('Accepted', ${c.application_id})">Accept</button><button class="btn btn-sm btn-danger" style="margin-left:30px;" onclick="StatusUpdate('Rejected', ${c.application_id})">Reject</button>`
-                                  }
 
-                              }
+            contentType = contentType || '';
 
-                          }
+            var sliceSize = 1024;
+            var byteCharacters = atob(base64Data);
+            var byteArrays = [];
 
-                      ]
-                  })
-              }
-              function StatusUpdate(status, id) {
-                  $.ajax({
-                      url: '@Url.Action("ApplicationStatus","Application")'+'/'+status+'/'+id,
-                      type: "GET",
-                      contentType: "application/json",
-                      async: false,
-                      success: function(resp) {
-                          GetAllApplications();
-                          Swal.fire('Saved', 'Status updated successfully', 'success');
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
 
-                      },
-                      error: function(err) {
-                          Swal.fire('Error', 'Something went wrong', 'error');
-                      }
-                  })
-              }
-              function badge_1(val){
-                  if(val > 0 && val <= 25) return `<span class="badge badge-danger ">${val} %</span>`;
-                  if(val > 25 && val <= 50) return `<span class="badge badge-warning ">${val} %</span>`;
-                  if(val > 50 && val <= 75) return `<span class="badge badge-info ">${val} %</span>`;
-                  if(val > 75 && val <= 100) return `<span class="badge badge-success ">${val} %</span>`;
-                  return ``;
-              }
-
-              function badge_2(val){
-                  if(val > 0 && val <= 25) return `<span class="badge badge-success ">${val} %</span>`;
-                  if(val > 25 && val <= 50) return `<span class="badge badge-info ">${val} %</span>`;
-                  if(val > 50 && val <= 75) return `<span class="badge badge-warning ">${val} %</span>`;
-                  if(val > 75 && val <= 100) return `<span class="badge badge-danger ">${val} %</span>`;
-                  return ``;
-              }
-              function showWriterDetails(app_id){
-                   $('#writerName').text('');
-                   $('#writerEmail').text('');
-                   $('#writerMobile').text('');
-                   $('#writerResume').text('');
-                   $('#writerContent').text('');
-                   resumeB64 ="";
-                   contentB64 = "";
-                  $.ajax({
-                      url:'@Url.Action("GetUserDetailsByAppId","Application")'+'/'+app_id,
-                      type:'GET',
-                      contentType:'application/json',
-                      success:function(resp){
-                          $('#writerName').text(resp.name);
-                          $('#writerEmail').text(resp.email);
-                          $('#writerMobile').text(resp.mobile);
-                          $('#writerResume').text(resp.resume_filename);
-                          $('#writerContent').text(resp.sample_content_filename);
-                          resumeB64 = resp.resume;
-                          contentB64 = resp.sample_content;
-                          resumeFileName = resp.resume_filename;
-                          contentFileName = resp.sample_content_filename;
-
-                      },
-                      error:function(err){
-                          alert('Something went wrong')
-                      }
-                  })
-                  $('#writerModal').modal('show');
-              }
-
-              function downloadResume(){
-                  var blob = base64ToBlob(resumeB64, resumeFileName);
-                  var downloadLink = document.createElement('a');
-                  downloadLink.href = URL.createObjectURL(blob);
-                  downloadLink.download = resumeFileName;
-
-                  document.body.appendChild(downloadLink);
-                  downloadLink.click();
-                  document.body.removeChild(downloadLink);
-              }
-
-              function downloadSampleContent(){
-                var blob = base64ToBlob(contentB64, contentFileName);
-                  var downloadLink = document.createElement('a');
-                  downloadLink.href = URL.createObjectURL(blob);
-                  downloadLink.download = contentFileName;
-
-                  document.body.appendChild(downloadLink);
-                  downloadLink.click();
-                  document.body.removeChild(downloadLink);
-              }
-
-              function base64ToBlob(base64Data, fileName) {
-                    var contentType = '';
-                    var fileExtension = fileName.substr(fileName.lastIndexOf('.') + 1);
-
-                    switch (fileExtension.toLowerCase()) {
-                      case 'txt':
-                        contentType = 'text/plain';
-                        break;
-                      case 'pdf':
-                        contentType = 'application/pdf';
-                        break;
-                      case 'jpg':
-                      case 'jpeg':
-                        contentType = 'image/jpeg';
-                        break;
-                      case 'png':
-                        contentType = 'image/png';
-                        break;
-                      case 'doc':
-                        contentType = 'application/msword';
-                        break;
-                      case 'docx':
-                        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-                        break;
-                      // Add more cases for other file extensions if needed
-                      default:
-                        contentType = 'application/octet-stream';
-                    }
-
-                    contentType = contentType || '';
-
-                    var sliceSize = 1024;
-                    var byteCharacters = atob(base64Data);
-                    var byteArrays = [];
-
-                    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-                      var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-                      var byteNumbers = new Array(slice.length);
-                      for (var i = 0; i < slice.length; i++) {
-                        byteNumbers[i] = slice.charCodeAt(i);
-                      }
-
-                      var byteArray = new Uint8Array(byteNumbers);
-                      byteArrays.push(byteArray);
-                    }
-                    return new Blob(byteArrays, { type: contentType });
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
                 }
 
-</script>
+                var byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+            return new Blob(byteArrays, { type: contentType });
+        }
+
+    </script>
 }
