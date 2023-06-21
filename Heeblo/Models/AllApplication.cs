@@ -10,4 +10,10 @@
         public decimal  plagiarism { get; set; }
         public string status { get; set; }
     }
+    public class AppFeedback
+    {
+        public string status { get; set; }
+        public int appId { get; set; }
+        public string bodyString { get; set; }
+    }
 }

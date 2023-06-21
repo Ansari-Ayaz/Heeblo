@@ -182,15 +182,17 @@ namespace Heeblo.Implementation
             }
         }
 
-        public bool ApplicationStatus(string status, int appId)
+        public bool ApplicationStatus(AppFeedback feedback)
         {
             bool resp = false;
-            string sql = "update hbl_tbl_application set Status='" + status + "' where application_id='" + appId + "'";
-            var appData = _db.hbl_tbl_application.FirstOrDefault(z => z.application_id == appId);
+            string sql = "update hbl_tbl_application set Status='" + feedback.status + "' where application_id='" + feedback.appId + "'";
+            var appData = _db.hbl_tbl_application.FirstOrDefault(z => z.application_id == feedback.appId);
             var user = _db.hbl_tbl_user.FirstOrDefault(z => z.uid == appData.uid);
-            var subject = "Heeblo assignment Rejected!";
-            var body = "Thanks for your submission but your content is not approved. Better luck next time !!";
-            using(NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
+            var subject = "Heeblo assignment Feedback!";
+            //var acceptString = "Your Content is Aproved"
+            //var rejectString = "Thanks for your submission but your content is not approved. Better luck next time !!";
+            var body = feedback.bodyString;
+            using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
             {
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
                 con.Open();

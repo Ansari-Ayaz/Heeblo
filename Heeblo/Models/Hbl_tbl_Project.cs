@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Heeblo.Models
 {
@@ -14,5 +15,8 @@ namespace Heeblo.Models
         public int created_by { get; set; }
         public DateTime? updated_on { get; set; }
         public int? updated_by { get; set; }
+        [NotMapped]
+        public int applicatant_count { get; set; }
     }
+    
 }

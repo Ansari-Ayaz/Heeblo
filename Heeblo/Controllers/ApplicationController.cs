@@ -42,14 +42,19 @@ namespace Heeblo.Controllers
             var res = _app.GetApplicationById(id);
             return Ok(res);
         }
-        [HttpGet("{status}/{appId}")]
-        [HttpGet]
-        public IActionResult ApplicationStatus(string status,int appId)
+        [HttpPost]
+        [HttpPost]
+        public IActionResult ApplicationStatus(AppFeedback feedback)
         {
-            var res = _app.ApplicationStatus(status,appId);
+            var res = _app.ApplicationStatus(feedback);
             return Ok(res);
         }
-
+        //[HttpGet("{pid}")]
+        //public IActionResult GetAllAppCountByPid(int pid)
+        //{
+        //    var res = _app.GetAllAppCountByPid(pid);
+        //    return Ok(res);
+        //}
         [HttpPost]
         public IActionResult SaveApplication([FromForm] application_view app)
         {
@@ -57,5 +62,6 @@ namespace Heeblo.Controllers
             var res = _app.SaveApplication(app);
             return Ok(res);
         }
+
     }
 }
