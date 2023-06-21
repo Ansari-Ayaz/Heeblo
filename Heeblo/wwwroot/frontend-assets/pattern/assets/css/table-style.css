@@ -86,27 +86,24 @@ opacity: 1;
   cursor: pointer;
   margin-top: 4px;
 }
-#tblApp_wrapper .badge-success {
-  color: #fff;
-  background-color: #d6c494;
+#tblApp_wrapper .badge {
   width: 70px;
-  height: 70px;
-  line-height: 60px;
-  border-radius: 50px;
+  height: 50px;
+  line-height: 38px;
   margin: auto;
   display: block;
-  border: 2px solid #fff6f7;
-  font-size: ;
+  border: 1px solid #fff6f7;
+  font-size:15px ;
 }
 #writerModal p {
   color: #fff;
 }
-#tblApp_wrapper .btn {
+/*#tblApp_wrapper .btn {
   background: #fff;
   color: #000;
   border: 0;
   padding: 6px 11px;
-}
+}*/
 .page-link {
   background: #005f7a !Important;
   color: #fff !Important;

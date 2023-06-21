@@ -109,10 +109,10 @@
 
                                 <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
                                     <div class="col-md-12 btn-login">
-                                        <button type="button" onclick="Whatsapp()">
+                                        @*<button type="button" onclick="Whatsapp()">
                                             <span><i class="fa-brands fa-whatsapp"></i>Whatsapp</span>
-                                        </button>
-                                        <button type="button" onclick="Facebook()">
+                                        </button>*@
+                                        @*<button type="button" onclick="Facebook()">
                                             <span><i class="fa-brands fa-facebook-f"></i>Facebook</span>
                                             <fb:login-button id="login" scope="public_profile" onlogin="checkLoginState();">
                                             </fb:login-button>
@@ -121,7 +121,7 @@
 
                                             <div id="status">
                                             </div>
-                                        </button>
+                                        </button>*@
                                         <button type="button" onclick="Google()">
                                             <span> <i class="fa-brands fa-google"></i> Google</span>
                                             <div id="g_id_onload"
@@ -137,14 +137,11 @@
                                         <div class="g_id_signin"
                                              data-type="standard"
                                              data-shape="rectangular"
-                                             data-theme="filled_black"
+                                             data-theme="outline"
                                              data-text="signin_with"
                                              data-size="medium"
-                                             data-logo_alignment="left">
+                                             data-logo_alignment="center">
                                         </div>
-                                        <!-- Display Google sign-in button -->
-                                        @*<div id="gSignIn"></div>*@
-                                        <div class="userContent" style="display: none;"></div>
 
                                         <button type="button" onclick="Email()">
                                             <span> <i class="fa-solid fa-envelope"></i> Email</span>

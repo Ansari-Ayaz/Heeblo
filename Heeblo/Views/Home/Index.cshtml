@@ -24,8 +24,9 @@
                 <table id="tblProject" class="table table-sm table-striped table-bordered">
                     <thead>
                         <tr>
+                            <th>Sr no</th>
                             <th>Project Name</th>
-                            <th></th>
+                            <th>View</th>
                             <th>Application Link</th>
                             <th>Created On</th>
                         </tr>
@@ -82,6 +83,12 @@
                 dataSrc: ""
             },
             "columns": [
+                {
+        "targets": 0,
+        "render": function(data, type, row, meta) {
+          return meta.row + 1;
+        }
+      },
                 { "data": "name" },
                 {
                     "data": null,
@@ -89,7 +96,20 @@
                         return '<button class="btn btn-primary btn-sm" onclick="viewApplication(' + c.pid + ')">View</button>'
                     }
                 },
-                { "data": "link" },
+                {
+                    "data": null,
+                    "render": function(data, type, row) {
+                        var url = row.link;
+                        var shortenedUrl = url.length > 20 ? url.substring(0, 20) + '...' : url;
+                        var link = '<div class="link-container"><p title="' + url + '">' + shortenedUrl + '</p></div>';
+                        var copyButton = '<button class="btn btn-secondary btn-sm copy-btn" onclick="share(\'copy\', \'' + row.link + '\')" title="Copy to Clipboard"><i class="far fa-copy"></i></button>';
+                        var whatsappButton = '<button class="btn btn-primary btn-sm whatsapp-btn" onclick="share(\'w\', \'' + row.link + '\')"><i class="fab fa-whatsapp"></i></button>';
+                        var instagramButton = '<button class="btn btn-danger btn-sm instagram-btn" onclick="share(\'i\', \'' + row.link + '\')"><i class="fab fa-instagram"></i></button>';
+                        var twitterButton = '<button class="btn btn-info btn-sm twitter-btn" onclick="share(\'t\', \'' + row.link + '\')"><i class="fab fa-twitter"></i></button>';
+                        var linkedinButton = '<button class="btn btn-primary btn-sm linkedin-btn" onclick="share(\'l\', \'' + row.link + '\')"><i class="fab fa-linkedin"></i></button>';
+                     return link + '<div class="icon-buttons">' + copyButton + whatsappButton + ' ' + instagramButton + ' ' + twitterButton + ' ' + linkedinButton + '</div>';
+                    }
+                },
                 {
                     "data":null,
                     "render": function(a, b, c) {
@@ -101,7 +121,7 @@
         })
     }
     function viewApplication(pid) {
-        window.location.href = '@(Url.Action("Applications","Home"))' + '?pid=' + pid,)
+        window.location.href = '@(Url.Action("Applications","Home"))' + '?pid=' + pid
     }
     function SaveProject() {
         var obj = {
@@ -125,6 +145,36 @@
             Swal.fire('OOPS','Something Went Wrong','error');
         }
     })
-    }
+    }function share(type,url){
+
+        switch (type) {
+            case 'copy':
+            navigator.clipboard.writeText(url)
+        .then(function() {
+        })
+        .catch(function(error) {
+        });
+        break;
+          case 'w':
+            var whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(url);
+            window.open(whatsappUrl, '_blank');
+            break;
+          case 'i':
+            var instagramUrl = 'https://www.instagram.com/?url=' + encodeURIComponent(url);
+            window.open(instagramUrl, '_blank');
+            break;
+          case 't':
+            var twitterUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url);
+            window.open(twitterUrl, '_blank');
+            break;
+          case 'l':
+            var linkedinUrl = 'https://www.linkedin.com/shareArticle?url=' + encodeURIComponent(url);
+            window.open(linkedinUrl, '_blank');
+            break;
+          default:
+            // Handle unknown social media platform
+            break;
+        }
+      }
 </script>
 }
