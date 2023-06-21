@@ -8,12 +8,12 @@
 }
 
 @font-face {
-	font-family: 'orkney-medium';
-	src: url('../fonts/orkney-medium.otf') format('opentype');
+	font-family:orkney medium;
+	src: url('/frontend-assets/pattern/assets/fonts/orkney-medium.otf') format('opentype');
 }
 @font-face {
-	font-family: 'orkney-light';
-	src: url('../fonts/orkney-light.otf') format('opentype');
+	font-family: 'orkney light';
+	src: url('/frontend-assets/pattern/assets/fonts/orkney-light.otf') format('opentype');
 }
 
 
@@ -417,8 +417,8 @@ header ul.navbar-nav li {
 	height: 100vh;
 	position: relative;
 }
-
-.home-page img {
+	
+		.home-page img {
 	width: 80%;
 	display: block;
 	margin: auto;
@@ -2043,7 +2043,7 @@ button a:hover {
 }
 
 .login-tittle h2 {
-	font-size: 100px;
+	font-size: 70px;
 	text-transform: capitalize;
 	color: #fff;
 	font-weight: bold;
@@ -2138,11 +2138,11 @@ button a:hover {
 }
 
 .thankyou-page h2 {
-    font-size: 100px;
+    font-size: 60px;
     color: #fff;
     font-weight: bold;
     margin: 0;
-    line-height: 100px;
+    line-height: 70px;
     font-family: orkney medium;
 }
 
@@ -2309,6 +2309,8 @@ line-height: 80px;
   font-family: orkney medium;
   font-weight: 100;
 }
+
+
 @media(max-width:767px) {
 	.reset-password .login-tittle h2 {
   font-size: 30px;

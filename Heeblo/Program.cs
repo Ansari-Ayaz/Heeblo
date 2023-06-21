@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+//builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(z => z.UseNpgsql(builder.Configuration.GetConnectionString("HBL")));
 builder.Services.AddTransient<IUser, UserRepo>();
 builder.Services.AddTransient<IProject, ProjectRepo>();

@@ -24,10 +24,11 @@
                 <table id="tblProject" class="table table-sm table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>Sr no</th>
+                            <th class="srnumber">Sr no</th>
                             <th>Project Name</th>
-                            <th>View</th>
                             <th>Application Link</th>
+                            <th>Share</th>
+                            <th>Count</th>
                             <th>Created On</th>
                         </tr>
                     </thead>
@@ -37,6 +38,71 @@
         </div>
     </div>
 </div>
+
+ <div class="modal" id="linkModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-body">
+                 
+ <div class="banner popup-body">
+    <div class="container">
+        <div class="content-login">
+    
+            <div class="row" style="align-items: center;">
+     
+        <div class="col-lg-12 col-md-12">
+                    <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
+                     <h2> Project Name</h2>
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <form action="#" method="post">
+                       <div class="col-md-12">
+                                <div class="form-group">
+                            <input class="form-control" placeholder="www.writey.com/projectxyz" name="link" type="text" />
+                            
+                                 
+                  <p> Here is your Custom link</p>
+                                </div>
+                            </div>
+<hr>
+                             <div class="form-group">
+                            <input class="form-control" placeholder="www.writey.com/projectxyz" name="link" type="text" />
+                            
+                                 
+                  <p> Here is your Custom link</p>
+                                </div>
+                     
+                        </form>
+             
+             
+        
+                    </div>
+          
+          <div class="social-icon">
+            <h3><span style="color:#d6c494">Dont't forget to share</span> this with your application!</h3>
+          <ul>
+          <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+           <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li> 
+           <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+          <li><a href="#"><i<i class="fa-brands fa-linkedin-in"></i></a></li>
+          <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+           
+          </ul>
+          </div>
+          
+          
+                </div>
+               
+            </div>
+        </div>
+    </div>
+ 
+  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -60,8 +126,7 @@
 
 @section Scripts{
 <script>
-            var user;
-
+    var user;
     $(document).ready(function() {
          user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
         console.log(user.uid)
@@ -89,25 +154,35 @@
           return meta.row + 1;
         }
       },
-                { "data": "name" },
                 {
                     "data": null,
                     "render": function(a, b, c) {
-                        return '<button class="btn btn-primary btn-sm" onclick="viewApplication(' + c.pid + ')">View</button>'
+                        return '<p onclick="viewApplication(' + c.pid + ')">'+c.name+'</p>'
                     }
                 },
                 {
                     "data": null,
                     "render": function(data, type, row) {
                         var url = row.link;
-                        var shortenedUrl = url.length > 20 ? url.substring(0, 20) + '...' : url;
-                        var link = '<div class="link-container"><p title="' + url + '">' + shortenedUrl + '</p></div>';
+                        var link = '<div class="link-container"><p title="' + url + '">' + row.name + '.spreadhood.com</p></div>';
                         var copyButton = '<button class="btn btn-secondary btn-sm copy-btn" onclick="share(\'copy\', \'' + row.link + '\')" title="Copy to Clipboard"><i class="far fa-copy"></i></button>';
+                        return link + '<div class="icon-buttons">' + copyButton+ '</div>';
+                    }
+                },
+                {
+                    "data": null,
+                    "render": function(data, type, row) {
                         var whatsappButton = '<button class="btn btn-primary btn-sm whatsapp-btn" onclick="share(\'w\', \'' + row.link + '\')"><i class="fab fa-whatsapp"></i></button>';
                         var instagramButton = '<button class="btn btn-danger btn-sm instagram-btn" onclick="share(\'i\', \'' + row.link + '\')"><i class="fab fa-instagram"></i></button>';
                         var twitterButton = '<button class="btn btn-info btn-sm twitter-btn" onclick="share(\'t\', \'' + row.link + '\')"><i class="fab fa-twitter"></i></button>';
                         var linkedinButton = '<button class="btn btn-primary btn-sm linkedin-btn" onclick="share(\'l\', \'' + row.link + '\')"><i class="fab fa-linkedin"></i></button>';
-                     return link + '<div class="icon-buttons">' + copyButton + whatsappButton + ' ' + instagramButton + ' ' + twitterButton + ' ' + linkedinButton + '</div>';
+                     return '<div class="icon-buttons">' + whatsappButton + ' ' + instagramButton + ' ' + twitterButton + ' ' + linkedinButton + '</div>';
+                    }
+                },
+                {
+                    "data":null,
+                    "render": function(a, b, c) {
+                        return '<p>10</p>';
                     }
                 },
                 {
@@ -136,7 +211,8 @@
         async:false,
         data:JSON.stringify(obj),
         success:function(resp){
-            Swal.fire('Saved','Project Saved Sucessfuly','success');
+            $('#linkModal').fadeIn();
+            //Swal.fire('Saved','Project Saved Sucessfuly','success');
             $("#txtProjectName").val('');
             $("#myModal").modal('hide');
             GetAllProjects(user.uid);
@@ -145,7 +221,8 @@
             Swal.fire('OOPS','Something Went Wrong','error');
         }
     })
-    }function share(type,url){
+    }
+    function share(type,url){
 
         switch (type) {
             case 'copy':

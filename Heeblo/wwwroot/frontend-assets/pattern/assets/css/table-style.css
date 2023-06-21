@@ -1,8 +1,19 @@
 
+@font-face {
+	font-family: orkney medium;
+	src: url('/frontend-assets/pattern/assets/fonts/orkney-medium.otf') format('opentype');
+}
+
+@font-face {
+	font-family:orkney bold;
+	src: url('/frontend-assets/pattern/assets/fonts/orkney-bold.otf') format('opentype');
+}
+
 table.dataTable.no-footer {
-  border-bottom: 1px solid #fff !important;
-  background: #006480;
-font-family: orkney medium;
+	border-bottom: 1px solid #fff !important;
+	background: #006480;
+	font-family: orkney medium;
+	width: 100% !important;
 }
 
  .even {
@@ -18,16 +29,23 @@ font-family: orkney medium;
 #DataTables_Table_0_info {
   color: #fff;
 }
- 
+
 thead, td {
-  color: #fff;
-  font-size:18px;
+	font-size: 18px;
+	padding: 12px 10px !important;
+	text-align: center;
 }
 table.dataTable thead th, table.dataTable tfoot th {
-  font-size:18px; padding: 12px 10px !important;;
+	font-size: 18px;
+	color: rgb(255, 255, 255);
+	text-align: center;
+	padding: 12px 10px !important;
+	font-family: orkney bold !important
 }
 table.dataTable tbody td {
-  padding: 12px 10px !important;;
+	padding: 12px 10px !important;
+	text-align: center;
+	color: #fff;
 }
 #btnAdd {
   padding: 10px 38px;
@@ -36,7 +54,9 @@ table.dataTable tbody td {
   font-family: orkney medium;
 }
 
-
+div#tblApp_info {
+	color: #fff;
+}
 .modal-dialog {
   max-width: 60%;
   font-family: orkney medium;
@@ -44,6 +64,7 @@ table.dataTable tbody td {
 .modal-content {
   background: #006480;
   padding: 20px;
+  border:2px solid #fff
 }
 .modal-header h3 {
   color: #d6c494;
@@ -96,17 +117,145 @@ opacity: 1;
   font-size:15px ;
 }
 #writerModal p {
-  color: #fff;
+	color: #fff;
 }
-/*#tblApp_wrapper .btn {
-  background: #fff;
-  color: #000;
-  border: 0;
-  padding: 6px 11px;
-}*/
+
+#tblApp_wrapper .btn {
+ background: #fff;
+color: #000;
+border: 0;
+padding: 6px 10px;
+margin: 0 !Important;
+margin-bottom: 20px!Important;
+width: 100%;
+}
 .page-link {
   background: #005f7a !Important;
   color: #fff !Important;
   border: 0;
   margin: 0px 1px;
+}
+.icon-buttons {
+	float: right;
+}
+
+th.srnumber {
+	width: 70px !important;
+}
+
+.link-container {
+	float: left;
+}
+.main-header {
+	background: #006480;
+}
+
+a.nav-link i {
+	color: #fff;
+}
+
+.content-wrapper {
+	background: #006480;
+}
+
+.card-body {
+	background: #006480;
+}
+.content-wrapper label{
+	color: #fff;
+}
+div#tblProject_info {
+	color: #fff;
+}
+.popup-body h2 {
+	text-align: center;
+	color: #fff;
+	font-size: 45px;
+	line-height: 70px;
+}
+ 
+.popup-body input {
+	border: 1px solid #99c1cb;
+	padding: 22px 45px;
+	background: #348399;
+	color: #fff;
+	margin-bottom: 10px;
+	border-radius: 8px;
+	font-size: 20px;
+	width: 100%;
+	font-family: orkney medium;
+	height: 60px;
+}
+
+	.popup-body input:placeholder {
+		color: #fff !Important
+	}
+
+.popup-body p{
+	color: #fff;
+	text-align: center;
+	font-size: 22px;
+}
+
+.popup-body h3{
+	font-size: 22px;
+	text-align: center;
+	color: #fff;
+	line-height: 40px;
+}
+.popup-body button.close {
+	position: absolute;
+	right: 0;
+	top: -10px;
+	font-size: 34px;
+}
+.social-icon ul {
+	display: flex;
+	justify-content: space-between;
+}
+
+.social-icon li {
+	display: block;
+}
+
+.social-icon a {
+	color: #fff;
+	font-size: 22px;
+	width: 50px;
+	height: 50px;
+	background: transparent;
+	display: block;
+	line-height: 50px;
+	text-align: center;
+	border: 1px solid #fff;
+	border-radius: 50px;
+}
+
+.social-icon a {
+	color: #fff;
+	font-size: 23px;
+	width: 50px;
+	height: 50px;
+	background: transparent;
+	display: block;
+	line-height: 50px;
+	text-align: center;
+	border: 1px solid transparent;
+	border-radius: 50px;
+}
+
+	.social-icon a:hover {
+		border: 1px solid #fff;
+		color: #fff;
+	}
+
+.social-icon {
+	margin-top: 20px;
+	overflow: hidden;
+}
+.icon-buttons .btn {
+	margin-bottom: 10px;
+}
+div#linkModal {
+	background: #1a1a1aad;
 }
