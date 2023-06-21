@@ -9,6 +9,7 @@ namespace Heeblo.Repository
         hbl_tbl_application GetApplicationById(int pid);
         UserDetailsWithUploadDocs GetUserDetailsByAppId(int appid);
         Response SaveApplication(application_view application);
-        bool ApplicationStatus(string status, int appId);
+        bool ApplicationStatus(AppFeedback feedback);
+        //Response GetAllAppCountByPid(int pid);
     }
 }
