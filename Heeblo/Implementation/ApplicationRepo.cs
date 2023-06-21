@@ -22,6 +22,7 @@ namespace Heeblo.Implementation
         {
             Response response = new Response();
             var applns = _db.hbl_tbl_application.ToList();
+            var sortedApplns = applns.OrderBy(a => a.status == null ? 0 : a.status == "Accepted" ? 1 : a.status == "Rejected" ? 2 : 3).ToList();
             if (applns.Count == 0) { response.RespMsg = "Application Data Not Found"; response.RespObj = null; return response; }
             response.Resp = true; response.RespMsg = "Application Data Found Successfully"; response.RespObj = applns; return response;
         }
@@ -34,11 +35,17 @@ namespace Heeblo.Implementation
                 string connectionString = _config.GetConnectionString("HBL");
                 using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
                 {
-                    string sql = @"select application_id , app.created_on ,app.status, u.name as created_by , ai_score,grammar_score, plagiarism 
-                                    from hbl_tbl_application app
-                                    inner
-                                    join hbl_tbl_user u on u.uid = app.created_by
-                                    where app.pid = @pid";
+                    string sql = @"SELECT app.application_id, app.created_on, app.status, u.name AS created_by, app.ai_score, app.grammar_score, app.plagiarism
+                                   FROM hbl_tbl_application app
+                                   INNER JOIN hbl_tbl_user u ON u.uid = app.created_by
+                                   WHERE app.pid = @pid
+                                   ORDER BY 
+                                       CASE 
+                                           WHEN app.status IS NULL THEN 0
+                                           WHEN app.status = 'Accepted' THEN 1
+                                           WHEN app.status = 'Rejected' THEN 2
+                                           ELSE 3
+                                       END;";
                     NpgsqlCommand cmd = new NpgsqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("@pid", pid);
                     connection.Open();
