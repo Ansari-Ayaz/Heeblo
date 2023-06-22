@@ -31,8 +31,8 @@
                             <th>Submitted By</th>
                             <th>Submitted On</th>
                             <th>AI Writen</th>
-                            <th>Grammar Error</th>
-                            <th>Plagiarism Error</th>
+                            <th>Grammatical</th>
+                            <th>Plagiarism</th>
                             <th>Average</th>
                             <th></th>
                         </tr>
@@ -138,28 +138,28 @@
                         }
                     },
                     {
-                        "data": "ai_score",
-                        //"render": function(a, b, c) {
-                        //    return badge_2(c.ai_score)
-                        //}
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return c.ai_score+" %"
+                        }
                     },
                     {
-                        "data": "grammar_score",
-                        //"render": function(a, b, c) {
-                        //    return badge_1(c.grammar_score)
-                        //}
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return c.grammar_score+" %"
+                        }
                     },
                     {
-                        "data": "plagiarism",
-                        //"render": function(a, b, c) {
-                        //    return badge_2(c.plagiarism)
-                        //}
+                        "data": null,
+                        "render": function(a, b, c) {
+                            return c.plagiarism+" %"
+                        }
                     },
                     {
                         "data": null,
                         "render": function(a, b, c) {
                             var averageScore = (c.plagiarism + c.grammar_score + c.ai_score) / 3;
-                            return '<p>' + averageScore.toFixed(2) + '</p>';
+                            return '<p>' + averageScore.toFixed(2) + ' %</p>';
                         }
                     },
                     {

@@ -101,20 +101,20 @@
                         <div class="row align-items-center g-4">
                             <div class="col-md-6 d-block d-md-none d-lg-none wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
                                 <div class="banner__content">
-                                    <img src="~/frontend-assets/pattern/assets/images/login-user.png" alt="" />
+                                    <img src="~/frontend-assets/pattern/assets/images/login-user.png" alt="" id="img" />
                                 </div>
                             </div>
                             <div class="col-md-6 wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
                                 <div class="btn-login home-page">
                                     <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo" />
-                                    <p>Your hub for all <span style="color:#d6c494"><b>things talent</b></span></p>
+                                    <p id="message"></p>
                                     <a href="@Url.Action("Login","Auth")"> <button type="submit" value="submit">Login </button></a>
                                     <a href="@Url.Action("SignUp","Auth")">   <button type="submit" value="submit">Signup  </button></a>
                                 </div>
                             </div>
                             <div class="col-md-6 d-none d-md-block d-lg-block wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
                                 <div class="banner__content">
-                                    <img src="~/frontend-assets/pattern/assets/images/login-user.png" alt="" />
+                                    <img src="~/frontend-assets/pattern/assets/images/login-user.png" alt="" id="img" />
                                 </div>
                             </div>
                         </div>
@@ -220,9 +220,17 @@
 
     </div>
     <script>
-      $(document).ready(function() {
-          var params = new URLSearchParams(window.location.search);
-          });
+        $(document).ready(function() {
+            var params = new URLSearchParams(window.location.search);
+            var role = sessionStorage.getItem('role');
+        if (role != 2) {
+            $("#img").attr("src", "~/frontend-assets/pattern/assets/images/login-user.png");
+            $("#message").html("We Help you find Quality writer")
+        } else {
+            $("#img").attr("src", "~/frontend-assets/pattern/assets/images/hi_man.png");
+            $("#message").html("Your hub for all things talent")
+        }
+                          });
     </script>
 
 </body>

@@ -8,7 +8,7 @@
     .fa-square-check {
         color: green;
     }
- 
+
     .fa-circle-xmark {
         background-color: green;
     }
@@ -98,6 +98,38 @@
                 ]
             })
         }
+        function share(type, url) {
+
+            switch (type) {
+                case 'copy':
+                    navigator.clipboard.writeText(url)
+                        .then(function() {
+                        })
+                        .catch(function(error) {
+                        });
+                    break;
+                case 'w':
+                    var whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(url);
+                    window.open(whatsappUrl, '_blank');
+                    break;
+                case 'i':
+                    var instagramUrl = 'https://www.instagram.com/?url=' + encodeURIComponent(url);
+                    window.open(instagramUrl, '_blank');
+                    break;
+                case 't':
+                    var twitterUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url);
+                    window.open(twitterUrl, '_blank');
+                    break;
+                case 'l':
+                    var linkedinUrl = 'https://www.linkedin.com/shareArticle?url=' + encodeURIComponent(url);
+                    window.open(linkedinUrl, '_blank');
+                    break;
+                default:
+                    // Handle unknown social media platform
+                    break;
+            }
+        }
+
         function viewApplication(pid) {
             window.location.href = '@(Url.Action("Applications","Home"))' + '?pid=' + pid
         }

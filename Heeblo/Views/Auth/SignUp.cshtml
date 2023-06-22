@@ -119,7 +119,7 @@
                                             <div id="status">
                                             </div>
                                         </button>*@
-                                        <button type="button" onclick="Google()">
+                                        <button type="button" onclick="g_click()">
                                             <span> <i class="fa-brands fa-google"></i> Google</span>
                                             <div id="g_id_onload"
                                                  data-client_id="123231719566-usi33hu495tmjg72f9jm6eoj6ia1ga3b.apps.googleusercontent.com"
@@ -131,7 +131,7 @@
                                             </div>
                                         </button>
 
-                                        <div class="g_id_signin"
+                                        <div class="g_id_signin d-none"
                                              data-type="standard"
                                              data-shape="rectangular"
                                              data-theme="outline"
@@ -253,6 +253,7 @@
             function Google() {
                 alert('Google')
             }
+const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
             function Email() {
                 window.location.href = '@Url.Action("Register","Auth")'
             }

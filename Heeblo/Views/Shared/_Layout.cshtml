@@ -31,6 +31,13 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.13.1/datatables.min.css" />
     <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/table-style.css" />
     <style>
+        
+    .cpybtninp {
+        background-color: #17a2b8;
+        border: 1px solid #fff;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
         .form-control:disabled, .form-control[readonly] {
             background-color: #e9ecef33;
             opacity: 1;
@@ -164,8 +171,8 @@
                                                     <p> Here is your Custom link</p>
                                                     <div class="input-group">
                                                         <input class="form-control" id="projLink" type="text" disabled />
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-secondary" onclick="shareSavedProjLink('copy')" id="copyBtn" style="background-color: #17a2b8;">Copy</button>
+                                                        <div class="input-group-append" >
+                                                            <button class="btn btn-secondary cpybtninp" onclick="shareSavedProjLink('copy')" id="copyBtn" style="background-color: #17a2b8;">Copy</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -174,10 +181,10 @@
                                             <div class="social-icon">
                                                 <h3><span style="color:#d6c494">Dont't forget to share</span> this with your application!</h3>
                                                 <ul>
-                                                    <li><a onclick="shareSavedProjLink('w')"><i class="fa-brands fa-whatsapp"></i></a></li>
-                                                    <li><a onclick="shareSavedProjLink('i')"><i class="fa-brands fa-instagram"></i></a></li>
-                                                    <li><a onclick="shareSavedProjLink('t')"><i class="fa-brands fa-twitter"></i></a></li>
-                                                    <li><a onclick="shareSavedProjLink('l')"><i<i class="fa-brands fa-linkedin-in"></i></a></li>
+                                                    <li><a style="color:white" onclick="shareSavedProjLink('w')"><i class="fa-brands fa-whatsapp"></i></a></li>
+                                                    <li><a style="color:white" onclick="shareSavedProjLink('i')"><i class="fa-brands fa-instagram"></i></a></li>
+                                                    <li><a style="color:white" onclick="shareSavedProjLink('t')"><i class="fa-brands fa-twitter"></i></a></li>
+                                                    <li><a style="color:white" onclick="shareSavedProjLink('l')"><i<i class="fa-brands fa-linkedin-in"></i></a></li>
                                                 </ul>
                                             </div>
 

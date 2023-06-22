@@ -140,6 +140,8 @@ namespace Heeblo.Implementation
                 if (application.uid <= 0) { response.RespMsg = "User id Required"; return response; }
                 if (!PdfIsValid(application.resume)) { response.RespMsg = "Resume should be PDF"; return response; }
                 if (!DocIsValid(application.sample_content)) { response.RespMsg = "Sample Content should be Doc or Docx"; return response; }
+                string content = ReadDocFileContent(application.sample_content);
+                if (string.IsNullOrEmpty(content)) { response.RespMsg = "Content Should be less then 500 words"; return response; }
                 app.pid = application.pid;
                 app.uid = application.uid;
                 app.updated_by = application.created_by;
@@ -151,8 +153,6 @@ namespace Heeblo.Implementation
 
                 _db.hbl_tbl_application.Add(app);
                 var i = _db.SaveChanges();
-                string content = ReadDocFileContent(application.sample_content);
-                if (string.IsNullOrEmpty(content)) { response.RespMsg = "Content Should be less then 500 words";return response; }
                 System.Threading.Tasks.Task.Run(() => { _heeblo.GetScores(content, app.application_id); });
                 //_heeblo.GetScores(ReadDocFileContent(application.sample_content), app.application_id);
                 if (i == 0)
