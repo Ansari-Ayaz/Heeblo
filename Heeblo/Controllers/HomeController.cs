@@ -1,5 +1,7 @@
 ﻿using Heeblo.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Diagnostics;
 
@@ -21,13 +23,19 @@ namespace Heeblo.Controllers
         }
         public IActionResult ApplicationList()
         {
+            if (!Authorized()) return RedirectToAction("Login", "Auth");
             return View();
         }
         public IActionResult AddProject()
         {
+            if (!Authorized()) return RedirectToAction("Login", "Auth");
             return View();
         }
         public IActionResult EmailSent()
+        {
+            return View();
+        }
+        public IActionResult EmailSentReset()
         {
             return View();
         }
@@ -38,21 +46,27 @@ namespace Heeblo.Controllers
         }
         public IActionResult WriterThankyou()
         {
+            HttpContext.Session.Clear();
             return View();
         }
         public IActionResult WriterUpload()
         {
+            var user = HttpContext.Session.GetString("user")??null;
+            if (!Authorized()) return RedirectToAction("Login", "Auth");
+            JObject userObject = JsonConvert.DeserializeObject<JObject>(user);
+            int role = userObject.Value<int>("role");
+            if (role != 2) return RedirectToAction("Login", "Auth");
             return View();
         }
         public IActionResult Index()
         {
-            
+            if (!Authorized()) return RedirectToAction("Login", "Auth");
             return View();
         }
 
         public IActionResult Applications()
         {
-          
+            if (!Authorized()) return RedirectToAction("Login", "Auth");
             return View();
         }
 
@@ -108,6 +122,11 @@ namespace Heeblo.Controllers
             }
 
         }
-
+        public bool Authorized()
+        {
+            var user = HttpContext.Session.GetString("user") ?? null;
+            if (user == null) return false;
+            return true;
+        }
     }
 }

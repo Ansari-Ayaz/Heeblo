@@ -38,15 +38,7 @@
         }
     </script>
     <style>
-        .error {
-            border: 1px solid red;
-        }
-
-        .error-label {
-            color: red;
-            font-size: 14px;
-            font-weight: bold;
-        }
+        
         .banner.newRegister {
 	height: auto;
 }
@@ -115,8 +107,8 @@
 
                             <div class="col-lg-6 col-md-6 offset-3">
                                 <div class="login-tittle mb-4">
-                                    <h2> <span style="color:#d6c494">Reg</span>ister </h2>
-                                    <h3> Lets get you <span style="color:#d6c494">onboarded! </span></h3>
+@*                                    <h2> <span style="color:#d6c494">Reg</span>ister </h2>
+*@                                    <h3> Lets get you onboarded! </h3>
                                 </div>
                                 <div class="form-info welcome-login wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
 
@@ -127,7 +119,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input class="form-control" placeholder="Mobile*" name="mobile" type="number" />
+                                            <input class="form-control" placeholder="Mobile" name="mobile" type="number" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -137,18 +129,17 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input class="form-control" placeholder="Password*" name="password" type="password" />
+                                            <input class="form-control" placeholder="Password" name="password" type="password" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input class="form-control" placeholder="Confirm Password*" name="confirmPassword" type="password" />
+                                            <input class="form-control" placeholder="Confirm Password" name="confirmPassword" type="password" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <span id="errorLabel" class="error-label"></span>
-                                        <hr />
-
+                                        <br />
                                         <button onclick="submitFunc()">
                                             Submit
                                         </button>
@@ -332,7 +323,7 @@
                         console.log("User saved successfully:", response);
                         window.location.href = '@Url.Action("EmailSent","home")' + '?u=' + btoa(response.respObj.email)
                     } else {
-                        $('#errorLabel').text(response.RespMsg);
+                        $('#errorLabel').text(response.respMsg);
                     }
 
                 },

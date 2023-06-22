@@ -37,18 +37,6 @@
             document.getElementById("mySidenav").style.width = "0";
         }
     </script>
-    <style>
-        .error {
-            border: 1px solid red;
-        }
-
-        .error-label {
-            color: red;
-            font-size: 14px;
-            font-weight: bold;
-        }
-    </style>
-
 </head>
 <body>
 
@@ -112,8 +100,7 @@
 
                             <div class="col-lg-6 col-md-6 main-form-center">
                                 <div class="login-tittle mb-4">
-                                    <h2> <span style="color:#d6c494">Wel</span>come </h2>
-                                    <h3> Lets get to <span style="color:#d6c494">work! </span></h3>
+                                    <h3> Lets get to work! </h3>
                                 </div>
                                 <div class="form-info welcome-login wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
                                     <form action="@Url.Action("LoginPost","Auth")" method="post">
@@ -146,11 +133,8 @@
                                     </div>
                                     <div class="social-media">
                                         <ul>
-                                            <li><a href="@Url.Action("SignUp","Auth")"> Phone</a> </li>
                                             <li><a href="@Url.Action("SignUp","Auth")"> Email</a> </li>
-                                            <li><a href="@Url.Action("SignUp","Auth")">Facebook</a> </li>
                                             <li><a href="@Url.Action("SignUp","Auth")">Google</a> </li>
-
                                         </ul>
                                     </div>
 

@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800&display=swap');
 
-
+.error-label {
+	color: #d6c494;
+	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 * {
 	margin: 0;
 	padding: 0;
@@ -1960,7 +1966,7 @@ font-size: 15px;
 
 .social-media ul {
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-evenly;
 }
 
 .social-media li {
@@ -2277,10 +2283,17 @@ span.mb {
     top: 54%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    width: 40%;
+    min-width: 40%;
+}
+@media only screen and (min-width: 992px) {
+	.form-info.welcome-login {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 40vw;
+	}
 }
 .reset-password .main-form-center {
-  width: 80%;
+	width: 80%;
 }
 .reset-password .login-tittle {
   margin: 4px 0;

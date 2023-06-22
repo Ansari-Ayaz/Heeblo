@@ -21,11 +21,16 @@ namespace Heeblo.Controllers
          
         public IActionResult Login()
         {
+            HttpContext.Session.Remove("user");
             return View();
         }
         public IActionResult LoginPost(string cred, string pwd)
         {
-
+            if(cred == ""|| cred == null|| pwd == null ||pwd == "")
+            {
+                ViewData["Error"] = "Please enter your credential";
+                return View("Login");
+            }
             LoginReq uDetail = new LoginReq()
             {
                 UserCred = cred,

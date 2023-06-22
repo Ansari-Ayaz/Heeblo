@@ -37,19 +37,6 @@
             document.getElementById("mySidenav").style.width = "0";
         }
     </script>
-    <style>
-        .error {
-            border: 1px solid red;
-        }
-
-        .error-label {
-            color: red;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-    </style>
-
 </head>
 <body>
 
@@ -111,12 +98,12 @@
                         <div class="row" style="align-items: center;">
                             <div class="top-logo">  <img src="~/frontend-assets/pattern/assets/images/Heeblo_Logo_white.png" alt="Logo" /></div>
 
-                            <div class="col-lg-6 col-md-6 main-form-center">
+                            <div class="col-lg-8 col-md-8 main-form-center">
                                 <div class="login-tittle mb-4">
                                     <h2> <span style="color:#d6c494">Forgot</span> Password </h2>
-                                    <h3> Please enter  <span style="color:#d6c494">your email ! </span></h3>
+                                    <h3> Please enter your email ! </h3>
                                 </div>
-                                <div class="form-info welcome-login wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
+                                <div class="form-info welcome-login" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <input class="form-control" placeholder="Email" name="email" type="email" />
@@ -124,7 +111,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <span id="errorLabel" class="error-label"></span>
-                                        <hr />
+                                        <br />
                                         <button onclick="submitFunc()">
                                             Submit
                                         </button>
@@ -241,6 +228,9 @@
 
     </div>
     <script>
+        $(document).ready(function() {
+            $(window).trigger('resize');
+        });
         function submitFunc() {
             // Get the input field values
             var email = $("input[name='email']").val();
@@ -251,13 +241,13 @@
             $('#errorLabel').text("")
 
             $.ajax({
-                url: '@(Url.Action("forgotlink","user"))'+'/'+email,
+                url: '@(Url.Action("forgotlink","user"))' + '/' + email,
                 type: "GET",
                 contentType: "application/json",
                 success: function(response) {
                     // Handle the success response
                     if (response.resp) {
-                        window.location.href = '@Url.Action("EmailSent","home")' + '?u=' + btoa(email)
+                        window.location.href = '@Url.Action("EmailSentReset","home")' + '?u=' + btoa(email)
                     } else {
                         $('#errorLabel').text(response.respMsg);
                     }
