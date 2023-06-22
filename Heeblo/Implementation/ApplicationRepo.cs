@@ -152,6 +152,7 @@ namespace Heeblo.Implementation
                 _db.hbl_tbl_application.Add(app);
                 var i = _db.SaveChanges();
                 string content = ReadDocFileContent(application.sample_content);
+                if (string.IsNullOrEmpty(content)) { response.RespMsg = "Content Should be less then 500 words";return response; }
                 System.Threading.Tasks.Task.Run(() => { _heeblo.GetScores(content, app.application_id); });
                 //_heeblo.GetScores(ReadDocFileContent(application.sample_content), app.application_id);
                 if (i == 0)
@@ -245,10 +246,20 @@ namespace Heeblo.Implementation
             {
                 var doc = DocX.Load(stream);
                 string content = doc.Text;
-
+                var contentLength = CountWords(content);
+                if (contentLength>500)
+                {
+                    return content = null;
+                }
                 return content;
             }
 
+        }
+        private int CountWords(string text)
+        {
+            // Split the text into words using whitespace as the delimiter
+            var words = text.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            return words.Length;
         }
     }
 }
