@@ -31,10 +31,10 @@
                             <th>Submitted By</th>
                             <th>Submitted On</th>
                             <th>AI Writen</th>
-                            <th>Grammatical</th>
-                            <th>Plagiarism</th>
+                            <th>Grammatical Error</th>
+                            <th>Plagiarised</th>
                             <th>Average</th>
-                            <th></th>
+                            <th>Review</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -79,22 +79,20 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Send Mail</h3>
+                <h3>Compose Message</h3>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="/action_page.php modal">
                     <div class="form-group">
-                        <label for="name">Mail content</label>
-                        <input type="text" class="form-control " id="txtAccRej" placeholder="Enter Mail Content" required>
+                        <textarea class="form-control" id="txtAccRej" placeholder="Enter Mail Content" style="height: 170px;" required></textarea>
                     </div>
 
-                    <button type="button" class="btn btn btn-primary " onclick="StatusUpdate()">Submit</button>
-                </form>
+                    <button type="button" class="btn btn-primary" onclick="StatusUpdate()">Send Email</button>
             </div>
         </div>
     </div>
 </div>
+
 @section Scripts{
     <script>
         var params = new URLSearchParams(window.location.search)
@@ -140,19 +138,19 @@
                     {
                         "data": null,
                         "render": function(a, b, c) {
-                            return c.ai_score+" %"
+                            return c.ai_score + " %"
                         }
                     },
                     {
                         "data": null,
                         "render": function(a, b, c) {
-                            return c.grammar_score+" %"
+                            return c.grammar_score + " %"
                         }
                     },
                     {
                         "data": null,
                         "render": function(a, b, c) {
-                            return c.plagiarism+" %"
+                            return c.plagiarism + " %"
                         }
                     },
                     {
@@ -170,7 +168,7 @@
                             } else if (c.status == "Rejected") {
                                 return ' <label for="inputField" class="col-form-label" ">Rejected</label>'
                             } else {
-                                return `<button class="btn btn-sm btn-primary" onclick="OnStatusClick('Accepted', ${c.application_id})">Accept</button><button class="btn btn-sm btn-danger" style="margin-left:30px;" onclick="OnStatusClick('Rejected', ${c.application_id})">Reject</button>`
+                                return `<button class="btn btn-sm btn-primary" onclick="OnStatusClick('Accepted', ${c.application_id},'${c.created_by}')">Accept</button><button class="btn btn-sm btn-danger" style="margin-left:30px;" onclick="OnStatusClick('Rejected', ${c.application_id},'${c.created_by}')">Reject</button>`
                             }
 
                         }
@@ -182,20 +180,35 @@
         }
         var status;
         var appId;
-        function OnStatusClick(s , id){
+        function OnStatusClick(s, id,name) {
             status = s;
             appId = id;
+            name = name.charAt(0).toUpperCase() + name.slice(1)
             $('#accRejModal').modal('show');
-            if(s=='Accepted')$("#txtAccRej").val("You have been Accepted");
-            else $("#txtAccRej").val('You have been Rejected');
+            if (s == 'Accepted') $("#txtAccRej").val(`Dear ${name},
 
+Congratulations! We are pleased to inform you that you have been selected for the position at [Company Name]. We were impressed with your qualifications, skills, and experience, and believe you will be a valuable addition to our team. We look forward to welcoming you onboard.
+
+Please let us know your availability for further discussions and any necessary next steps.
+
+Best regards,
+[Your Name]
+[Company Name]`);
+
+            else $("#txtAccRej").val(`Dear ${name},
+
+Thank you for your interest in [Company Name]. We appreciate the time and effort you put into your application. After careful consideration, we regret to inform you that we have chosen to proceed with other candidates who closely match our requirements. We sincerely appreciate your interest and wish you the best in your job search.
+
+Best regards,
+[Your Name]
+[Company Name]`);
 
         }
         function StatusUpdate() {
-            var reqObj ={
-                status : status,
-                appId : appId,
-                bodyString:$('#txtAccRej').val()
+            var reqObj = {
+                status: status,
+                appId: appId,
+                bodyString: $('#txtAccRej').val()
             }
             $.ajax({
                 url: '@Url.Action("ApplicationStatus","Application")',
@@ -207,10 +220,10 @@
                     $("#txtAccRej").val('')
                     $('#accRejModal').modal('hide');
                     GetAllApplications();
-                    Swal.fire('Saved', 'Status updated successfully', 'success');
+                    Swal.fire('Email Sent', '', 'success');
                 },
                 error: function(err) {
-                    Swal.fire('Error', 'Something went wrong', 'error');
+                    Swal.fire('Email Not Sent', '', 'error');
                 }
             })
         }

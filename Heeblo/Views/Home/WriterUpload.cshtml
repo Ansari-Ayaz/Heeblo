@@ -47,10 +47,10 @@
         <div class="container">
             <div class="content-login">
                 @*<div class="top-logo">
-                <img src="~/frontend-assets/pattern/assets/images/Heeblo_Logo_white.png" alt="Logo">
+                <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo">
                 </div>*@
                 <div class="row" style="align-items: center;">
-                    <div class="top-logo">  <img src="~/frontend-assets/pattern/assets/images/Heeblo_Logo_white.png" alt="Logo" /></div>
+                    <div class="top-logo">  <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo" /></div>
 
                     <div class="col-lg-6 col-md-6 main-form-center">
 
@@ -92,8 +92,8 @@
         </div>
         <div class="right-ft">
             <ul>
-                <li><a href="#">Terms and Conditions </a></li>
-                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="@Url.Action("termsandcondition","Auth")">Terms and Conditions </a></li>
+                            <li><a href="@Url.Action("privacypolicy","Auth")">Privacy Policy</a></li>
             </ul>
         </div>
     </div>

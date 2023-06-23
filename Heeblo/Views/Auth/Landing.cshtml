@@ -28,16 +28,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
     <!-- ========== End Stylesheet ========== -->
-    <script>
-        function openNav() {
-          document.getElementById("mySidenav").style.width = "350px";
-        }
-
-        function closeNav() {
-          document.getElementById("mySidenav").style.width = "0";
-        }
-    </script>
-
 </head>
 <body>
 
@@ -51,40 +41,6 @@
                 </div>
             </div>
         </div>
-        <header>
-            <div class="row">
-                <div class="container-fluid">
-                    <nav class="navbar navbar-expand-lg">
-                        <div class="container-fluid">
-                            <a class="navbar-brand" href="#">
-                                <div class="logo-nav">
-                                    <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo" />
-                                </div>
-                            </a>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"> <i class="fa-solid fa-bars"></i></span>
-                            </button>
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/home">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="http://localhost/customer/login"><span class="outer-border">log in   </span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="http://localhost/customer/register">Signup </a>
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </header>
-
-
         <div class="content-main-wraper">
 
             <!-- Start Banner
@@ -99,14 +55,6 @@
                     <div class="main-form-center">
 
                         <div class="row align-items-center g-4">
-
-                            <div class="col-md-6 d-block d-md-none d-lg-none wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
-                                <div class="banner__content">
-
-                                    <img src="~/frontend-assets/pattern/assets/images/writer.png" alt="" />
-                                </div>
-
-                            </div>
                             <div class="col-md-6 wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
                                 <div class="btn-login home-page">
                                     <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo" />
@@ -138,8 +86,8 @@
                     <div class="left-ft"><a href="mailto:contact@entertainment.com"><i class="fa-solid fa-envelope"></i>contact@entertainment.com</a></div>
                     <div class="right-ft">
                         <ul>
-                            <li><a href="#">Terms and Conditions </a></li>
-                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="@Url.Action("termsandcondition","Auth")">Terms and Conditions </a></li>
+                            <li><a href="@Url.Action("privacypolicy","Auth")">Privacy Policy</a></li>
 
                         </ul>
                     </div>
@@ -179,8 +127,8 @@
                             <div class="footer__body wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s;">
                                 <h2> Important Links</h2>
                                 <ul>
-                                    <li> <a href="#"> Term & Condition  </a> </li>
-                                    <li> <a href="#"> Privacy & Policy  </a> </li>
+                                    <li><a href="@Url.Action("termsandcondition","Auth")">Terms and Conditions </a></li>
+                            <li><a href="@Url.Action("privacypolicy","Auth")">Privacy Policy</a></li>
 
 
                                 </ul>
