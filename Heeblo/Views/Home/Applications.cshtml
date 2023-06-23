@@ -19,6 +19,40 @@
         color: blue;
     }
 </style>
+<style>
+		* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --progress-bar-width: 50px;
+  --progress-bar-height: 50px;
+  --font-size: 0.8rem;
+}
+
+.circular-progress {
+  width: var(--progress-bar-width);
+  height: var(--progress-bar-height);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inner-circle {
+  position: absolute;
+  width: calc(var(--progress-bar-width) - 13px);
+  height: calc(var(--progress-bar-height) - 13px);
+  border-radius: 50%;
+}
+
+.percentage {
+  position: relative;
+  font-size: var(--font-size);
+  color:white;
+}
+		</style>
 
 <div class="card">
     <div class="card-body">
@@ -103,6 +137,32 @@
         var contentFileName = "";
         $(document).ready(function() {
             GetAllApplications();
+            const circularProgress = document.querySelectorAll(".circular-progress");
+
+Array.from(circularProgress).forEach((progressBar) => {
+  const progressValue = progressBar.querySelector(".percentage");
+  const innerCircle = progressBar.querySelector(".inner-circle");
+  let startValue = 0,
+    endValue = Number(progressBar.getAttribute("data-percentage")),
+    speed = 50,
+    progressColor = progressBar.getAttribute("data-progress-color");
+
+  const progress = setInterval(() => {
+    startValue++;
+    progressValue.textContent = `${startValue}%`;
+
+    innerCircle.style.backgroundColor = `${progressBar.getAttribute(
+      "data-inner-circle-color"
+    )}`;
+
+    progressBar.style.background = `conic-gradient(${progressColor} ${
+      startValue * 3.6
+    }deg,${progressBar.getAttribute("data-bg-color")} 0deg)`;
+    if (startValue === endValue) {
+      clearInterval(progress);
+    }
+  }, speed);
+});
         })
         function GetAllApplications() {
             $('#tblApp').DataTable().destroy();
@@ -137,27 +197,70 @@
                     },
                     {
                         "data": null,
+                        "className": "",
                         "render": function(a, b, c) {
-                            return c.ai_score + " %"
+                            return `<div class="circular-progress m-auto" data-inner-circle-color="#006480" data-percentage="${c.ai_score}" data-progress-color="#d6c494" data-bg-color="white">
+  			<div class="inner-circle"></div>
+  			<p class="percentage m-auto" style="color:white;">0%</p>
+		</div>`
                         }
                     },
+                    //{
+                    //    "data": null,
+                    //    "render": function(a, b, c) {
+                    //        return c.ai_score + " %"
+                    //    }
+                    //},
                     {
                         "data": null,
+                        "className": "",
                         "render": function(a, b, c) {
-                            return c.grammar_score + " %"
+                            return `<div class="circular-progress m-auto" data-inner-circle-color="#006480" data-percentage="${c.grammar_score}" data-progress-color="#d6c494" data-bg-color="white">
+  			<div class="inner-circle"></div>
+  			<p class="percentage m-auto" style="color:white;">0%</p>
+		</div>`
                         }
                     },
+                    //{
+                    //    "data": null,
+                    //    "render": function(a, b, c) {
+                    //        return c.grammar_score + " %"
+                    //    }
+                    //},
                     {
                         "data": null,
+                        "className": "",
                         "render": function(a, b, c) {
-                            return c.plagiarism + " %"
+                            return `<div class="circular-progress m-auto" data-inner-circle-color="#006480" data-percentage="${c.plagiarism}" data-progress-color="#d6c494" data-bg-color="white">
+  			<div class="inner-circle"></div>
+  			<p class="percentage m-auto" style="color:white;">0%</p>
+		</div>`
                         }
                     },
+                    //{
+                    //    "data": null,
+                    //    "render": function(a, b, c) {
+                    //        return c.plagiarism + " %"
+                    //    }
+                    //},
+                    //{
+                    //    "data": null,
+                    //    "render": function(a, b, c) {
+                    //        var averageScore = (c.plagiarism + c.grammar_score + c.ai_score) / 3;
+                    //        return '<p>' + averageScore.toFixed(2) + ' %</p>';
+                    //    }
+                    //},
                     {
                         "data": null,
+                        "className": "",
                         "render": function(a, b, c) {
-                            var averageScore = (c.plagiarism + c.grammar_score + c.ai_score) / 3;
-                            return '<p>' + averageScore.toFixed(2) + ' %</p>';
+                         var averageScore = (c.plagiarism + c.grammar_score + c.ai_score) / 3;
+                         var averageScore = averageScore.toFixed(2);
+
+                            return `<div class="circular-progress m-auto" data-inner-circle-color="#006480" data-percentage="${averageScore}" data-progress-color="#d6c494" data-bg-color="white">
+  			<div class="inner-circle"></div>
+  			<p class="percentage m-auto" style="color:white;">0%</p>
+		</div>`
                         }
                     },
                     {
@@ -168,7 +271,7 @@
                             } else if (c.status == "Rejected") {
                                 return ' <label for="inputField" class="col-form-label" ">Rejected</label>'
                             } else {
-                                return `<button class="btn btn-sm btn-primary" onclick="OnStatusClick('Accepted', ${c.application_id},'${c.created_by}')">Accept</button><button class="btn btn-sm btn-danger" style="margin-left:30px;" onclick="OnStatusClick('Rejected', ${c.application_id},'${c.created_by}')">Reject</button>`
+                                return `<div class="d-flex"><button class="btn btn-sm btn-primary mx-2" onclick="OnStatusClick('Accepted', ${c.application_id},'${c.created_by}')">Accept</button><button class="btn btn-sm btn-danger mx-2" onclick="OnStatusClick('Rejected', ${c.application_id},'${c.created_by}')">Reject</button></div>`
                             }
 
                         }
@@ -234,7 +337,6 @@ Best regards,
             if (val > 75 && val <= 100) return `<span class="badge badge-success ">${val} %</span>`;
             return ``;
         }
-
         function badge_2(val) {
             if (val > 0 && val <= 25) return `<span class="badge badge-success ">${val} %</span>`;
             if (val > 25 && val <= 50) return `<span class="badge badge-info ">${val} %</span>`;

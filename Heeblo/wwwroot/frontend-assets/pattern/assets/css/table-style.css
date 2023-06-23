@@ -125,7 +125,7 @@ opacity: 1;
 color: #000;
 border: 0;
 padding: 6px 10px;
-margin: 0 !Important;
+/*margin: 0 !Important;*/
 margin-bottom: 20px!Important;
 width: 100%;
 }
