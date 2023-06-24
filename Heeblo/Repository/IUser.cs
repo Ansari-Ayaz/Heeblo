@@ -5,7 +5,7 @@ namespace Heeblo.Repository
 {
     public interface IUser
     {
-        Response GetAllUser();
+        List<hbl_tbl_user> GetAllUser(int role);
         Response GetUserByPublication(int pid);
         Response GetUserById(int id);
         Response SaveUser(hbl_tbl_user user);
@@ -13,5 +13,6 @@ namespace Heeblo.Repository
         Response PasswordForgot(int uid, string password);
         Response ValidateUser(LoginReq req);
         bool VerifyUser(int uid);
+        bool ChangeIsActive(int uid, bool isActive);
     }
 }

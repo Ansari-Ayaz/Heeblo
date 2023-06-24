@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Html
 @using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,13 +36,14 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.13.1/datatables.min.css" />
     <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/table-style.css" />
     <style>
-        
-    .cpybtninp {
-        background-color: #17a2b8;
-        border: 1px solid #fff;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-    }
+
+        .cpybtninp {
+            background-color: #17a2b8;
+            border: 1px solid #fff;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
         .form-control:disabled, .form-control[readonly] {
             background-color: #e9ecef33;
             opacity: 1;
@@ -96,22 +99,47 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="@Url.Action("Index","Home")" class="nav-link active" style="background-color:#d6c494">
-                                <i class="nav-icon fas fa-list"></i>
-                                <p>
-                                    My Projects
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" data-toggle="modal" data-target="#myModal" class="nav-link ">
-                                <i class="nav-icon fas fa-add"></i>
-                                <p style="color:white">
-                                    Add Projects
-                                </p>
-                            </a>
-                        </li>
+                        @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+                        @using Newtonsoft.Json
+
+                        @{
+                            var serializedUser = HttpContextAccessor.HttpContext.Session.GetString("user");
+                            var user = JsonConvert.DeserializeObject<hbl_tbl_user>(serializedUser);
+                        }
+
+                        @if (user != null)
+                        {
+                            @if (user.role == 1)
+                            {
+                                <li class="nav-item">
+                                    <a href="@Url.Action("AllUsers", "Home")" class="nav-link active" style="background-color:#d6c494">
+                                        <i class="nav-icon fas fa-list"></i>
+                                        <p>
+                                            All Users
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Home")" class="nav-link active" style="background-color:#d6c494">
+                                        <i class="nav-icon fas fa-list"></i>
+                                        <p>
+                                            My Projects
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" data-toggle="modal" data-target="#myModal" class="nav-link ">
+                                        <i class="nav-icon fas fa-add"></i>
+                                        <p style="color:white">
+                                            Add Projects
+                                        </p>
+                                    </a>
+                                </li>
+                            }
+                        }
                         <li class="nav-item">
                             <a href="@Url.Action("Login","Auth")" class="nav-link ">
                                 <i class="nav-icon fas fa-sign-out"></i>
@@ -174,7 +202,7 @@
                                                     <p> Here is your Custom link</p>
                                                     <div class="input-group">
                                                         <input class="form-control" id="projLink" type="text" disabled />
-                                                        <div class="input-group-append" >
+                                                        <div class="input-group-append">
                                                             <button class="btn btn-secondary cpybtninp" onclick="shareSavedProjLink('copy')" id="copyBtn" style="background-color: #17a2b8;">Copy</button>
                                                         </div>
                                                     </div>
@@ -261,7 +289,7 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script>
         var baseUrl = '@_config["Config:Api"]';
-        var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
+        var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user") ?? "null"));
         var projSavedLink;
         function SaveProject() {
             var obj = {
@@ -275,7 +303,7 @@
                 contentType: "application/json",
                 async: false,
                 data: JSON.stringify(obj),
-                success: function(resp) {
+                success: function (resp) {
                     //Swal.fire('Saved','Project Saved Sucessfuly','success');
                     $("#txtProjectName").val('');
                     $("#myModal").modal('hide');
@@ -286,7 +314,7 @@
                     projSavedLink = resp.respObj.link
                     GetAllProjects(user.uid);
                 },
-                error: function(err) {
+                error: function (err) {
                     Swal.fire('OOPS', 'Something Went Wrong', 'error');
                 }
             })
@@ -297,9 +325,9 @@
             switch (type) {
                 case 'copy':
                     navigator.clipboard.writeText(url)
-                        .then(function() {
+                        .then(function () {
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                         });
                     break;
                 case 'w':
@@ -329,10 +357,10 @@
             sessionStorage.clear();
 
         }
-                            //if(user.Role==2){
-                            //$("#manageUsers").hide();
-                            //}
-                            //$("#userName").text(user.Name)
+                                                    //if(user.Role==2){
+                                                    //$("#manageUsers").hide();
+                                                    //}
+                                                    //$("#userName").text(user.Name)
 
     </script>
     @RenderSection("Scripts", required: false)

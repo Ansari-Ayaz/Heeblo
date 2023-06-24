@@ -54,7 +54,8 @@ namespace Heeblo.Controllers
                     if (pid!=null) return RedirectToAction("WriterUpload", "Home");
                     else return RedirectToAction("WriterNoProject", "Home");
                 }
-                else return RedirectToAction("Index", "Home");
+                else if (u.role == 3) return RedirectToAction("Index", "Home");
+                else return RedirectToAction("AllUsers", "Home");
 
             }
             else

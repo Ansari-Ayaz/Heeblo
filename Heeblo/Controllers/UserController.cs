@@ -16,12 +16,10 @@ namespace Heeblo.Controllers
         {
             this._user = user;
         }
-        [HttpGet]
-        public IActionResult GetAllUser()
+        [HttpGet("{role?}")]
+        public IActionResult GetAllUser(int role = 0)
         {
-            
-            
-            var res = _user.GetAllUser();
+            var res = _user.GetAllUser(role);
             return Ok(res);
         }
         [HttpGet("{pid}")]
@@ -68,6 +66,13 @@ namespace Heeblo.Controllers
         public IActionResult VerifyUser(int uid)
         {
             var res = _user.VerifyUser(uid);
+            return Ok(res);
+        }
+        [HttpGet("{uid}/{isActive}")]
+        [HttpGet]
+        public IActionResult ChangeIsActive(int uid, bool isActive)
+        {
+            var res = _user.ChangeIsActive(uid, isActive);
             return Ok(res);
         }
 

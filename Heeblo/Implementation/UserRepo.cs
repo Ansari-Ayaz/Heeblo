@@ -12,29 +12,23 @@ namespace Heeblo.Implementation
         private readonly IHeeblo _heeblo;
         private readonly IConfiguration _config;
 
-        public UserRepo(ApplicationDbContext db,IHeeblo heeblo,IConfiguration config)
+        public UserRepo(ApplicationDbContext db, IHeeblo heeblo, IConfiguration config)
         {
             this._db = db;
             this._heeblo = heeblo;
             this._config = config;
         }
-        public Response GetAllUser()
+        public List<hbl_tbl_user> GetAllUser(int role)
         {
-            Response response = new Response();
-            var users = _db.hbl_tbl_user.ToList();
-            if (users == null) {
-                response.RespMsg = "Data Not Found";
-                response.RespObj = null;
-                return response;
-            }
-             else{ response.Resp = true;response.RespMsg = "Data Found Successfully";response.RespObj = users; return response; }
+            var users = (role != 0) ? _db.hbl_tbl_user.Where(z => z.role == role).ToList() : _db.hbl_tbl_user.ToList();
+            return users;
         }
         public Response GetUserByPublication(int pid)
         {
             Response response = new Response();
-            var user = _db.hbl_tbl_user.FirstOrDefault(z=>z.role.Equals(pid));
-            if (user ==null) { response.RespMsg = "User Not Found";return response; }
-            else{ response.Resp = true;response.RespMsg = "User Found Successfully";response.RespObj = user;return response; }
+            var user = _db.hbl_tbl_user.FirstOrDefault(z => z.role.Equals(pid));
+            if (user == null) { response.RespMsg = "User Not Found"; return response; }
+            else { response.Resp = true; response.RespMsg = "User Found Successfully"; response.RespObj = user; return response; }
         }
         public Response GetUserById(int id)
         {
@@ -48,7 +42,7 @@ namespace Heeblo.Implementation
             Response response = new Response();
             try
             {
-                if (string.IsNullOrEmpty(user.name) == null) { response.RespMsg = "Name is Blank";return response; }
+                if (string.IsNullOrEmpty(user.name) == null) { response.RespMsg = "Name is Blank"; return response; }
                 if (string.IsNullOrEmpty(user.email) == null) { response.RespMsg = "Email is Blank"; return response; }
                 if (string.IsNullOrEmpty(user.mobile) == null) { response.RespMsg = "Mobile Number is Blank"; return response; }
                 if (_db.hbl_tbl_user.Any(z => z.mobile.Equals(user.mobile))) { response.Resp = false; response.RespMsg = "Mobile Number already exist"; response.RespObj = user.mobile; return response; }
@@ -67,10 +61,10 @@ namespace Heeblo.Implementation
                 string aesString = AESEncryption.Encrypt(user.uid.ToString());
                 var link = _config["verifyUrl"] + aesString;
                 var subject = "Heeblo Account Verification";
-                var body = @"Dear " + user.name + ", \r\nPlease click below link to verify your account.\r\n"+ link;
+                var body = @"Dear " + user.name + ", \r\nPlease click below link to verify your account.\r\n" + link;
                 System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
-                if (i == 0) { response.RespMsg = "User Not Saved";return response; }
-                if (i > 0) { response.Resp = true;response.RespMsg = "User Saved and mail sent Successfully";response.RespObj = user;return response; }
+                if (i == 0) { response.RespMsg = "User Not Saved"; return response; }
+                if (i > 0) { response.Resp = true; response.RespMsg = "User Saved and mail sent Successfully"; response.RespObj = user; return response; }
                 return response;
             }
             catch (Exception ex)
@@ -86,6 +80,23 @@ namespace Heeblo.Implementation
             //Response response = new Response();
             var user = _db.hbl_tbl_user.FirstOrDefault(z => z.uid.Equals(uid));
             string sql = "update hbl_tbl_user set verified= true where uid='" + uid + "'";
+            using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
+            {
+                NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+                con.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i == 0) { return false; }
+                if (i >= 1) { return true; }
+                return false;
+            }
+
+        }
+        public bool ChangeIsActive(int uid, bool isActive)
+        {
+            //Response response = new Response();
+            var user = _db.hbl_tbl_user.FirstOrDefault(z => z.uid.Equals(uid));
+            if (user == null) { return false; }
+            string sql = "update hbl_tbl_user set is_active= " + isActive + " where uid='" + uid + "'";
             using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
             {
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
@@ -125,23 +136,23 @@ namespace Heeblo.Implementation
             var body = @"Dear " + user.name + ", \r\nPlease click below link to reset your password.\r\n" + link;
             System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
             resp.Resp = true;
-            resp.RespMsg = "We have sent a mail to "+user.email;
+            resp.RespMsg = "We have sent a mail to " + user.email;
             return resp;
         }
-        public Response PasswordForgot(int uid,string password)
+        public Response PasswordForgot(int uid, string password)
         {
             Response resp = new Response();
-            if (uid <= 0) 
-            if (string.IsNullOrEmpty(password)) { resp.Resp = false; resp.RespMsg = "Password should not blank"; return resp; ; }
+            if (uid <= 0)
+                if (string.IsNullOrEmpty(password)) { resp.Resp = false; resp.RespMsg = "Password should not blank"; return resp; ; }
             var pass = ComputeMD5Hash(password);
-            string sql = "update hbl_tbl_user set password= '"+ pass + "' where uid='" + uid + "'";
+            string sql = "update hbl_tbl_user set password= '" + pass + "' where uid='" + uid + "'";
             using (NpgsqlConnection con = new NpgsqlConnection(_config.GetConnectionString("HBL")))
             {
                 NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
                 con.Open();
                 int i = cmd.ExecuteNonQuery();
-                if(i == 0) { resp.Resp = false; resp.RespMsg = "Password not updated"; return resp; }
-                { resp.Resp = true; resp.RespMsg = "Password updated successfully"; return resp;  }
+                if (i == 0) { resp.Resp = false; resp.RespMsg = "Password not updated"; return resp; }
+                { resp.Resp = true; resp.RespMsg = "Password updated successfully"; return resp; }
             }
         }
 
@@ -155,8 +166,8 @@ namespace Heeblo.Implementation
             }
             else isMobile = true;
             var user = new hbl_tbl_user();
-            if(isMobile)
-            user = _db.hbl_tbl_user.FirstOrDefault(z => z.mobile.Equals(req.UserCred));
+            if (isMobile)
+                user = _db.hbl_tbl_user.FirstOrDefault(z => z.mobile.Equals(req.UserCred));
             else
             {
                 user = _db.hbl_tbl_user.FirstOrDefault(z => z.email.Equals(req.UserCred));
@@ -167,8 +178,28 @@ namespace Heeblo.Implementation
             }
             else
             {
-                if(user.password == ComputeMD5Hash(req.UserPwd))
+
+                if (user.password == ComputeMD5Hash(req.UserPwd))
                 {
+                    if (!user.verified)
+                    {
+                        string aesString = AESEncryption.Encrypt(user.uid.ToString());
+                        var link = _config["verifyUrl"] + aesString;
+                        var subject = "Heeblo Account Verification";
+                        var body = @"Dear " + user.name + ", \r\nPlease click below link to verify your account.\r\n" + link;
+                        System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
+                        resp.RespObj = null;
+                        resp.RespMsg = "Please verify your Account First";
+                        return resp;
+
+                    }
+                    if (!user.is_active)
+                    {
+                        resp.RespObj = null;
+                        resp.RespMsg = "Your Account is Blocked";
+                        return resp;
+
+                    }
                     user.password = "dummy";
                     resp.Resp = true;
                     resp.RespObj = user;

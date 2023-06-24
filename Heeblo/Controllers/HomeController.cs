@@ -1,4 +1,5 @@
 ﻿using Heeblo.Models;
+using Heeblo.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -17,18 +18,18 @@ namespace Heeblo.Controllers
             this.configuration = configuration;
             _logger = logger;
         }
+        public IActionResult AllUsers()
+        {
+            if (!Authorized(1)) return RedirectToAction("Login", "Auth");
+            return View();
+        }
+        public IActionResult AdminProj()
+        {
+            if (!Authorized(1)) return RedirectToAction("Login", "Auth");
+            return View();
+        }
         public IActionResult Verified()
         {
-            return View();
-        }
-        public IActionResult ApplicationList()
-        {
-            if (!Authorized()) return RedirectToAction("Login", "Auth");
-            return View();
-        }
-        public IActionResult AddProject()
-        {
-            if (!Authorized()) return RedirectToAction("Login", "Auth");
             return View();
         }
         public IActionResult EmailSent()
@@ -42,6 +43,7 @@ namespace Heeblo.Controllers
 
         public IActionResult WriterNoProject()
         {
+            if (!Authorized(2)) return RedirectToAction("Login", "Auth");
             return View();
         }
         public IActionResult WriterThankyou()
@@ -52,26 +54,18 @@ namespace Heeblo.Controllers
         public IActionResult WriterUpload()
         {
             var user = HttpContext.Session.GetString("user")??null;
-            if (!Authorized()) return RedirectToAction("Login", "Auth");
-            JObject userObject = JsonConvert.DeserializeObject<JObject>(user);
-            int role = userObject.Value<int>("role");
-            if (role != 2) return RedirectToAction("Login", "Auth");
+            if (!Authorized(2)) return RedirectToAction("Login", "Auth");
             return View();
         }
         public IActionResult Index()
         {
-            if (!Authorized()) return RedirectToAction("Login", "Auth");
+            if (!Authorized(3)) return RedirectToAction("Login", "Auth");
             return View();
         }
 
         public IActionResult Applications()
         {
-            if (!Authorized()) return RedirectToAction("Login", "Auth");
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            if (!Authorized(3)) return RedirectToAction("Login", "Auth");
             return View();
         }
 
@@ -122,10 +116,12 @@ namespace Heeblo.Controllers
             }
 
         }
-        public bool Authorized()
+        public bool Authorized(int role)
         {
-            var user = HttpContext.Session.GetString("user") ?? null;
-            if (user == null) return false;
+            var serializedUser = HttpContext.Session.GetString("user") ?? null;
+            if (serializedUser == null ) return false;
+            var user = JsonConvert.DeserializeObject<hbl_tbl_user>(serializedUser);
+            if (user.role != role) return false;
             return true;
         }
     }

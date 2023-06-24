@@ -1,0 +1,83 @@
+﻿@using Microsoft.AspNetCore.Html
+<style>
+    .submittedBy {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .fa-square-check {
+        color: green;
+    }
+
+    .fa-circle-xmark {
+        background-color: green;
+    }
+</style>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tblProject" class="table table-sm table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="srnumber">Sr no</th>
+                            <th>Project Name</th>
+                            <th>Total Applications</th>
+                            <th>Created On</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var params = new URLSearchParams(window.location.search)
+            var uid = params.get('uid');
+            GetAllProjects(uid);
+
+        })
+        function GetAllProjects(uid) {
+
+            $('#tblProject').DataTable().destroy();
+            $("#tblProject").dataTable({
+                "ajax": {
+                    url: '@(Url.Action("GetAllProjects", "Project"))' + '/' + uid,
+                    type: "GET",
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    async: false,
+                    dataSrc: ""
+                },
+                "columns": [
+                    {
+                        "targets": 0,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        "data": "name"
+                    },
+                    { "data": "applicatant_count", },
+                    {
+                        "data": null,
+                        "render": function (a, b, c) {
+                            return moment(c.created_on).format("YYYY-MM-DD");
+                        }
+                    }
+
+                ]
+            })
+        }
+
+        
+    </script>
+}

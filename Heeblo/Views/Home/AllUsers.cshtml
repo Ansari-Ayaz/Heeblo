@@ -1,0 +1,125 @@
+﻿@using Microsoft.AspNetCore.Html
+<style>
+    .submittedBy {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .fa-square-check {
+        color: green;
+    }
+
+    .fa-circle-xmark {
+        background-color: green;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <select id="ddlOptions" class="form-control form-control-sm" onchange="handleDropdownChange()">
+                    <option value="3">Publisher</option>
+                    <option value="2">Writer</option>
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-12">
+                <table id="tblPublisher" class="table table-sm table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="srnumber">Sr no</th>
+                            <th>Publisher</th>
+                            <th>Created On</th>
+                            <th>Is Active</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        var drpRole = 3
+        $(document).ready(function () {
+            GetAllPublisher();
+
+        })
+        function handleDropdownChange() {
+            var selectedValue = document.getElementById("ddlOptions").value;
+            drpRole = selectedValue;
+            GetAllPublisher();
+            console.log("Selected value:", drpRole);
+            // Add your logic here
+        }
+        function GetAllPublisher() {
+
+            $('#tblPublisher').DataTable().destroy();
+            $("#tblPublisher").dataTable({
+                "ajax": {
+                    url: '@(Url.Action("GetAllUser", "User"))' + '/' + drpRole,
+                    dataType: "JSON",
+                    contentType: "application/json",
+                    async: false,
+                    dataSrc: ""
+                },
+                "columns": [
+                    {
+                        "targets": 0,
+                        "render": function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (a, b, c) {
+                            return '<p class="submittedBy" onclick="viewProj(' + c.uid + ')">' + c.name + '</p>'
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (a, b, c) {
+                            return moment(c.created_on).format("YYYY-MM-DD");
+                        }
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" role="switch" ${row.is_active ? 'checked' : ''} onclick="changeIsActive(this.checked,${row.uid})">
+                                                            </div>`;
+                        }
+                    }
+
+                ]
+            })
+        }
+        function changeIsActive(isActive, uid) {
+            console.log(isActive + uid)
+            $.ajax({
+                url: '@(Url.Action("ChangeIsActive", "user"))' + '/' + uid + '/' + isActive,
+                type: "Get",
+                contentType: "application/json",
+                success: function (resp) {
+                    (resp) ? Swal.fire('Updated successfully', '', 'success') : Swal.fire('Unable to update', '', 'error');
+                    GetAllPublisher();
+
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire('Something went wrong', '', 'error');
+                }
+            });
+        }
+        function viewProj(uid) {
+            if (drpRole == 2) return
+            window.location.href = '@(Url.Action("AdminProj", "Home"))' + '?uid=' + uid
+        }
+    </script>
+}

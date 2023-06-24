@@ -136,8 +136,9 @@
         var contentB64 = "";
         var resumeFileName = "";
         var contentFileName = "";
-        $(document).ready(function() {
-            GetAllApplications();
+
+        function InitCircular(){
+            
             const circularProgress = document.querySelectorAll(".circular-progress");
 
             Array.from(circularProgress).forEach((progressBar) => {
@@ -173,6 +174,11 @@
                     }
                 }, speed);
             });
+        }
+
+        $(document).ready(function() {
+            GetAllApplications();
+            InitCircular();
         })
         function GetAllApplications() {
             $('#tblApp').DataTable().destroy();
@@ -293,6 +299,8 @@
                     }
 
                 ]
+            }).on('draw.dt', function(){
+                InitCircular();
             })
         }
         var status;
