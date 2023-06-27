@@ -39,10 +39,8 @@
                                 Thank <span style="color:#d6c494">you !</span>
                             </h2>
 
-                            <p> We have sent a verification link on your email. <span style="color:#d6c494" id="email"></span></p>
+                            <p> Your password  <span style="color:#d6c494">has been successfully reset</span></p>
                         </div>
-                        <a href="@Url.Action("Login","Auth")" style="color:#ffffff"> Click here to go back to login</a>
-
                     </div>
                 </div>
             </div>
@@ -51,7 +49,7 @@
             <div class="left-ft"><a href="mailto:admin@heeblo.com"><i class="fa-solid fa-envelope"></i>admin@heeblo.com</a></div>
             <div class="right-ft">
                 <ul>
-                   <li><a href="@Url.Action("termsandcondition","Auth")">Terms and Conditions </a></li>
+                    <li><a href="@Url.Action("termsandcondition","Auth")">Terms and Conditions </a></li>
                             <li><a href="@Url.Action("privacypolicy","Auth")">Privacy Policy</a></li>
                 </ul>
             </div>
@@ -63,16 +61,5 @@
     <script src="~/frontend-assets/pattern/assets/js/swiper.min.js"></script>
     <script src="~/frontend-assets/pattern/assets/js/wow.min.js"></script>
     <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
-    <script>
-            $(document).ready(function() {
-          var params = new URLSearchParams(window.location.search);
-          var uValue = params.get("u");
-
-          console.log(atob(uValue));
-          $('#email').text(atob(uValue))
-
-          // Further processing or actions with the extracted value can be done here
-        });
-    </script>
 </body>
 </html>

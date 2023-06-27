@@ -28,6 +28,10 @@ namespace Heeblo.Controllers
             if (!Authorized(1)) return RedirectToAction("Login", "Auth");
             return View();
         }
+        public IActionResult PassResetSuc()
+        {
+            return View();
+        }
         public IActionResult Verified()
         {
             return View();
