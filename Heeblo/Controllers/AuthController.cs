@@ -36,6 +36,7 @@ namespace Heeblo.Controllers
                 UserCred = cred,
                 UserPwd = pwd
             };
+            Console.WriteLine(configuration["Config:API"]);
             var client = new RestClient(configuration["Config:API"]);
             var request = new RestRequest("User/ValidateUser/", Method.POST);
             request.AddJsonBody(uDetail);

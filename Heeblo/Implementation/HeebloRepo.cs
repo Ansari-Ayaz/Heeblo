@@ -191,7 +191,7 @@ namespace Heeblo.Implementation
             smtp.Host = _config.GetValue<string>("Mail:Server");
             smtp.Port = _config.GetValue<int>("Mail:Port");
             smtp.Credentials = new NetworkCredential(
-                _config.GetValue<string>("Mail:From"),
+                _config.GetValue<string>("Mail:User"),
                 _config.GetValue<string>("Mail:Password")
                 );
             smtp.EnableSsl = true;
