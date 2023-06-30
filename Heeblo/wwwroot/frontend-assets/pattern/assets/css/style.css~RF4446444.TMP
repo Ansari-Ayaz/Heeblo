@@ -2464,7 +2464,7 @@ span.mb {
         color: #fff;
         font-weight: bold;
         margin: 0;
-        line-height: 55px;
+        line-height: 42px;
     }
 
     .social-media a {

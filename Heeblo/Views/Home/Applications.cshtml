@@ -53,12 +53,21 @@
         font-size: var(--font-size);
         color: white;
     }
+    @media only screen and (max-width: 600px) {
+        .modal-dialog {
+            max-width: 100% !important;
+        }
+        .modal-header h3{
+            font-size: 32px !important;
+        }
+ 
+    }
 </style>
 
 <div class="card">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 table-responsive ">
                 <table id="tblApp" class="table table-sm table-striped table-bordered">
                     <thead>
                         <tr>
@@ -88,23 +97,23 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4"><p>Name:</p></div>
-                    <div class="col-md-8"><p id="writerName"></p></div>
+                    <div class="col-md-8"><p id="writerName" style="color: #d6c494;"></p></div>
                 </div>
                 <div class="row">
                     <div class="col-md-4"><p>Email:</p></div>
-                    <div class="col-md-8"><p id="writerEmail"></p></div>
+                    <div class="col-md-8"><p id="writerEmail"  style="color: #d6c494;"></p></div>
                 </div>
                 <div class="row">
                     <div class="col-md-4"><p>Mobile:</p></div>
-                    <div class="col-md-8"><p id="writerMobile"></p></div>
+                    <div class="col-md-8"><p id="writerMobile"  style="color: #d6c494;"></p></div>
                 </div>
                 <div class="row">
                     <div class="col-md-4"><p>Resume:</p></div>
-                    <div class="col-md-8"><p class="download" onclick="downloadResume()" id="writerResume"></p></div>
+                    <div class="col-md-8"><p class="download" onclick="downloadResume()" id="writerResume"  style="color: #d6c494;"></p></div>
                 </div>
                 <div class="row">
                     <div class="col-md-4"><p>Sample Content:</p></div>
-                    <div class="col-md-8"><p class="download" onclick="downloadSampleContent()" id="writerContent"></p></div>
+                    <div class="col-md-8"><p class="download" onclick="downloadSampleContent()" id="writerContent"  style="color: #d6c494;"></p></div>
                 </div>
             </div>
         </div>
