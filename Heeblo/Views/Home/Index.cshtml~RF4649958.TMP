@@ -12,12 +12,6 @@
     .fa-circle-xmark {
         background-color: green;
     }
-    @media only screen and (max-width: 600px) {
-        .icon-buttons{
-            float: center !important;
-        }
-
-    }
 </style>
 <div class="card">
     <div class="card-body">
@@ -78,7 +72,7 @@
                         "data": null,
                         "render": function(data, type, row) {
                             var url = row.link;
-                            var link = '<div class="link-container"><p title="' + url + '">' + row.name + '.heeblo.com</p></div>';
+                            var link = '<div class="link-container"><p title="' + url + '">' + row.name + '.spreadhood.com</p></div>';
                             var copyButton = '<button class="btn btn-info btn-sm " onclick="share(\'copy\', \'' + row.link + '\')" title="Copy to Clipboard"><i class="far fa-copy"></i></button>';
                             return link + '<div class="icon-buttons">' + copyButton + '</div>';
                         }
