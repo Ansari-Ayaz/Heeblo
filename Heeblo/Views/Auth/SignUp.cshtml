@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/rangeui.css" />
 
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
     <!-- ========== End Stylesheet ========== -->
     <script>
         function openNav() {
@@ -109,40 +108,9 @@
                                 </div>
                                 <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
                                     <div class="col-md-12 btn-login">
-                                        @*<button type="button" onclick="Whatsapp()">
-                                        <span><i class="fa-brands fa-whatsapp"></i>Whatsapp</span>
-                                        </button>*@
-                                        @*<button type="button" onclick="Facebook()">
-                                        <span><i class="fa-brands fa-facebook-f"></i>Facebook</span>
-                                        <fb:login-button id="login" scope="public_profile" onlogin="checkLoginState();">
-                                        </fb:login-button>
-                                        <fb:logut-button id="logout" onlogout="facebookLogout();">
-                                        </fb:logut-button>
-
-                                        <div id="status">
-                                        </div>
-                                        </button>*@
-                                        <button type="button" onclick="g_click()">
+                                        <button type="button" onclick="Google()">
                                             <span> <i class="fa-brands fa-google"></i> Google</span>
-                                            <div id="g_id_onload"
-                                                 data-client_id="123231719566-usi33hu495tmjg72f9jm6eoj6ia1ga3b.apps.googleusercontent.com"
-                                                 data-context="signin"
-                                                 data-ux_mode="popup"
-                                                 data-callback="handleCredentialResponse"
-                                                 data-nonce=""
-                                                 data-auto_prompt="false">
-                                            </div>
                                         </button>
-
-                                        <div class="g_id_signin d-none"
-                                             data-type="standard"
-                                             data-shape="rectangular"
-                                             data-theme="outline"
-                                             data-text="signin_with"
-                                             data-size="medium"
-                                             data-logo_alignment="center">
-                                        </div>
-
                                         <button type="button" onclick="Email()">
                                             <span> <i class="fa-solid fa-envelope"></i> Email</span>
                                         </button>
@@ -242,20 +210,12 @@
         <script src="~/frontend-assets/pattern/assets/js/lightcase.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/isotope.pkgd.min.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <script async defer src="https://apis.google.com/js/platform.js?onload=renderButton"></script>
+
 
         <script>
-            function Whatsapp() {
-                alert('Whatsapp')
-            }
-            function Facebook() {
-                alert('Facebook')
-            }
             function Google() {
-                alert('Google')
+                window.location.href = '@Url.Action("SignInWithGoogle","Auth")'
             }
-            const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
             function Email() {
                 window.location.href = '@Url.Action("Register","Auth")'
             }
@@ -266,131 +226,6 @@
 
 
     </div>
-
-    <script src="https://www.google.com/recaptcha/api.js?render=https://callsystem.net"></script>
-    @*<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>*@
-    @*<script type="text/javascript" src="https://otpless.com/auth.js"></script>*@
-    <script>
-
-        //grecaptcha.ready(function () {
-        //    grecaptcha.execute('https://callsystem.net', { action: 'homepage' }).then(function (token) {
-        //        // pass the token to the backend script for verification
-        //    });
-        //});
-
-        //function otpless(otplessUser) {
-        //    alert(JSON.stringify(otplessUser));
-        //}
-
-        // function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
-        //     console.log('statusChangeCallback');
-        //     console.log(response);                   // The current login status of the person.
-        //     if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-        // 
-        //         testAPI();
-        //     } else {                                 // Not logged into your webpage or we are unable to tell.
-        //         document.getElementById('status').innerHTML = 'Please log ' +
-        //             'into this webpage.';
-        //     }
-        // }
-        // 
-        // 
-        // function checkLoginState() {               // Called when a person is finished with the Login Button.
-        //     FB.getLoginStatus(function (response) {   // See the onlogin handler
-        //         statusChangeCallback(response);
-        //     });
-        // }
-        // 
-        // 
-        // window.fbAsyncInit = function () {
-        //     FB.init({
-        //         appId: '218711571111775',
-        //         cookie: true,                     // Enable cookies to allow the server to access the session.
-        //         xfbml: true,                     // Parse social plugins on this webpage.
-        //         version: 'v17.0'           // Use this Graph API version for this call.
-        //     });
-        // 
-        // 
-        //     FB.getLoginStatus(function (response) {   // Called after the JS SDK has been initialized.
-        //         statusChangeCallback(response);        // Returns the login status.
-        //     });
-        // };
-        // 
-        // function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-        //     console.log('Welcome!  Fetching your information.... ');
-        //     FB.api('/me?fields=id,name,email', function (response) {
-        //         console.log(response);
-        //         //document.getElementById('status').innerHTML =
-        //         //    'Thanks for logging in, ' + response.name + '!';
-        //     });
-        // }
-        // 
-        // function facebookLogout() {
-        //     FB.logout(function (response) {
-        //         statusChangeCallback(response);
-        //     });
-        // };
-        // 
-        // function facebookLoginByDialog() {
-        //     FB.login(function (response) {
-        //         statusChangeCallback(resposne);
-        //     }, { scope: 'public_profile,email' });
-        // };
-        // 
-
-
-        // Render Google Sign-in button
-        function renderButton() {
-            gapi.signin2.render('gSignIn', {
-                'scope': 'profile email',
-                'width': 240,
-                'height': 50,
-                'longtitle': true,
-                'theme': 'dark',
-                'onsuccess': onSuccess,
-                'onfailure': onFailure
-            });
-        }
-        // Sign-in success callback
-        function onSuccess(googleUser) {
-            // Retrieve the Google account data
-            gapi.client.load('oauth2', 'v2', function () {
-                var request = gapi.client.oauth2.userinfo.get({
-                    'userId': 'me'
-                });
-                request.execute(function (resp) {
-                    // Display the user details
-                    var profileHTML = '<h3>Welcome ' + resp.given_name + '! <a href="javascript:void(0);" onclick="signOut();">Sign out</a></h3>';
-                    profileHTML += '<img src="' + resp.picture + '"/><p><b>Google ID: </b>' + resp.id + '</p><p><b>Name: </b>' + resp.name + '</p><p><b>Email: </b>' + resp.email + '</p><p><b>Gender: </b>' + resp.gender + '</p><p><b>Locale: </b>' + resp.locale + '</p><p><b>Google Profile:</b> <a target="_blank" href="' + resp.link + '">click to view profile</a></p>';
-                    document.getElementsByClassName("userContent")[0].innerHTML = profileHTML;
-
-                    document.getElementById("gSignIn").style.display = "none";
-                    document.getElementsByClassName("userContent")[0].style.display = "block";
-                });
-            });
-        }
-
-        // Sign-in failure callback
-        function onFailure(error) {
-            alert(error);
-        }
-        function handleCredentialResponse(response) {
-            const responsePayload = decodeJwtResponse(response.credential);
-
-            var cred = {
-                email: responsePayload.email,
-                name: responsePayload.name
-            }
-            console.log(cred)
-            window.location.href = '@(Url.Action("Register", "Auth"))' + '?c=' + btoa(JSON.stringify(cred))
-
-        }
-
-        function decodeJwtResponse(data) {
-            var tokens = data.split(".");
-            return JSON.parse(atob(tokens[1]));
-        }
-    </script>
 
 </body>
 </html>
