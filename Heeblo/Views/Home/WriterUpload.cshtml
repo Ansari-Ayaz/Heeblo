@@ -47,8 +47,8 @@
         <div class="container">
             <div class="content-login">
                 @*<div class="top-logo">
-                <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo">
-                </div>*@
+                    <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo">
+                    </div>*@
                 <div class="row" style="align-items: center;">
                     <div class="top-logo">  <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo" /></div>
 
@@ -59,8 +59,8 @@
                                 <H3 style="text-align: center !important;color: #fff !important;">You're almost there </H3>
                             </div>
                             @*<div class="signup-line">
-                            <a href="#">Or</a>
-                            </div>*@
+                                <a href="#">Or</a>
+                                </div>*@
                             <div class="col-md-12 btn-login">
                                 <div class="upload-btn">
                                     <label for="files" class="button">  Upload Resume<small><br /> Text here</small></label>
@@ -93,7 +93,7 @@
         <div class="right-ft">
             <ul>
                 <li><a href="@Url.Action("termsandcondition","Auth")">Terms and Conditions </a></li>
-                            <li><a href="@Url.Action("privacypolicy","Auth")">Privacy Policy</a></li>
+                <li><a href="@Url.Action("privacypolicy","Auth")">Privacy Policy</a></li>
             </ul>
         </div>
     </div>
@@ -105,60 +105,84 @@
     <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
 </body>
 <script>
-
     $('label[for="files"]').click(function() {
-        $(this).parent().find('input[type="file"]').trigger('click')
-    })
+        $(this).parent().find('input[type="file"]').trigger('click');
+    });
 
     $('input[type="file"]').change(function() {
         var f = $(this)[0].files;
-        if (f.length == 0)
+        var maxSize = 1 * 1024 * 1024; // 1 MB in bytes
+        var allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+        if (f.length == 0) {
             $(this).parent().find('.button small').empty();
-        else
-            $(this).parent().find('.button small').html(`<br/>` + f[0].name);
-    }).trigger('change')
+        } else {
+            var file = f[0];
+            var fileSize = file.size;
+            var fileType = file.type;
 
-    function uploadFile() {
-        var resumeFile = $("#resume").prop("files")[0];
-        var sampleFile = $("#sample").prop("files")[0];
+            if (fileSize <= maxSize && allowedTypes.includes(fileType)) {
+                $(this).parent().find('.button small').html('<br/>' + file.name);
+            } else {
+                // Invalid file type or size exceeds the limit
+                $(this).val(''); // Clear the selected file
+                $(this).parent().find('.button small').empty();
 
-        if (!resumeFile || !sampleFile) {
-            $("#errorLabel").text("Please upload both files.");
-            return;
-        }
-        $("#errorLabel").text("");
-
-        var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
-        var pid = @(new HtmlString(_hca.HttpContext.Session.GetString("pid")??"null"));
-
-
-        var formData = new FormData()
-        formData.append('resume', $('#resume')[0].files[0]);
-        formData.append('sample_content', $('#sample')[0].files[0]);
-
-        formData.append("pid", pid);
-        formData.append("uid", user.uid);
-        formData.append("created_by", user.uid);
-
-        $.ajax({
-            url: `@Url.Action("SaveApplication","Application")`,
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(resp) {
-                console.log(resp)
-                if (resp.resp) {
-                    window.location.href = "@Url.Action("WriterThankyou", "Home")"
+                if (fileSize > maxSize) {
+                $("#errorLabel").text('File size should be less than 1 MB.');
                 } else {
-                    $("#errorLabel").text(resp.respMsg);
+                    $("#errorLabel").text('Only PDF, DOC, or DOCX files are allowed.');
                 }
-            },
-            error: function(err) {
-                $("#errorLabel").text("Something went wrong .Please try again");
             }
-        })
-    }
+        }
+    }).trigger('change');
+
+
+
+        function uploadFile() {
+            var resumeFile = $("#resume").prop("files")[0];
+            var sampleFile = $("#sample").prop("files")[0];
+
+            if (!resumeFile || !sampleFile) {
+                $("#errorLabel").text("Please upload both files.");
+                return;
+            }
+            $("#errorLabel").text("");
+
+            var user = @(new HtmlString(_hca.HttpContext.Session.GetString("user")??"null"));
+            var pid = @(new HtmlString(_hca.HttpContext.Session.GetString("pid")??"null"));
+            if(user=="null"||pid=="null"){
+                        window.location.href = "@Url.Action("Login", "Auth")"
+                        return;
+            }
+
+            var formData = new FormData()
+            formData.append('resume', $('#resume')[0].files[0]);
+            formData.append('sample_content', $('#sample')[0].files[0]);
+
+            formData.append("pid", pid);
+            formData.append("uid", user.uid);
+            formData.append("created_by", user.uid);
+
+            $.ajax({
+                url: `@Url.Action("SaveApplication","Application")`,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(resp) {
+                    console.log(resp)
+                    if (resp.resp) {
+                        window.location.href = "@Url.Action("WriterThankyou", "Home")"
+                    } else {
+                        $("#errorLabel").text(resp.respMsg);
+                    }
+                },
+                error: function(err) {
+                    $("#errorLabel").text("Something went wrong .Please try again");
+                }
+            })
+        }
 
 
 </script>
