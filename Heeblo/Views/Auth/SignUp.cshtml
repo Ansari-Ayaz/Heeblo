@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Stock Logistics: Powered by Matrixninjas" />
     <meta name="csrf-token" content="rZ3zX1dNEGz3R30Ek9IafBt5MJp31NkEnluQJfNR" />
+    <meta name="google-signin-client_id" content="370069400410-srd922ua4fpqfkkfgjlnuddf0je47f9v.apps.googleusercontent.com">
     <!-- ========== Page Title ========== -->
     <title> Heeblo</title>
     <!-- ========== Favicon Icon ========== -->
@@ -99,9 +100,9 @@
 
                         <div class="row" style="align-items: center;">
 
-                            <div class="top-logo">  
+                            <div class="top-logo">
                                 <img src="~/frontend-assets/pattern/assets/images/heeblo-logo.png" alt="Logo" />
-                                </div>
+                            </div>
                             <div class="col-lg-6 col-md-6 main-form-center">
                                 <div class="login-tittle mb-4 register-page">
                                     <h3> Sign Up</h3>
@@ -109,17 +110,17 @@
                                 <div class="form-info wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
                                     <div class="col-md-12 btn-login">
                                         @*<button type="button" onclick="Whatsapp()">
-                                            <span><i class="fa-brands fa-whatsapp"></i>Whatsapp</span>
+                                        <span><i class="fa-brands fa-whatsapp"></i>Whatsapp</span>
                                         </button>*@
                                         @*<button type="button" onclick="Facebook()">
-                                            <span><i class="fa-brands fa-facebook-f"></i>Facebook</span>
-                                            <fb:login-button id="login" scope="public_profile" onlogin="checkLoginState();">
-                                            </fb:login-button>
-                                            <fb:logut-button id="logout" onlogout="facebookLogout();">
-                                            </fb:logut-button>
+                                        <span><i class="fa-brands fa-facebook-f"></i>Facebook</span>
+                                        <fb:login-button id="login" scope="public_profile" onlogin="checkLoginState();">
+                                        </fb:login-button>
+                                        <fb:logut-button id="logout" onlogout="facebookLogout();">
+                                        </fb:logut-button>
 
-                                            <div id="status">
-                                            </div>
+                                        <div id="status">
+                                        </div>
                                         </button>*@
                                         <button type="button" onclick="g_click()">
                                             <span> <i class="fa-brands fa-google"></i> Google</span>
@@ -241,7 +242,6 @@
         <script src="~/frontend-assets/pattern/assets/js/lightcase.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/isotope.pkgd.min.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
-        <meta name="google-signin-client_id" content="370069400410-srd922ua4fpqfkkfgjlnuddf0je47f9v.apps.googleusercontent.com">
         <script src="https://accounts.google.com/gsi/client" async defer></script>
         <script async defer src="https://apis.google.com/js/platform.js?onload=renderButton"></script>
 
@@ -255,7 +255,7 @@
             function Google() {
                 alert('Google')
             }
-const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
+            const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
             function Email() {
                 window.location.href = '@Url.Action("Register","Auth")'
             }
@@ -268,7 +268,7 @@ const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
     </div>
 
     <script src="https://www.google.com/recaptcha/api.js?render=https://callsystem.net"></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    @*<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>*@
     @*<script type="text/javascript" src="https://otpless.com/auth.js"></script>*@
     <script>
 
@@ -282,61 +282,61 @@ const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
         //    alert(JSON.stringify(otplessUser));
         //}
 
-        function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
-            console.log('statusChangeCallback');
-            console.log(response);                   // The current login status of the person.
-            if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-
-                testAPI();
-            } else {                                 // Not logged into your webpage or we are unable to tell.
-                document.getElementById('status').innerHTML = 'Please log ' +
-                    'into this webpage.';
-            }
-        }
-
-
-        function checkLoginState() {               // Called when a person is finished with the Login Button.
-            FB.getLoginStatus(function (response) {   // See the onlogin handler
-                statusChangeCallback(response);
-            });
-        }
-
-
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '218711571111775',
-                cookie: true,                     // Enable cookies to allow the server to access the session.
-                xfbml: true,                     // Parse social plugins on this webpage.
-                version: 'v17.0'           // Use this Graph API version for this call.
-            });
-
-
-            FB.getLoginStatus(function (response) {   // Called after the JS SDK has been initialized.
-                statusChangeCallback(response);        // Returns the login status.
-            });
-        };
-
-        function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-            console.log('Welcome!  Fetching your information.... ');
-            FB.api('/me?fields=id,name,email', function (response) {
-                console.log(response);
-                //document.getElementById('status').innerHTML =
-                //    'Thanks for logging in, ' + response.name + '!';
-            });
-        }
-
-        function facebookLogout() {
-            FB.logout(function (response) {
-                statusChangeCallback(response);
-            });
-        };
-
-        function facebookLoginByDialog() {
-            FB.login(function (response) {
-                statusChangeCallback(resposne);
-            }, { scope: 'public_profile,email' });
-        };
-
+        // function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+        //     console.log('statusChangeCallback');
+        //     console.log(response);                   // The current login status of the person.
+        //     if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+        // 
+        //         testAPI();
+        //     } else {                                 // Not logged into your webpage or we are unable to tell.
+        //         document.getElementById('status').innerHTML = 'Please log ' +
+        //             'into this webpage.';
+        //     }
+        // }
+        // 
+        // 
+        // function checkLoginState() {               // Called when a person is finished with the Login Button.
+        //     FB.getLoginStatus(function (response) {   // See the onlogin handler
+        //         statusChangeCallback(response);
+        //     });
+        // }
+        // 
+        // 
+        // window.fbAsyncInit = function () {
+        //     FB.init({
+        //         appId: '218711571111775',
+        //         cookie: true,                     // Enable cookies to allow the server to access the session.
+        //         xfbml: true,                     // Parse social plugins on this webpage.
+        //         version: 'v17.0'           // Use this Graph API version for this call.
+        //     });
+        // 
+        // 
+        //     FB.getLoginStatus(function (response) {   // Called after the JS SDK has been initialized.
+        //         statusChangeCallback(response);        // Returns the login status.
+        //     });
+        // };
+        // 
+        // function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+        //     console.log('Welcome!  Fetching your information.... ');
+        //     FB.api('/me?fields=id,name,email', function (response) {
+        //         console.log(response);
+        //         //document.getElementById('status').innerHTML =
+        //         //    'Thanks for logging in, ' + response.name + '!';
+        //     });
+        // }
+        // 
+        // function facebookLogout() {
+        //     FB.logout(function (response) {
+        //         statusChangeCallback(response);
+        //     });
+        // };
+        // 
+        // function facebookLoginByDialog() {
+        //     FB.login(function (response) {
+        //         statusChangeCallback(resposne);
+        //     }, { scope: 'public_profile,email' });
+        // };
+        // 
 
 
         // Render Google Sign-in button
@@ -376,13 +376,13 @@ const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
         }
         function handleCredentialResponse(response) {
             const responsePayload = decodeJwtResponse(response.credential);
-            
+
             var cred = {
                 email: responsePayload.email,
                 name: responsePayload.name
             }
             console.log(cred)
-            window.location.href = '@(Url.Action("Register", "Auth"))' + '?c='+btoa(JSON.stringify(cred))
+            window.location.href = '@(Url.Action("Register", "Auth"))' + '?c=' + btoa(JSON.stringify(cred))
 
         }
 
