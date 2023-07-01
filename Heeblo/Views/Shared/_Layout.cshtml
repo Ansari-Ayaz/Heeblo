@@ -48,6 +48,23 @@
             background-color: #e9ecef33;
             opacity: 1;
         }
+        @@media only screen and (max-width: 600px) {
+             .modal-dialog {
+                    max-width: 100% !important;
+              }
+            .modal-header h3 {
+                font-size: 26px !important;
+            }
+            .popup-body h2 {
+                font-size: 33px !important;
+            }
+            .popup-body p {
+                font-size: 18px !important;
+            }
+            .popup-body h3 {
+                font-size: 20px !important;
+            }
+        }
     </style>
 
     @RenderSection("Styles", required: false)

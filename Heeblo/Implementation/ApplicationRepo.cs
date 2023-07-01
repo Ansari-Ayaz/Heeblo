@@ -23,8 +23,8 @@ namespace Heeblo.Implementation
             Response response = new Response();
             var applns = _db.hbl_tbl_application.ToList();
             var sortedApplns = applns.OrderBy(a => a.status == null ? 0 : a.status == "Accepted" ? 1 : a.status == "Rejected" ? 2 : 3).ToList();
-            if (applns.Count == 0) { response.RespMsg = "Application Data Not Found"; response.RespObj = null; return response; }
-            response.Resp = true; response.RespMsg = "Application Data Found Successfully"; response.RespObj = applns; return response;
+            if (applns.Count == 0) { response.RespMsg = "Application data not found"; response.RespObj = null; return response; }
+            response.Resp = true; response.RespMsg = "Application data found successfully"; response.RespObj = applns; return response;
         }
         public List<AllApplication> GetApplicationByPid(int pid)
         {
@@ -136,12 +136,12 @@ namespace Heeblo.Implementation
             try
             {
                 hbl_tbl_application app = new hbl_tbl_application();
-                if (application.pid <= 0) { response.RespMsg = "Project id Required"; return response; }
-                if (application.uid <= 0) { response.RespMsg = "User id Required"; return response; }
+                if (application.pid <= 0) { response.RespMsg = "Project id required"; return response; }
+                if (application.uid <= 0) { response.RespMsg = "User id required"; return response; }
                 if (!PdfIsValid(application.resume)) { response.RespMsg = "Resume should be PDF"; return response; }
-                if (!DocIsValid(application.sample_content)) { response.RespMsg = "Sample Content should be Doc or Docx"; return response; }
+                if (!DocIsValid(application.sample_content)) { response.RespMsg = "Sample content should be doc or docx"; return response; }
                 string content = ReadDocFileContent(application.sample_content);
-                if (string.IsNullOrEmpty(content)) { response.RespMsg = "Content Should be less then 500 words"; return response; }
+                if (string.IsNullOrEmpty(content)) { response.RespMsg = "Content should be less then 500 words"; return response; }
                 app.pid = application.pid;
                 app.uid = application.uid;
                 app.updated_by = application.created_by;
@@ -157,7 +157,7 @@ namespace Heeblo.Implementation
                 //_heeblo.GetScores(ReadDocFileContent(application.sample_content), app.application_id);
                 if (i == 0)
                 {
-                    response.RespMsg = "Application Failed to Saved"; return response;
+                    response.RespMsg = "Application failed to saved"; return response;
 
                 }
                 hbl_tbl_attachment attachment = new hbl_tbl_attachment();
@@ -169,10 +169,10 @@ namespace Heeblo.Implementation
                 _db.hbl_tbl_attachment.Add(attachment);
                 if (_db.SaveChanges() == 0)
                 {
-                    response.RespMsg = "Attachment Failed to Saved"; return response;
+                    response.RespMsg = "Attachment failed to saved"; return response;
                 }
 
-                response.Resp = true; response.RespMsg = "Application and Attachment Saved Successfully"; response.RespObj = application; return response;
+                response.Resp = true; response.RespMsg = "Application and attachment saved successfully"; response.RespObj = application; return response;
             }
             catch (Exception ex)
             {

@@ -62,8 +62,8 @@ namespace Heeblo.Implementation
         {
             Response response = new Response();
             var projects = _db.hbl_tbl_project.FirstOrDefault(z => z.pid == id);
-            if (projects == null) { response.RespMsg = "Project Data Not Found"; response.RespObj = null; return response; }
-            else { response.Resp = true; response.RespMsg = "Project Data Found Successfully"; response.RespObj = projects; return response; }
+            if (projects == null) { response.RespMsg = "Project data not found"; response.RespObj = null; return response; }
+            else { response.Resp = true; response.RespMsg = "Project data found successfully"; response.RespObj = projects; return response; }
         }
 
         public Response SaveProject(hbl_tbl_project project)
@@ -71,7 +71,7 @@ namespace Heeblo.Implementation
             Response response = new Response();
             try
             {
-                if (string.IsNullOrEmpty(project.name) == null) { response.RespMsg = "Name is Blank"; return response; }
+                if (string.IsNullOrEmpty(project.name) == null) { response.RespMsg = "Name is blank"; return response; }
                 project.name = project.name.Trim().ToLower();
                 project.date = DateTime.UtcNow;
                 project.is_active = true;
@@ -84,8 +84,8 @@ namespace Heeblo.Implementation
                 _db.hbl_tbl_project.Attach(project);
                 _db.Entry(project).State = EntityState.Modified;
                 var j = _db.SaveChanges();
-                if (j == 0) { response.RespMsg = "Project Not Saved"; response.RespObj = null; return response; }
-                response.Resp = true; response.RespMsg = "Project Saved Successfully";
+                if (j == 0) { response.RespMsg = "Project not saved"; response.RespObj = null; return response; }
+                response.Resp = true; response.RespMsg = "Project saved successfully";
                 response.RespObj = new { link= link,name = project.name} ;
                 return response;
             }

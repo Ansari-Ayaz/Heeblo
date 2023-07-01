@@ -27,25 +27,25 @@ namespace Heeblo.Implementation
         {
             Response response = new Response();
             var user = _db.hbl_tbl_user.FirstOrDefault(z => z.role.Equals(pid));
-            if (user == null) { response.RespMsg = "User Not Found"; return response; }
-            else { response.Resp = true; response.RespMsg = "User Found Successfully"; response.RespObj = user; return response; }
+            if (user == null) { response.RespMsg = "User not found"; return response; }
+            else { response.Resp = true; response.RespMsg = "User found successfully"; response.RespObj = user; return response; }
         }
         public Response GetUserById(int id)
         {
             Response response = new Response();
             var user = _db.hbl_tbl_user.FirstOrDefault(z => z.uid.Equals(id));
-            if (user == null) { response.RespMsg = "User Not Found"; return response; }
-            else { response.Resp = true; response.RespMsg = "User Found Successfully"; response.RespObj = user; return response; }
+            if (user == null) { response.RespMsg = "User not found"; return response; }
+            else { response.Resp = true; response.RespMsg = "User found successfully"; response.RespObj = user; return response; }
         }
         public Response SaveUser(hbl_tbl_user user)
         {
             Response response = new Response();
             try
             {
-                if (string.IsNullOrEmpty(user.name) == null) { response.RespMsg = "Name is Blank"; return response; }
-                if (string.IsNullOrEmpty(user.email) == null) { response.RespMsg = "Email is Blank"; return response; }
-                if (string.IsNullOrEmpty(user.mobile) == null) { response.RespMsg = "Mobile Number is Blank"; return response; }
-                if (_db.hbl_tbl_user.Any(z => z.mobile.Equals(user.mobile))) { response.Resp = false; response.RespMsg = "Mobile Number already exist"; response.RespObj = user.mobile; return response; }
+                if (string.IsNullOrEmpty(user.name) == null) { response.RespMsg = "Name is blank"; return response; }
+                if (string.IsNullOrEmpty(user.email) == null) { response.RespMsg = "Email is blank"; return response; }
+                if (string.IsNullOrEmpty(user.mobile) == null) { response.RespMsg = "Mobile number is blank"; return response; }
+                if (_db.hbl_tbl_user.Any(z => z.mobile.Equals(user.mobile))) { response.Resp = false; response.RespMsg = "Mobile number already exist"; response.RespObj = user.mobile; return response; }
                 if (_db.hbl_tbl_user.Any(z => z.email.Equals(user.email))) { response.Resp = false; response.RespMsg = "email already exist"; response.RespObj = user.mobile; return response; }
                 user.name = user.name.Trim().ToLower();
                 user.email = user.email.Trim().ToLower();
@@ -60,11 +60,11 @@ namespace Heeblo.Implementation
                 user.uid = user.uid;
                 string aesString = AESEncryption.Encrypt(user.uid.ToString());
                 var link = _config["verifyUrl"] + aesString;
-                var subject = "Heeblo Account Verification";
+                var subject = "Heeblo account verification";
                 var body = @"Dear " + user.name + ", \r\nPlease click below link to verify your account.\r\n" + link;
                 System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
-                if (i == 0) { response.RespMsg = "User Not Saved"; return response; }
-                if (i > 0) { response.Resp = true; response.RespMsg = "User Saved and mail sent Successfully"; response.RespObj = user; return response; }
+                if (i == 0) { response.RespMsg = "User not saved"; return response; }
+                if (i > 0) { response.Resp = true; response.RespMsg = "User saved and mail sent successfully"; response.RespObj = user; return response; }
                 return response;
             }
             catch (Exception ex)
@@ -128,7 +128,7 @@ namespace Heeblo.Implementation
             if (user == null)
             {
                 resp.Resp = false;
-                resp.RespMsg = "Invalid User";
+                resp.RespMsg = "Invalid user";
                 return resp;
             }
             var subject = "Forgot Password Link";
@@ -174,7 +174,7 @@ namespace Heeblo.Implementation
             }
             if (user == null)
             {
-                resp.RespMsg = "Invalid User";
+                resp.RespMsg = "Invalid user";
             }
             else
             {
@@ -185,30 +185,30 @@ namespace Heeblo.Implementation
                     {
                         string aesString = AESEncryption.Encrypt(user.uid.ToString());
                         var link = _config["verifyUrl"] + aesString;
-                        var subject = "Heeblo Account Verification";
+                        var subject = "Heeblo account verification";
                         var body = @"Dear " + user.name + ", \r\nPlease click below link to verify your account.\r\n" + link;
                         System.Threading.Tasks.Task.Run(() => { _heeblo.SendEmail(user.email, subject, body); });
                         resp.RespObj = null;
-                        resp.RespMsg = "Please verify your Account First";
+                        resp.RespMsg = "Please verify your account first";
                         return resp;
 
                     }
                     if (!user.is_active)
                     {
                         resp.RespObj = null;
-                        resp.RespMsg = "Your Account is Blocked";
+                        resp.RespMsg = "Your account is blocked";
                         return resp;
 
                     }
                     user.password = "dummy";
                     resp.Resp = true;
                     resp.RespObj = user;
-                    resp.RespMsg = "Valid User";
+                    resp.RespMsg = "Valid user";
                 }
                 else
                 {
                     resp.RespObj = null;
-                    resp.RespMsg = "Invalid Credentials";
+                    resp.RespMsg = "Invalid credentials";
                 }
             }
             return resp;
