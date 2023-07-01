@@ -1,10 +1,12 @@
 ﻿using Heeblo.Implementation;
 using Heeblo.Models;
-using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Heeblo.Controllers
 {
@@ -18,7 +20,7 @@ namespace Heeblo.Controllers
             _logger = logger;
             this.configuration = configuration;
         }
-         
+
         public IActionResult Login()
         {
             HttpContext.Session.Remove("user");
@@ -26,7 +28,7 @@ namespace Heeblo.Controllers
         }
         public IActionResult LoginPost(string cred, string pwd)
         {
-            if(cred == ""|| cred == null|| pwd == null ||pwd == "")
+            if (cred == "" || cred == null || pwd == null || pwd == "")
             {
                 ViewData["Error"] = "Please enter your credential";
                 return View("Login");
@@ -52,7 +54,7 @@ namespace Heeblo.Controllers
                 if (u.role == 2)
                 {
                     var pid = HttpContext.Session.GetString("pid") ?? null;
-                    if (pid!=null) return RedirectToAction("WriterUpload", "Home");
+                    if (pid != null) return RedirectToAction("WriterUpload", "Home");
                     else return RedirectToAction("WriterNoProject", "Home");
                 }
                 else if (u.role == 3) return RedirectToAction("Index", "Home");
@@ -72,6 +74,13 @@ namespace Heeblo.Controllers
         }
         public IActionResult Register()
         {
+            var email = TempData["Email"];
+            var name = TempData["Name"];
+            if (email != null && name != null)
+            {
+                ViewData["Email"] = email;
+                ViewData["Name"] = name;
+            }
             return View();
         }
 
@@ -104,6 +113,30 @@ namespace Heeblo.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult SignInWithGoogle()
+        {
+            var redirectUrl = Url.Action(nameof(HandleGoogleResponse), "Auth");
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> HandleGoogleResponse()
+        {
+            var authenticateResult = await HttpContext.AuthenticateAsync();
+            if (authenticateResult.Succeeded)
+            {
+                // Authentication successful, handle the user information as needed
+                var email = authenticateResult.Principal.FindFirstValue(ClaimTypes.Email);
+                var name = authenticateResult.Principal.FindFirstValue(ClaimTypes.Name);
+                TempData["Email"] = email;
+                TempData["Name"] = name;
+                return RedirectToAction("Register", "Auth");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Auth");
+            }
         }
     }
 }

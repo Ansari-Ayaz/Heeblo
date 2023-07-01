@@ -38,10 +38,10 @@
         }
     </script>
     <style>
-        
-     /*   .banner.newRegister {
-	height: auto;
-}*/
+
+        /*   .banner.newRegister {
+                    height: auto;
+                }*/
     </style>
 
 </head>
@@ -107,8 +107,8 @@
 
                             <div class="col-lg-6 col-md-6 main-form-center">
                                 <div class="login-tittle mb-4">
-@*                                    <h2> <span style="color:#d6c494">Reg</span>ister </h2>
-*@                                    <h3> Let's get you onboarded! </h3>
+                                    @*                                    <h2> <span style="color:#d6c494">Reg</span>ister </h2>
+                                    *@                                    <h3> Let's get you onboarded! </h3>
                                 </div>
                                 <div class="form-info welcome-login wow fadeInDown" data-wow-duration="1.6s" style="visibility: visible; animation-duration: 1.6s; animation-name: fadeInDown;">
 
@@ -257,12 +257,11 @@
     </div>
     <script>
         $(document).ready(function() {
-            var params = new URLSearchParams(window.location.search);
-            var cred = JSON.parse(atob(params.get("c") || 'e30=')) ?? null
-            if (cred != null) {
-                console.log(cred);
-                $("input[name='name']").val(cred.name);
-                $("input[name='email']").val(cred.email);
+            var email = '@ViewData["Email"]';
+            var name = '@ViewData["Name"]';
+            if (email != null&& name != null) {
+                $("input[name='name']").val(name);
+                $("input[name='email']").val(email);
             }
         });
         function submitFunc() {

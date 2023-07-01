@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="~/frontend-assets/pattern/assets/css/rangeui.css" />
 
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
     <!-- ========== End Stylesheet ========== -->
 </head>
 <body>
@@ -95,28 +94,8 @@
                                     <div class="social-media">
                                         <ul>
                                             <li><a href="@Url.Action("Register","Auth")"> Email</a> </li>
-                                            <li><a href="#" onclick="g_click()">Google</a> </li>
+                                            <li><a href="@Url.Action("SignInWithGoogle","Auth")">Google</a> </li>
                                         </ul>
-                                        @*                                            <button type="button" >
-                                        <span> <i class="fa-brands fa-google"></i> Google</span>*@
-                                        <div id="g_id_onload" onclick='g_click'
-                                             data-client_id="123231719566-usi33hu495tmjg72f9jm6eoj6ia1ga3b.apps.googleusercontent.com"
-                                             data-context="signin"
-                                             data-ux_mode="popup"
-                                             data-callback="handleCredentialResponse"
-                                             data-nonce=""
-                                             data-auto_prompt="false">
-                                        </div>
-                                        @*</button>*@
-
-                                        <div class="g_id_signin d-none"
-                                             data-type="standard"
-                                             data-shape="rectangular"
-                                             data-theme="outline"
-                                             data-text="signin_with"
-                                             data-size="medium"
-                                             data-logo_alignment="center">
-                                        </div>
                                     </div>
 
                                 </div>
@@ -220,65 +199,7 @@
         <script src="~/frontend-assets/pattern/assets/js/lightcase.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/isotope.pkgd.min.js"></script>
         <script src="~/frontend-assets/pattern/assets/js/functions.js"></script>
-        <script src="https://www.google.com/recaptcha/api.js?render=https://callsystem.net"></script>
-        <script src="https://accounts.google.com/gsi/client" async defer></script>
-        <script async defer src="https://apis.google.com/js/platform.js?onload=renderButton"></script>
-
-        <script>
-            const g_click = () => $('.g_id_signin [role="button"]').trigger('click');
-
-            // Render Google Sign-in button
-            function renderButton() {
-                gapi.signin2.render('gSignIn', {
-                    'scope': 'profile email',
-                    'width': 240,
-                    'height': 50,
-                    'longtitle': true,
-                    'theme': 'dark',
-                    'onsuccess': onSuccess,
-                    'onfailure': onFailure
-                });
-            }
-            // Sign-in success callback
-            function onSuccess(googleUser) {
-                // Retrieve the Google account data
-                gapi.client.load('oauth2', 'v2', function () {
-                    var request = gapi.client.oauth2.userinfo.get({
-                        'userId': 'me'
-                    });
-                    request.execute(function (resp) {
-                        // Display the user details
-                        var profileHTML = '<h3>Welcome ' + resp.given_name + '! <a href="javascript:void(0);" onclick="signOut();">Sign out</a></h3>';
-                        profileHTML += '<img src="' + resp.picture + '"/><p><b>Google ID: </b>' + resp.id + '</p><p><b>Name: </b>' + resp.name + '</p><p><b>Email: </b>' + resp.email + '</p><p><b>Gender: </b>' + resp.gender + '</p><p><b>Locale: </b>' + resp.locale + '</p><p><b>Google Profile:</b> <a target="_blank" href="' + resp.link + '">click to view profile</a></p>';
-                        document.getElementsByClassName("userContent")[0].innerHTML = profileHTML;
-
-                        document.getElementById("gSignIn").style.display = "none";
-                        document.getElementsByClassName("userContent")[0].style.display = "block";
-                    });
-                });
-            }
-
-            // Sign-in failure callback
-            function onFailure(error) {
-                alert(error);
-            }
-            function handleCredentialResponse(response) {
-                const responsePayload = decodeJwtResponse(response.credential);
-
-                var cred = {
-                    email: responsePayload.email,
-                    name: responsePayload.name
-                }
-                console.log(cred)
-                window.location.href = '@(Url.Action("Register", "Auth"))' + '?c=' + btoa(JSON.stringify(cred))
-
-            }
-
-            function decodeJwtResponse(data) {
-                var tokens = data.split(".");
-                return JSON.parse(atob(tokens[1]));
-            }
-        </script>
+               
         <!-- End Footer Bottom -->
         <!-- End Footer-->
 
